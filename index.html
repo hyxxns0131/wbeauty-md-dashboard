@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>셰이드 큐레이션 · 뷰티 온라인MD 대시보드 | 강현서</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Zilla+Slab:wght@600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root{
@@ -146,27 +146,64 @@
   .tag.real{background:#111110;color:#fff}
   .card.bench{border:1.5px solid #111110}
   footer{margin-top:30px;font-size:12px;color:var(--text-muted);text-align:center}
+
+  /* ===== frame UI (portfolio reference) ===== */
+  body{background:#f1f0ec}
+  .frame{max-width:1220px;margin:24px auto 40px;background:#2c2b2d;border-radius:30px;padding:18px 18px 14px;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+  .topbar{display:flex;align-items:center;gap:10px;border:1.5px solid #5a595c;border-radius:999px;padding:7px 10px 7px 14px;margin-bottom:14px;color:#e9e8e4;overflow-x:auto}
+  .topbar .sicon{display:flex;color:#e9e8e4}
+  .topbar .sep{width:1.5px;height:20px;background:#6b6a6d;flex:none}
+  .schip{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#111;border-radius:999px;padding:4px 12px 4px 5px;font:500 12.5px "IBM Plex Mono","Noto Sans KR",monospace;white-space:nowrap}
+  .schip i{display:flex;width:20px;height:20px;border-radius:50%;background:#2c2b2d;color:#fff;align-items:center;justify-content:center}
+  .panel{background:#fff;border-radius:22px;overflow:hidden}
+  header.hero{position:relative;padding:34px 34px 22px;border-bottom:1px solid #e7e5df}
+  .expand{position:absolute;right:18px;top:18px;width:32px;height:32px;border-radius:50%;background:#2c2b2d;color:#fff;display:flex;align-items:center;justify-content:center}
+  .guides{position:relative;padding:18px 0 6px}
+  .guides::before{content:"";position:absolute;left:-34px;right:-34px;top:0;bottom:0;pointer-events:none;
+    background:linear-gradient(#d9d7d1,#d9d7d1) 0 31px/100% 1px no-repeat,linear-gradient(#d9d7d1,#d9d7d1) 0 50px/100% 1px no-repeat,linear-gradient(#d9d7d1,#d9d7d1) 0 93px/100% 1px no-repeat,linear-gradient(#d9d7d1,#d9d7d1) 0 112px/100% 1px no-repeat}
+  .guides .h1{position:relative;font-family:"Zilla Slab","Noto Sans KR",serif;font-weight:700;font-size:84px;line-height:1;letter-spacing:-.035em;color:#1b1a1c}
+  .guides .sub{position:relative;margin:16px 0 0;color:var(--text-secondary);font-size:14px;max-width:760px}
+  nav.tabs{display:flex;flex-wrap:wrap;gap:8px;border:none;margin:18px 0 0;overflow:visible}
+  nav.tabs a{display:inline-flex;align-items:center;gap:6px;border:1.5px solid #1b1a1c;border-radius:999px;padding:5px 13px;font:600 13px "IBM Plex Mono","Noto Sans KR",monospace;color:#1b1a1c;background:#fff;text-decoration:none;white-space:nowrap}
+  nav.tabs a b{font-weight:700;font-size:12px}
+  nav.tabs a .jd{font-size:10.5px;border:1px solid currentColor;border-radius:4px;padding:0 4px;margin:0 0 0 2px;opacity:.75}
+  nav.tabs a:hover{background:#f1f0ec}
+  nav.tabs a.on{background:#1b1a1c;color:#fff}
+  .content{padding:26px 26px 30px;background:#fafaf8}
+  .bottombar{display:flex;align-items:center;gap:22px;flex-wrap:wrap;color:#d6d5d1;padding:14px 10px 4px;font:500 12px "IBM Plex Mono","Noto Sans KR",monospace;margin:0;text-align:left}
+  .bottombar .bi{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+  .bottombar .bnote{flex:1 1 100%;font-family:"Noto Sans KR",sans-serif;font-size:11px;color:#9a999c;line-height:1.5}
+  .card,.kpi{border-color:#e4e2dc}
+  .card.bench{border:1.5px solid #1b1a1c}
+  .jobline .chip{border-radius:999px;padding:3px 10px}
+  @media (max-width:900px){.frame{margin:0;border-radius:0;padding:10px}.guides .h1{font-size:52px}header.hero{padding:26px 18px 18px}.guides::before{left:-18px;right:-18px;background:linear-gradient(#d9d7d1,#d9d7d1) 0 14px/100% 1px no-repeat,linear-gradient(#d9d7d1,#d9d7d1) 0 30px/100% 1px no-repeat,linear-gradient(#d9d7d1,#d9d7d1) 0 58px/100% 1px no-repeat,linear-gradient(#d9d7d1,#d9d7d1) 0 70px/100% 1px no-repeat}.content{padding:16px 12px 20px}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
-    <div>
-      <div class="eyebrow">AX Portfolio · Beauty Online MD</div>
-      <h1>셰이드 큐레이션 — 톤별 셰이드 수요·공급 MD 대시보드</h1>
-      <p class="sub">퍼스널컬러 진단으로 모은 익명 톤 데이터로 “어떤 셰이드가 부족한지” 찾고, 브랜드 운영·소싱·기획전·매출 판단까지 연결합니다.</p>
+<div class="frame">
+  <div class="topbar">
+    <span class="sicon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></span><span class="sep"></span>
+    <span class="schip"><i><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i>강현서</span>
+    <span class="schip"><i><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i>2026</span>
+    <span class="schip"><i><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i>Beauty Online MD</span>
+  </div>
+  <div class="panel">
+  <header class="hero">
+    <a class="expand" href="#story" title="프로젝트 설명 보기"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg></a>
+    <div class="guides">
+      <div class="h1">shade curation.</div>
+      <p class="sub">셰이드 큐레이션 — 퍼스널컬러 진단으로 모은 익명 톤 데이터로 “어떤 셰이드가 부족한지” 찾고, 브랜드 운영·소싱·기획전·매출 판단까지 연결하는 뷰티 온라인MD 대시보드</p>
     </div>
-    <div class="who"><b>강현서</b> · 온라인MD 지원<br>국제통상 · 회계 복수전공 / 前 신성통상 E-MD 인턴</div>
+    <nav class="tabs" id="tabs">
+      <a href="#diagnose" data-v="diagnose"><b>↗</b>① 고객 체험</a>
+      <a href="#brand" data-v="brand"><b>↗</b>② 브랜드 운영<span class="jd">업무1</span></a>
+      <a href="#sourcing" data-v="sourcing"><b>↗</b>③ 소싱·상품등록<span class="jd">업무2</span></a>
+      <a href="#promo" data-v="promo"><b>↗</b>④ 기획전·프로모션<span class="jd">업무3</span></a>
+      <a href="#sales" data-v="sales"><b>↗</b>⑤ 매출 분석<span class="jd">업무4</span></a>
+      <a href="#story" data-v="story"><b>↗</b>⑥ 프로젝트 설명</a>
+    </nav>
   </header>
-
-  <nav class="tabs" id="tabs">
-    <a href="#diagnose" data-v="diagnose">① 고객 체험 · 퍼컬 진단</a>
-    <a href="#brand" data-v="brand"><span class="jd">업무1</span>② 브랜드 운영</a>
-    <a href="#sourcing" data-v="sourcing"><span class="jd">업무2</span>③ 소싱·상품등록</a>
-    <a href="#promo" data-v="promo"><span class="jd">업무3</span>④ 기획전·프로모션</a>
-    <a href="#sales" data-v="sales"><span class="jd">업무4</span>⑤ 매출 분석</a>
-    <a href="#story" data-v="story">⑥ 프로젝트 설명</a>
-  </nav>
+  <div class="content">
 
   <!-- ① 진단 -->
   <section class="view" id="v-diagnose">
@@ -485,7 +522,13 @@
     </div>
   </section>
 
-  <footer>포트폴리오용 프로토타입 · 검은 테두리 “실제 공개 정보”(2026.11.12 W컨셉 공개 페이지 직접 조사), ① 추천 셰이드, ⑤ 구좌 이름만 실제이고, 브랜드 A~F와 모든 매출·재고·성과 수치는 가정 데이터입니다 · W컨셉 공식 서비스와 무관 · © 강현서</footer>
+  </div>
+  </div>
+  <footer class="bottombar">
+    <span class="bi"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>AX Portfolio · W컨셉 온라인MD 지원</span>
+    <span class="bi"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>2026.11</span>
+    <span class="bnote">포트폴리오용 프로토타입 · 검은 테두리 “실제 공개 정보”(2026.11.12 W컨셉 공개 페이지 직접 조사), ① 추천 셰이드, ⑤ 구좌 이름만 실제이고, 브랜드 A~F와 모든 매출·재고·성과 수치는 가정 데이터입니다 · W컨셉 공식 서비스와 무관 · © 강현서</span>
+  </footer>
 </div>
 
 <script>
