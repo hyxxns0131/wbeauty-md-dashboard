@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>셰이드 큐레이션 · 뷰티 온라인MD 대시보드 | 강현서</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#f6f5f2; --card:#ffffff; --line:#e7e5df; --soft:#f1f0ec;
+    --text-primary:#111110; --text-secondary:#52514e; --text-muted:#8a8984;
+    --t-spring:#eda100; --t-summer:#2a78d6; --t-autumn:#eb6834; --t-winter:#1baf7a;
+    --good:#0a7a3d; --warn:#b26b00; --crit:#c2312f; --sale:#e0352b;
+  }
+  *{box-sizing:border-box} [hidden]{display:none!important}
+  body{margin:0;font-family:"Noto Sans KR",system-ui,sans-serif;background:var(--bg);color:var(--text-primary);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 60px}
+  header.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);font-weight:700}
+  h1{font-size:28px;line-height:1.25;margin:6px 0 4px;font-weight:800;letter-spacing:-.02em}
+  .sub{color:var(--text-secondary);font-size:14.5px;margin:0}
+  .who{font-size:13px;color:var(--text-secondary);text-align:right}
+  .who b{color:var(--text-primary)}
+  nav.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:16px 0 18px;overflow-x:auto}
+  nav.tabs a{padding:10px 12px;font-size:14px;font-weight:700;color:var(--text-muted);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap}
+  nav.tabs a.on{color:var(--text-primary);border-color:var(--text-primary)}
+  nav.tabs a .jd{display:inline-block;font-size:10.5px;font-weight:700;border:1px solid currentColor;border-radius:4px;padding:0 4px;margin-right:5px;vertical-align:1px}
+  section.view{display:none} section.view.on{display:block}
+  .jobline{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .jobline .chip{font-size:11.5px;font-weight:800;background:var(--text-primary);color:#fff;border-radius:6px;padding:3px 8px}
+  .jobline b{font-size:17px;letter-spacing:-.01em}
+  .jobline span.s{font-size:13px;color:var(--text-secondary)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .card h3{margin:0 0 4px;font-size:16px;letter-spacing:-.01em}
+  .card .cap{font-size:12.5px;color:var(--text-muted);margin:0 0 12px}
+  .grid{display:grid;gap:14px} .grid>*{min-width:0}
+  .g2{grid-template-columns:1fr 1fr} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)}
+  .g-diag{grid-template-columns:1.05fr 1fr}
+  .mt{margin-top:14px}
+  @media (max-width:900px){.g2,.g3,.g-diag{grid-template-columns:1fr}.g4{grid-template-columns:repeat(2,1fr)}h1{font-size:22px}.who{text-align:left}}
+  .btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--text-primary);background:var(--text-primary);color:#fff;border-radius:999px;padding:9px 16px;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+  .btn.ghost{background:transparent;color:var(--text-primary)}
+  .btn.sm{padding:6px 12px;font-size:12.5px}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .notice{font-size:12.5px;color:var(--text-secondary);background:var(--soft);border-radius:10px;padding:10px 12px;margin-top:12px}
+  .notice.top{margin:0 0 14px}
+  .live{color:var(--good);font-weight:700}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px}
+  .kpi .k{font-size:12px;color:var(--text-secondary);font-weight:500}
+  .kpi .v{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-top:2px}
+  .kpi .s{font-size:11.5px;color:var(--text-muted)}
+  .chartbox{position:relative;height:260px}
+  .chartbox.tall{height:330px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{font-weight:700;color:var(--text-secondary);text-align:right;padding:8px;border-bottom:1px solid var(--line);font-size:12px;white-space:nowrap}
+  td{padding:9px 8px;border-bottom:1px solid #f0efea;text-align:right;white-space:nowrap;vertical-align:middle}
+  th:first-child,td:first-child{text-align:left}
+  td.l,th.l{text-align:left;white-space:normal}
+  .scroll{overflow-x:auto}
+  .tag{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;border-radius:99px;padding:2px 8px;margin:1px 2px 1px 0;white-space:nowrap}
+  .tag.good{background:#e5f3ea;color:var(--good)} .tag.warn{background:#fbf0de;color:var(--warn)} .tag.crit{background:#fbe6e5;color:var(--crit)} .tag.mute{background:var(--soft);color:var(--text-secondary)}
+  .tt{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;white-space:nowrap}
+  .tt i{width:10px;height:10px;border-radius:3px;display:inline-block}
+  .key{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--text-secondary);margin-bottom:8px}
+  .dots{display:inline-flex;gap:3px;vertical-align:-1px;margin-right:6px}
+  .dots i{width:10px;height:10px;border-radius:50%;display:inline-block;border:1.5px solid}
+  .sw{display:inline-block;width:16px;height:16px;border-radius:50%;vertical-align:-3px;margin-right:6px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
+  .tbl-toggle{font-size:12px;color:var(--text-secondary);background:none;border:none;text-decoration:underline;cursor:pointer;padding:0;margin-top:6px;font-family:inherit}
+  .actions{display:grid;gap:10px}
+  .action{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fff}
+  .action .n{width:26px;height:26px;border-radius:50%;background:var(--text-primary);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .action b{display:block;font-size:14px}
+  .action span{font-size:13px;color:var(--text-secondary)}
+  .assume{font-size:11.5px;color:var(--text-muted);margin-top:8px}
+  /* matrix */
+  .mx td.c{text-align:center;font-size:12.5px;border:2px solid #fff;border-radius:6px}
+  .mx td.c b{display:block;font-size:14px}
+  .mx td.c.crit{background:#fbe6e5;color:var(--crit)} .mx td.c.warn{background:#fbf0de;color:var(--warn)} .mx td.c.ok{background:#f6f5f2;color:var(--text-secondary)}
+  /* compliance */
+  textarea{width:100%;font:inherit;font-size:13.5px;border:1px solid var(--line);border-radius:10px;padding:10px;min-height:70px;resize:vertical}
+  mark.crit{background:#fbe6e5;color:var(--crit);font-weight:700;border-radius:3px;padding:0 2px}
+  mark.warn{background:#fbf0de;color:var(--warn);font-weight:700;border-radius:3px;padding:0 2px}
+  .ok{color:var(--good);font-weight:700} .ng{color:var(--crit);font-weight:700}
+  /* sim */
+  .sim{display:grid;grid-template-columns:1fr 1.2fr;gap:18px;align-items:center}
+  @media (max-width:900px){.sim{grid-template-columns:1fr}}
+  input[type=range]{width:100%;accent-color:var(--text-primary)}
+  select{font:inherit;font-size:13.5px;padding:7px 10px;border-radius:8px;border:1px solid var(--line);background:#fff}
+  .simout{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .simout div{background:var(--bg);border-radius:10px;padding:10px}
+  .simout .k{font-size:11.5px;color:var(--text-secondary)} .simout .v{font-size:19px;font-weight:800}
+  .lab2{display:flex;justify-content:space-between;font-size:13px;margin-top:8px}
+  .status{font-size:13px;color:var(--text-secondary);margin-top:8px;min-height:20px}
+  /* diagnose */
+  .stage{position:relative;background:#efeee9;border-radius:12px;min-height:300px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:12px}
+  .stage canvas,.stage video{max-width:100%;max-height:440px;display:block}
+  .stage .ph{color:var(--text-muted);font-size:14px;text-align:center;padding:30px}
+  .result-hero{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+  .tone-dot{width:54px;height:54px;border-radius:50%;flex:none;border:3px solid #fff;box-shadow:0 0 0 1px var(--line)}
+  .result-hero .t{font-size:24px;font-weight:800;letter-spacing:-.02em}
+  .result-hero .d{font-size:13px;color:var(--text-secondary)}
+  .meter{margin:6px 0 10px}
+  .meter .lab{display:flex;justify-content:space-between;font-size:12px;color:var(--text-secondary)}
+  .meter .bar{height:8px;border-radius:99px;background:linear-gradient(90deg,#d9a3b5,#efe6dd,#e3b36b);position:relative;margin-top:4px}
+  .meter .bar.lum{background:linear-gradient(90deg,#6b5a4f,#efe6dd)}
+  .meter .pin{position:absolute;top:-4px;width:4px;height:16px;border-radius:2px;background:var(--text-primary);transform:translateX(-2px)}
+  .prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media (max-width:560px){.prod-grid{grid-template-columns:repeat(2,1fr)}}
+  .prod{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;display:flex;flex-direction:column;cursor:pointer}
+  .prod .img{height:78px;position:relative}
+  .prod .img i{position:absolute;left:8px;top:8px;font-style:normal;font-size:11px;font-weight:700;background:rgba(255,255,255,.9);border-radius:99px;padding:2px 8px}
+  .prod .body{padding:9px 10px 10px;font-size:12.5px;flex:1;display:flex;flex-direction:column;gap:1px}
+  .prod .br{font-weight:800;font-size:12px}
+  .prod .nm{color:var(--text-secondary)}
+  .prod .pr{margin-top:auto;padding-top:6px;display:flex;justify-content:space-between;align-items:center;gap:4px}
+  .prod .pr b{font-size:13px} .prod .pr em{font-style:normal;color:var(--sale);font-weight:800;margin-right:4px}
+  .prod button{border:1px solid var(--line);background:#fff;border-radius:8px;font:inherit;font-size:11.5px;padding:4px 7px;cursor:pointer}
+  .prod button.done{background:var(--text-primary);color:#fff;border-color:var(--text-primary)}
+  .md-link{border:1px dashed #c9c7c0;border-radius:12px;padding:12px 14px;margin-top:12px;font-size:13px;background:#fcfcfb}
+  .md-link b{font-size:13.5px}
+  /* story */
+  .pf-hero{background:var(--text-primary);color:#fff;border-radius:16px;padding:26px 24px}
+  .pf-hero .eyebrow{color:#b9b8b2}
+  .pf-hero h2{font-size:24px;margin:8px 0 6px;letter-spacing:-.02em}
+  .pf-hero p{margin:0;color:#dcdbd5;font-size:14px}
+  .pf-meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:12.5px;color:#b9b8b2}
+  .pf-meta b{color:#fff;font-weight:700}
+  .big{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:900px){.flow{grid-template-columns:1fr 1fr}}
+  .flow div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:13px}
+  .flow div b{display:block;font-size:13.5px;margin-bottom:4px}
+  .flow .x{border-color:#f0c9c8;background:#fdf6f6}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:700px){.split{grid-template-columns:1fr}}
+  .split>div{border-radius:12px;padding:14px;font-size:13px}
+  .split .ai{background:#eef4fc} .split .me{background:#f6f2ea}
+  .split ul{margin:6px 0 0;padding-left:18px}
+  ul.tight{margin:6px 0 0;padding-left:18px;font-size:13.5px} ul.tight li{margin:3px 0}
+  .g5{grid-template-columns:repeat(5,1fr)}
+  @media (max-width:900px){.g5{grid-template-columns:repeat(2,1fr)}}
+  .tag.real{background:#111110;color:#fff}
+  .card.bench{border:1.5px solid #111110}
+  footer{margin-top:30px;font-size:12px;color:var(--text-muted);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">AX Portfolio · Beauty Online MD</div>
+      <h1>셰이드 큐레이션 — 톤별 셰이드 수요·공급 MD 대시보드</h1>
+      <p class="sub">퍼스널컬러 진단으로 모은 익명 톤 데이터로 “어떤 셰이드가 부족한지” 찾고, 브랜드 운영·소싱·기획전·매출 판단까지 연결합니다.</p>
+    </div>
+    <div class="who"><b>강현서</b> · 온라인MD 지원<br>국제통상 · 회계 복수전공 / 前 신성통상 E-MD 인턴</div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <a href="#diagnose" data-v="diagnose">① 고객 체험 · 퍼컬 진단</a>
+    <a href="#brand" data-v="brand"><span class="jd">업무1</span>② 브랜드 운영</a>
+    <a href="#sourcing" data-v="sourcing"><span class="jd">업무2</span>③ 소싱·상품등록</a>
+    <a href="#promo" data-v="promo"><span class="jd">업무3</span>④ 기획전·프로모션</a>
+    <a href="#sales" data-v="sales"><span class="jd">업무4</span>⑤ 매출 분석</a>
+    <a href="#story" data-v="story">⑥ 프로젝트 설명</a>
+  </nav>
+
+  <!-- ① 진단 -->
+  <section class="view" id="v-diagnose">
+    <div class="grid g-diag">
+      <div class="card">
+        <h3>얼굴 사진으로 톤 진단하기</h3>
+        <p class="cap">MediaPipe Face Landmarker가 얼굴 478개 지점을 찾고, 볼·이마 피부색만 뽑아 웜/쿨과 명도를 계산합니다.</p>
+        <div class="row">
+          <label class="btn" for="file">📷 사진 올리기</label>
+          <input id="file" type="file" accept="image/*" hidden>
+          <button class="btn ghost" id="camBtn">카메라 켜기</button>
+          <button class="btn ghost" id="snapBtn" hidden>촬영 · 진단</button>
+          <button class="btn ghost sm" id="demoBtn">사진 없이 예시 결과 보기</button>
+        </div>
+        <div class="stage" id="stage"><div class="ph">정면 사진, 자연광, 민낯에 가까울수록 결과가 안정적이에요.<br>사진은 이 브라우저 안에서만 분석되고 어디에도 전송·저장되지 않습니다.</div></div>
+        <div class="status" id="status"></div>
+        <div class="notice">🔒 <b>개인정보 설계</b> — 고객이 스스로 체험을 선택할 때만 작동합니다. 얼굴 이미지는 저장·전송하지 않고, MD 화면에는 <b>“어떤 톤이 나왔는지 · 어떤 셰이드를 눌렀는지”</b> 같은 익명 결과만 집계됩니다.</div>
+      </div>
+      <div class="card" id="resultCard">
+        <h3>진단 결과 & 추천 셰이드</h3>
+        <p class="cap">조명·화장에 따라 달라지는 참고용 결과예요. 정확한 진단이 아니라 “내게 맞는 셰이드 탐색”의 입구로 설계했습니다.</p>
+        <div id="resultBody"><div style="color:var(--text-muted);font-size:14px;padding:40px 0;text-align:center">왼쪽에서 사진을 올리거나 예시 결과를 눌러보세요.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ② 브랜드 운영 -->
+  <section class="view" id="v-brand">
+    <div class="jobline"><span class="chip">공고 주요업무 1</span><b>W컨셉 플랫폼 입점 브랜드 운영/관리</b><span class="s">실제 색조 상품 8개 조사 + 브랜드 A~F 운영 시뮬레이션(가정)</span></div>
+    <div class="notice top">📊 검은 테두리 카드는 <b>실제 공개 정보</b>(2026.11.12 W컨셉 상품 페이지 직접 조사), 그 아래 <b>브랜드 A~F</b>는 실제 브랜드와 무관하게 익명 처리한 <b>가정 데이터</b>입니다. ①에서 이 브라우저로 체험한 결과는 <span class="live">초록색 +숫자</span>로 실시간 더해집니다.</div>
+    <div class="card bench">
+      <div class="row" style="justify-content:space-between"><span class="tag real">실제 공개 정보 · 2026.11.12 조사</span><span class="cap" style="margin:0">출처: W컨셉 뷰티 페이지 노출 색조 상품 8개의 상품 페이지</span></div>
+      <h3 id="hReal1" style="margin-top:10px">W컨셉 색조 브랜드 현황</h3>
+      <p class="cap">가격·할인율·평점·리뷰 수·셰이드 수·품절 옵션·리뷰 속성(“좋음” 비율)·연결된 기획전 — 페이지에 공개된 값 그대로</p>
+      <div class="grid g4" id="kpiReal1"></div>
+      <div class="scroll mt" id="tReal1"></div>
+      <div class="assume">매출·재고 수량·마진은 공개되지 않아 넣지 않았습니다. 가격·할인율은 조사 시점 기준이며 수시로 바뀝니다.</div>
+    </div>
+    <div class="notice" style="margin:14px 0">📊 아래부터는 <b>브랜드 A~F 가정 데이터</b>입니다. 실제 W컨셉 입점 브랜드와 무관합니다.</div>
+    <div class="grid g5" id="kpiBrand"></div>
+    <div class="card mt">
+      <h3 id="hBrand">브랜드 스코어카드 (브랜드 A~F, 가정)</h3>
+      <p class="cap">매출·셰이드 수·품절률·리뷰 평점·톤 커버리지(4톤 중 대응 톤 수)·단독 셰이드·선론칭 매출 비중 — 4주 누적 (가정)</p>
+      <div class="scroll" id="tBrand"></div>
+      <div class="assume">톤 커버리지 점: <span class="tt"><i style="background:#eda100"></i>봄웜</span> · <span class="tt"><i style="background:#2a78d6"></i>여름쿨</span> · <span class="tt"><i style="background:#eb6834"></i>가을웜</span> · <span class="tt"><i style="background:#1baf7a"></i>겨울쿨</span> 순서, 빈 원은 해당 톤 셰이드 없음.</div>
+    </div>
+    <div class="card mt">
+      <h3>이번 주 브랜드 운영 제안</h3>
+      <p class="cap">스코어카드 규칙으로 자동 생성 — 최종 협의 여부는 MD가 판단합니다.</p>
+      <div class="actions" id="aBrand"></div>
+      <div class="assume">규칙: ① 브랜드와 같은 온도(웜/쿨)의 톤 중 카테고리 수요 대비 −8%p 이상 부족한 셰이드가 없으면 신규 셰이드 협의 ② 발색 스와치 누락 시 상세컷 보완 요청 ③ 품절 셰이드 15% 이상이면 리오더 확인 ④ 단독 셰이드가 없고 평점 4.55 이상이면 단독 셰이드 선론칭 협의 (W컨셉 메인 기획전 23개 중 ‘단독’·‘론칭’ 문구가 가장 흔한 점을 반영)</div>
+    </div>
+  </section>
+
+  <!-- ③ 소싱·상품등록 -->
+  <section class="view" id="v-sourcing">
+    <div class="jobline"><span class="chip">공고 주요업무 2</span><b>제품 소싱 및 상품 등록</b><span class="s">톤별 수요 vs 셰이드 공급 → 소싱 우선순위 · 등록 검수</span></div>
+    <div class="card bench">
+      <div class="row" style="justify-content:space-between"><span class="tag real">실제 공개 정보 · 2026.11.12 조사</span><span class="cap" style="margin:0">출처: W컨셉 상품 페이지 8개 (색상 옵션 목록)</span></div>
+      <h3 id="hReal2" style="margin-top:10px">실제 등록 정보 점검</h3>
+      <p class="cap">실제 판매 중인 색조 상품의 셰이드 옵션을 등록 검수 기준으로 점검. 지적이 아니라 “MD가 등록 단계에서 볼 것”을 실제 데이터로 확인</p>
+      <div class="grid g4" id="kpiReal2"></div>
+      <div class="grid g2 mt">
+        <div>
+          <div style="font-size:13.5px;font-weight:700" id="hTone">셰이드 이름으로 본 톤</div>
+          <p class="cap">옵션명에 브랜드가 표기한 톤(쿨/웜/뉴트럴) 또는 색 이름 키워드로 추정 (개)</p>
+          <div class="chartbox"><canvas id="cTone"></canvas></div>
+          <button class="tbl-toggle" data-t="tTone">표로 보기</button>
+          <div id="tTone" class="scroll" hidden></div>
+        </div>
+        <div>
+          <div style="font-size:13.5px;font-weight:700">상품별 점검표</div>
+          <p class="cap">컬러 수 표기 · 옵션명 톤 정보 · 품절 옵션 · W컨셉 카테고리</p>
+          <div class="scroll" id="tReal2"></div>
+        </div>
+      </div>
+      <div class="assume">톤 추정 규칙(참고용): 브랜드 표기(쿨베스트/웜베스트/뉴트럴) 우선 → 색 이름 키워드. 웜: 피치·코랄·탠저린·오렌지·브릭·브라운·초코·시나몬·테라코타·칠리·차이·넛·베이지 등 / 쿨: 핑크·로즈·모브·라벤더·체리·플럼·멀베리·푸시아·베리·그레이프 등. 웜·쿨 키워드가 함께 있거나 없으면 ‘판단 불가’. 실제 발색은 확인하지 않았습니다.</div>
+    </div>
+    <div class="notice" style="margin:14px 0">📊 아래부터는 <b>브랜드 A~F 가정 데이터</b>입니다. 수요 = 퍼컬 진단 톤 비중, 공급 = 등록 셰이드(SKU)의 톤 태그 비중.</div>
+    <div class="grid g4" id="kpiSrc"></div>
+    <div class="grid g2 mt">
+      <div class="card">
+        <h3 id="hGap">톤별 수요 vs 셰이드 공급</h3>
+        <p class="cap">진단 비중(수요) vs 등록 셰이드 비중(공급), 단위 % (가정)</p>
+        <div class="legend"><span><i class="key" style="background:#111110"></i>진단 비중(수요)</span><span><i class="key" style="background:#c9c7c0"></i>셰이드 비중(공급)</span></div>
+        <div class="chartbox"><canvas id="cGap"></canvas></div>
+        <button class="tbl-toggle" data-t="tGap">표로 보기</button>
+        <div id="tGap" hidden></div>
+      </div>
+      <div class="card">
+        <h3 id="hMx">카테고리 × 톤 셰이드 갭</h3>
+        <p class="cap">칸 = 셰이드 수 · (공급 비중 − 수요 비중)%p. 빨강 −10%p 이하, 주황 −3~−10%p (가정)</p>
+        <div class="scroll" id="tMx"></div>
+      </div>
+    </div>
+    <div class="card mt">
+      <h3>소싱 우선순위 TOP 3</h3>
+      <p class="cap">갭이 가장 큰 칸부터 — 해당 카테고리 보유 브랜드 중 평점이 높은 곳에 먼저 신규 셰이드 협의</p>
+      <div class="actions" id="aSrc"></div>
+    </div>
+    <div class="grid g2 mt">
+      <div class="card">
+        <h3 id="hReg">상품 등록 검수</h3>
+        <p class="cap">등록 대기 셰이드 8건 — 셰이드명 · 톤 태그 · 발색 스와치 · 전성분 · 사용기한 · 상품명 컬러 수 표기 (가정)</p>
+        <div class="scroll" id="tReg"></div>
+        <div class="assume">상품명 규칙 예: “벨벳 립 (4colors)”처럼 셰이드 수를 상품명에 표기 — 뷰티 상품 목록에서 흔히 쓰는 방식을 검수 항목으로 넣음.</div>
+      </div>
+      <div class="card">
+        <h3>화장품 표현 검수 — 과장·금지 표현 플래그</h3>
+        <p class="cap">팀 프로젝트(Reboot)의 광고문구 검수 아이디어를 화장품 표현 기준으로 다시 정리. 등록 대기 문구 자동 검사 + 직접 입력</p>
+        <div class="scroll" id="tCopy"></div>
+        <div style="margin-top:12px;font-size:13px;font-weight:700">직접 검사해보기</div>
+        <textarea id="copyIn">자외선 차단은 물론 주름 개선까지! 피부과 테스트 완료, 부작용 없는 쿠션</textarea>
+        <div id="copyOut" class="status"></div>
+        <div class="assume">🔴 금지 성격: 질병 치료·의약품 오인, 효과 보장·절대적 표현 · 🟠 주의: 기능성 심사·보고 없이 쓰면 안 되는 효능(주름 개선·미백·자외선 차단), 근거 자료가 필요한 표현. 참고용 검수이며 실제 판단은 식약처 화장품 표시·광고 가이드라인으로 확인합니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ 기획전·프로모션 -->
+  <section class="view" id="v-promo">
+    <div class="jobline"><span class="chip">공고 주요업무 3</span><b>기획전, 프로모션 운영/관리</b><span class="s">실제 기획전 벤치마크 · 톤별 기획전 성과 · 판촉비 포함 시뮬레이션</span></div>
+    <div class="card bench">
+      <div class="row" style="justify-content:space-between"><span class="tag real">실제 공개 정보 · 2026.11.12 조사</span><span class="cap" style="margin:0">출처: W컨셉 뷰티 카테고리 메인 배너 (display.wconcept.co.kr/rn/cc/beauty)</span></div>
+      <h3 id="hBench" style="margin-top:10px">W컨셉 뷰티 메인 기획전 벤치마크</h3>
+      <p class="cap">메인 배너에 걸린 기획전을 직접 열람해 문구 키워드·혜택 구조·카테고리로 분류. 할인율은 배너의 “최대(~)” 표기 기준</p>
+      <div class="grid g4" id="kpiBench"></div>
+      <div class="grid g2 mt">
+        <div>
+          <div style="font-size:13.5px;font-weight:700" id="hBenchKw">기획전 문구 키워드</div>
+          <p class="cap">배너 문구에 들어간 키워드 (중복 포함, 개)</p>
+          <div class="chartbox"><canvas id="cBenchKw"></canvas></div>
+          <button class="tbl-toggle" data-t="tBenchKw">표로 보기</button>
+          <div id="tBenchKw" hidden></div>
+        </div>
+        <div>
+          <div style="font-size:13.5px;font-weight:700" id="hBenchBen">혜택 구조</div>
+          <p class="cap">할인 외에 함께 주는 혜택 (중복 포함, 개)</p>
+          <div class="chartbox"><canvas id="cBenchBen"></canvas></div>
+          <button class="tbl-toggle" data-t="tBenchBen">표로 보기</button>
+          <div id="tBenchBen" hidden></div>
+        </div>
+      </div>
+      <div class="notice"><b>기획전 상세 페이지 구성 예 (클럽클리오 위크)</b> — 그룹 6개 브랜드를 한 페이지에 묶고, 맨 위에 <b>클리어런스</b> 섹션을 둔 뒤 브랜드별로 구성. 상품명에 <b>[한정수량] [2EA] [증정] 5+5 [NEW] [BEST]</b> 같은 구성·혜택 태그를 붙여 할인율 외의 구매 이유를 만듦.</div>
+      <button class="tbl-toggle" data-t="tBenchList" style="margin-top:10px">조사한 기획전 23개 목록 보기</button>
+      <div id="tBenchList" class="scroll" hidden></div>
+      <div class="assume">조사 방법: robots.txt에서 지정된 검색엔진 봇 외 자동 수집이 막혀 있는 것을 확인 → 크롤러 대신 일반 방문자로 공개 페이지를 직접 열람해 기록. 브랜드 로고·이미지는 사용하지 않음. 노출 기획전은 수시로 바뀜.</div>
+    </div>
+    <div class="notice" style="margin:14px 0">📊 아래부터는 <b>가정 데이터</b>입니다(4주 누적). 위 벤치마크처럼 할인에 쿠폰·사은품·적립이 겹치는 구조를 반영해, 실효 할인율 = 1 − (1−할인)(1−쿠폰), 사은품·적립은 판매가 대비 판촉비로 계산합니다.</div>
+    <div class="grid g4" id="kpiPromo"></div>
+    <div class="card mt">
+      <h3 id="hPromo">톤별 기획전 성과</h3>
+      <p class="cap">매출 · 할인+쿠폰 · 사은품·적립 · 판촉비 포함 마진율 · 구매건 · 진단 유입 (가정)</p>
+      <div class="scroll" id="tPromo"></div>
+      <div class="assume">마진율 = (실효 판매가 − 원가 − 사은품·적립 비용) ÷ 실효 판매가, 원가율 정가의 57%, 적립금은 전액 사용 가정. 진단 유입 = 퍼컬 진단 결과 화면에서 기획전으로 넘어온 고객 수.</div>
+    </div>
+    <div class="card mt">
+      <h3>프로모션 시뮬레이터 — 할인·쿠폰·사은품·적립을 바꾸면 이익은?</h3>
+      <p class="cap">혜택 조합을 바꿔 예상 매출·이익·마진율을 비교합니다 (가정)</p>
+      <div class="sim">
+        <div>
+          <div class="row" style="margin-bottom:6px"><span style="font-size:13px;font-weight:700">기획전</span><select id="simSel"></select></div>
+          <div class="lab2"><span>기본 할인율</span><b id="simD">-</b></div>
+          <input type="range" id="simR" min="0" max="40" step="1">
+          <div class="lab2"><span>추가 쿠폰</span><b id="simC">-</b></div>
+          <input type="range" id="simCR" min="0" max="20" step="1">
+          <div class="lab2"><span>사은품 (판매가 대비 원가)</span><b id="simG">-</b></div>
+          <input type="range" id="simGR" min="0" max="10" step="1">
+          <div class="lab2"><span>적립</span><b id="simP">-</b></div>
+          <input type="range" id="simPR" min="0" max="10" step="1">
+          <div class="simout" style="margin-top:10px">
+            <div><div class="k">예상 매출</div><div class="v" id="soRev">-</div></div>
+            <div><div class="k">예상 이익</div><div class="v" id="soPro">-</div></div>
+            <div><div class="k">마진율</div><div class="v" id="soMar">-</div></div>
+          </div>
+          <div class="status" id="simMsg"></div>
+          <div class="assume">가정: 원가율 57%, 실효 할인 1%p당 판매량 +2.5%, 쿠폰은 판매가에서 차감, 사은품·적립은 판매량에 영향 없이 비용만 발생(보수적 가정). 실제 운영 시 브랜드별 원가·과거 행사 데이터로 바꿔 넣습니다.</div>
+        </div>
+        <div>
+          <div class="chartbox"><canvas id="cSim"></canvas></div>
+          <button class="tbl-toggle" data-t="tSim">표로 보기</button>
+          <div id="tSim" hidden></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑤ 매출 분석 -->
+  <section class="view" id="v-sales">
+    <div class="jobline"><span class="chip">공고 주요업무 4</span><b>매출 데이터 관리 및 분석</b><span class="s">셰이드 단위 판매 · 재고 소진 · 진단 퍼널 · 톤 추이 · 노출 구좌</span></div>
+    <div class="notice top">📊 가정 데이터입니다(4주, 10월 3주~11월 2주). 진단 체험 결과는 퍼널과 11월 2주 추이에 <span class="live">+숫자</span>로 더해집니다.</div>
+    <div class="grid g4" id="kpiSales"></div>
+    <div class="grid g2 mt">
+      <div class="card">
+        <h3 id="hTop">셰이드별 판매 TOP 10</h3>
+        <p class="cap">4주 판매 수량(개), 막대 색 = 톤 (가정)</p>
+        <div class="legend" id="lgTop"></div>
+        <div class="chartbox tall"><canvas id="cTop"></canvas></div>
+        <button class="tbl-toggle" data-t="tTop">표로 보기</button>
+        <div id="tTop" hidden></div>
+      </div>
+      <div class="card">
+        <h3 id="hOut">품절 임박 셰이드</h3>
+        <p class="cap">재고 ÷ 일평균 판매량 = 소진 예상일. 7일 이내 빨강, 14일 이내 주황 (가정)</p>
+        <div class="scroll" id="tOut"></div>
+      </div>
+    </div>
+    <div class="grid g2 mt">
+      <div class="card">
+        <h3 id="hFunnel">진단 퍼널</h3>
+        <p class="cap">진단 → 추천 노출 → 셰이드 클릭 → 장바구니 → 구매 (명, 가정)</p>
+        <div class="chartbox"><canvas id="cFunnel"></canvas></div>
+        <button class="tbl-toggle" data-t="tFunnel">표로 보기</button>
+        <div id="tFunnel" hidden></div>
+      </div>
+      <div class="card">
+        <h3 id="hTrend">주차별 톤 진단 추이</h3>
+        <p class="cap">주차별 톤 진단 수 (명, 가정)</p>
+        <div class="legend" id="lgTrend"></div>
+        <div class="chartbox"><canvas id="cTrend"></canvas></div>
+        <button class="tbl-toggle" data-t="tTrend">표로 보기</button>
+        <div id="tTrend" hidden></div>
+      </div>
+    </div>
+    <div class="card mt">
+      <h3 id="hSlot">노출 구좌별 성과</h3>
+      <p class="cap">뷰티 카테고리 화면의 구좌별 노출·클릭·매출 — 구좌 이름은 실제 W컨셉 뷰티 페이지 섹션명, 수치는 가정 (4주)</p>
+      <div class="grid g2">
+        <div>
+          <div class="chartbox"><canvas id="cSlot"></canvas></div>
+          <button class="tbl-toggle" data-t="tSlot">표로 보기</button>
+        </div>
+        <div>
+          <div class="md-link" id="slotNote" style="margin-top:0"></div>
+          <div class="actions" id="aSlot" style="margin-top:10px"></div>
+        </div>
+      </div>
+      <div id="tSlot" class="scroll" hidden></div>
+    </div>
+  </section>
+
+  <!-- ⑥ 설명 -->
+  <section class="view" id="v-story">
+    <div class="pf-hero">
+      <div class="eyebrow">한 줄 요약</div>
+      <h2>“고객이 어떤 셰이드를 찾는지”를 톤 데이터로 보여주는 뷰티 MD 대시보드</h2>
+      <p>퍼스널컬러 진단 체험으로 모은 익명 톤 결과를 셰이드 소싱 · 등록 검수 · 기획전 할인 · 재고 판단에 연결했습니다.</p>
+      <p style="margin-top:8px;font-size:13px;color:#b9b8b2">범위: 뷰티 중 <b style="color:#fff">셰이드(호수)로 팔리는 색조 카테고리 — 립·섀도·블러셔·베이스</b>에 집중. W컨셉 뷰티 메인 기획전 23개 중 메이크업은 일부이고 스킨케어·헤어·센트 비중이 큰 점을 알고, 퍼스널컬러 데이터가 실제로 쓰일 수 있는 곳으로 일부러 좁혔습니다.</p>
+      <div class="pf-meta"><span>역할 <b>1인 기획·제작</b></span><span>기간 <b>2026.11</b></span><span>도구 <b>MediaPipe Face Landmarker · Claude · Chart.js</b></span></div>
+    </div>
+
+    <div class="grid g3 mt">
+      <div class="card"><div class="cap" style="margin:0">문제 정의</div><h3 style="margin-top:6px">셰이드 구성 근거가 “작년 판매량”뿐</h3>
+        <ul class="tight">
+          <li>인턴 때 행사 상품을 고르면서 컬러 판단은 전년 판매 데이터와 감에 의존했음</li>
+          <li>뷰티는 같은 제품도 셰이드별로 판매가 갈림 → 인기 셰이드는 품절, 비인기 셰이드는 할인으로 소진 (가정)</li>
+          <li>“고객이 지금 어떤 톤을 찾는지”는 구매 전 단계라 데이터가 없음</li>
+        </ul></div>
+      <div class="card"><div class="cap" style="margin:0">해결 성과 (가정 데이터 기준)</div>
+        <div class="big" style="margin-top:8px" id="pfGap">−11%p</div><div class="cap" id="pfGapCap">가을웜 수요 대비 셰이드 부족을 찾아 소싱 1순위로 제시</div>
+        <div class="big" id="pfOut">5개</div><div class="cap" id="pfOutCap">7일 안에 품절될 셰이드 자동 표시</div>
+        <div class="big" id="pfMar">18% → 28%</div><div class="cap" id="pfMarCap">겨울쿨 기획전 할인 조정 시 예상 마진율 (시뮬레이터)</div></div>
+      <div class="card"><div class="cap" style="margin:0">배운 점 · 다음 개선</div><h3 style="margin-top:6px">기술보다 “어떤 단위로 볼지”가 먼저</h3>
+        <ul class="tight">
+          <li>상품이 아니라 <b>셰이드 단위</b>로 보자 품절·갭이 보이기 시작함</li>
+          <li>KPI(카테고리×톤 갭, 소진 예상일, 실효 할인 마진)를 먼저 정하니 화면이 단순해짐</li>
+          <li>다음: 반품 사유(“색상 상이”)·리뷰 속 발색 언급과 연결해 효과 검증</li>
+        </ul></div>
+    </div>
+
+    <div class="card mt">
+      <h3>해결 과정 — 시도 → 막힘 → 바꾼 방법</h3>
+      <p class="cap">실패하고 고친 지점이 이 프로젝트의 핵심입니다.</p>
+      <div class="flow">
+        <div class="x"><b>① 첫 시도</b>매장 카메라로 고객 얼굴·표정을 자동 분석해 선호 컬러를 추정</div>
+        <div class="x"><b>② 막힘</b>얼굴은 민감한 개인정보 — 동의 없는 촬영·분석은 법적·브랜드 리스크</div>
+        <div><b>③ 바꾼 방법</b>고객이 <u>직접 선택</u>하는 진단 체험으로 전환, 이미지는 브라우저 안에서만 처리</div>
+        <div><b>④ 연결</b>익명 톤 결과만 집계 → 셰이드 갭 · 브랜드 제안 · 기획전 할인 · 재고 판단</div>
+      </div>
+      <div class="flow" style="margin-top:10px">
+        <div class="x"><b>① 시도</b>W컨셉 기획전을 자동 크롤링해 실제 데이터로 채우려 함</div>
+        <div class="x"><b>② 막힘</b>robots.txt에서 지정 검색엔진 외 자동 수집이 막혀 있음</div>
+        <div><b>③ 바꾼 방법</b>공개 페이지를 일반 방문자로 직접 열람해 메인 기획전 23개 · 색조 상품 8개(셰이드 98개)를 기록·분류</div>
+        <div><b>④ 연결</b>“57%가 혜택을 겹침” → 판촉비 포함 마진, “셰이드 52%는 이름으로 톤 판단 불가” → 등록 단계 톤 태그</div>
+      </div>
+    </div>
+
+    <div class="card mt">
+      <h3>AI 적용 — AI가 한 일 / 내가 한 일</h3>
+      <div class="split" style="margin-top:8px">
+        <div class="ai"><b>🤖 AI가 한 일</b><ul>
+          <li><b>MediaPipe Face Landmarker</b>: 사진에서 얼굴 478개 지점 위치 인식</li>
+          <li><b>Claude</b>: 화면·차트 코드 작성, 피부색 계산식(Lab 색공간) 구현 보조, 화장품 표현 검수 사전 초안, W컨셉 공개 기획전 페이지 열람·텍스트 정리 보조</li></ul></div>
+        <div class="me"><b>🙋 내가 한 일</b><ul>
+          <li>피부색을 뽑을 위치(볼·이마) 선정, 웜/쿨·명도 판정 기준 설계</li>
+          <li>셰이드 톤 태깅 기준 설계 (베이스는 호수 + 언더톤 C/N/W로 분류)</li>
+          <li>MD 관점 KPI 정의: 카테고리×톤 갭, 재고 소진 예상일, 할인+쿠폰 실효 마진</li>
+          <li>브랜드 운영 제안 규칙과 등록 검수 항목 설계, 금지·주의 표현 분류 검토</li>
+          <li>개인정보 리스크 검토 후 설계 전환</li>
+          <li>기획전 벤치마크 분류 기준(문구 키워드·혜택 구조)과 셰이드 이름 기준 톤 추정 규칙 설계, robots.txt 확인 후 수집 방식 결정</li>
+          <li>실제 브랜드에는 공개 정보만, 가정 수치는 익명(브랜드 A~F)으로 분리하는 원칙 결정</li></ul></div>
+      </div>
+      <div class="assume">표현 검수 아이디어는 6인 팀 프로젝트 “Reboot”(팀 성과: 1등)의 광고문구 검수 기능에서 출발했으며, 이 대시보드에서는 화장품 표현 기준으로 새로 정리했습니다.</div>
+    </div>
+
+    <div class="card mt">
+      <h3>W컨셉 온라인MD 주요업무와의 연결</h3>
+      <div class="scroll"><table>
+        <tr><th class="l">공고 주요업무</th><th class="l">이 대시보드에서</th></tr>
+        <tr><td class="l">업무1 입점 브랜드 운영/관리</td><td class="l">② 탭 — 브랜드 스코어카드(매출·셰이드 수·품절률·평점·톤 커버리지·단독/선론칭) → 운영 제안 자동 생성</td></tr>
+        <tr><td class="l">업무2 제품 소싱 및 상품 등록</td><td class="l">③ 탭 — 카테고리×톤 갭으로 소싱 우선순위, 등록 필수 정보·과장 표현 검수</td></tr>
+        <tr><td class="l">업무3 기획전, 프로모션 운영/관리</td><td class="l">④ 탭 — W컨셉 실제 기획전 23개 벤치마크, 톤별 기획전 성과, 할인·쿠폰·사은품·적립 포함 마진 시뮬레이션</td></tr>
+        <tr><td class="l">업무4 매출 데이터 관리 및 분석</td><td class="l">⑤ 탭 — 셰이드 판매 TOP, 소진 예상일, 진단 퍼널, 주차별 톤 추이, 노출 구좌별 성과</td></tr>
+      </table></div>
+      <div class="assume">패션 MD 대시보드와 같은 4탭 구조 — 카테고리가 바뀌어도 같은 틀로 일하는 MD를 보여주려는 설계입니다.</div>
+    </div>
+  </section>
+
+  <footer>포트폴리오용 프로토타입 · 검은 테두리 “실제 공개 정보”(2026.11.12 W컨셉 공개 페이지 직접 조사), ① 추천 셰이드, ⑤ 구좌 이름만 실제이고, 브랜드 A~F와 모든 매출·재고·성과 수치는 가정 데이터입니다 · W컨셉 공식 서비스와 무관 · © 강현서</footer>
+</div>
+
+<script>
+/* ================= 데이터 (모두 가정) ================= */
+const TONES = {
+  spring:{ko:'봄 웜',color:'#eda100',desc:'밝고 따뜻한 톤 · 코랄, 피치, 살몬 계열 셰이드'},
+  summer:{ko:'여름 쿨',color:'#2a78d6',desc:'밝고 부드러운 쿨톤 · 로즈, 라벤더, 쿨핑크 계열'},
+  autumn:{ko:'가을 웜',color:'#eb6834',desc:'깊고 따뜻한 톤 · 브릭, 브라운, 테라코타 계열'},
+  winter:{ko:'겨울 쿨',color:'#1baf7a',desc:'선명하고 차가운 톤 · 버건디, 쿨레드, 플럼 계열'}
+};
+const ORDER=['spring','summer','autumn','winter'];
+const WARM={spring:1,autumn:1}, COOL={summer:1,winter:1};
+const CATS=['립','섀도','블러셔','베이스'];
+
+/* [브랜드, 카테고리, 상품, 셰이드, 톤, 색, 정가, 할인%, 재고, 4주판매, 평점, 리뷰수, 스와치있음] */
+const RAW=[
+ ['브랜드 A','립','글로우 립 틴트','01 피치코랄','spring','#f28b6e',18000,10,420,610,4.7,1320,1],
+ ['브랜드 A','립','글로우 립 틴트','02 애플코랄','spring','#ef6f5c',18000,10,380,540,4.6,1105,1],
+ ['브랜드 A','립','글로우 립 틴트','03 살몬','spring','#f49b80',18000,10,510,320,4.5,640,1],
+ ['브랜드 A','립','글로우 립 틴트','04 브릭코랄','autumn','#c35a3e',18000,10,110,980,4.8,1890,1],
+ ['브랜드 B','립','로즈 MLBB 립밤','01 로즈핑크','summer','#dc98ad',16000,0,460,700,4.6,980,1],
+ ['브랜드 B','립','로즈 MLBB 립밤','02 라벤더핑크','summer','#c993b8',16000,0,520,410,4.4,520,1],
+ ['브랜드 B','립','로즈 MLBB 립밤','03 모브','summer','#b07a8e',16000,0,0,450,4.5,610,1],
+ ['브랜드 C','립','벨벳 립','01 버건디','winter','#7a1730',19000,20,85,860,4.8,1540,0],
+ ['브랜드 C','립','벨벳 립','02 쿨레드','winter','#b3122e',19000,20,140,720,4.7,1210,0],
+ ['브랜드 C','립','벨벳 립','03 플럼','winter','#6e2347',19000,20,0,390,4.5,450,0],
+ ['브랜드 D','립','멀티 밤 립&치크','01 피치','spring','#f6a98c',22000,15,600,280,4.3,310,1],
+ ['브랜드 D','립','멀티 밤 립&치크','02 핑크','summer','#eab2c2',22000,15,580,300,4.3,290,1],
+ ['브랜드 D','립','멀티 밤 립&치크','03 누드베이지','spring','#d9a38a',22000,15,640,190,4.2,180,1],
+ ['브랜드 E','섀도','4구 아이 팔레트','01 브라운','autumn','#7e5639',32000,10,160,820,4.8,1460,1],
+ ['브랜드 E','섀도','4구 아이 팔레트','02 카키','autumn','#6b6a3a',32000,10,240,510,4.6,720,0],
+ ['브랜드 E','섀도','4구 아이 팔레트','03 테라코타','autumn','#a5523a',32000,10,95,690,4.7,980,0],
+ ['브랜드 B','섀도','쿨 섀도','01 그레이지','summer','#a99ea0',14000,0,380,260,4.4,300,1],
+ ['브랜드 B','섀도','쿨 섀도','02 라일락','summer','#b9a6cc',14000,0,410,180,4.3,190,1],
+ ['브랜드 A','섀도','데일리 섀도','01 피치베이지','spring','#e8b79c',15000,10,520,240,4.5,260,1],
+ ['브랜드 A','섀도','데일리 섀도','02 골드','spring','#d4a85a',15000,10,480,150,4.2,140,1],
+ ['브랜드 C','섀도','스모키 섀도','01 차콜','winter','#3f3a44',17000,20,210,330,4.6,410,0],
+ ['브랜드 A','블러셔','피치 블러셔','01 피치','spring','#f6a98c',22000,0,300,430,4.6,720,1],
+ ['브랜드 A','블러셔','피치 블러셔','02 코랄','spring','#f3907a',22000,0,260,380,4.5,560,1],
+ ['브랜드 B','블러셔','쿨 핑크 블러셔','01 쿨핑크','summer','#eab2c2',21000,10,340,410,4.6,630,1],
+ ['브랜드 B','블러셔','쿨 핑크 블러셔','02 라벤더','summer','#cdb2dc',21000,10,390,220,4.4,240,1],
+ ['브랜드 B','블러셔','쿨 핑크 블러셔','03 로즈','summer','#d98ea3',21000,10,0,350,4.5,380,1],
+ ['브랜드 D','블러셔','크림 치크','01 애프리콧','spring','#f2b07f',19000,15,450,170,4.2,160,1],
+ ['브랜드 E','블러셔','무드 치크','01 말린장미','autumn','#b9716b',19000,10,70,520,4.7,610,0],
+ ['브랜드 F','베이스','롱웨어 쿠션','13C 포슬린','summer','#f1dccf',32000,15,260,280,4.5,520,1],
+ ['브랜드 F','베이스','롱웨어 쿠션','17C 바닐라','summer','#ecd2c1',32000,15,420,560,4.6,1010,1],
+ ['브랜드 F','베이스','롱웨어 쿠션','17W 아이보리','spring','#efd4b6',32000,15,380,490,4.6,880,1],
+ ['브랜드 F','베이스','롱웨어 쿠션','21C 핑크베이지','summer','#e3c2ab',32000,15,450,620,4.5,1150,1],
+ ['브랜드 F','베이스','롱웨어 쿠션','21W 웜베이지','spring','#e6c3a0',32000,15,300,660,4.6,1230,1],
+ ['브랜드 F','베이스','롱웨어 쿠션','23W 허니베이지','autumn','#d6af8c',32000,15,60,540,4.7,760,1],
+ ['브랜드 F','베이스','롱웨어 쿠션','25W 탠','autumn','#c99b74',32000,15,0,260,4.6,300,1]
+];
+const SKU=RAW.map((r,i)=>{const s={id:i,brand:r[0],cat:r[1],prod:r[2],shade:r[3],tone:r[4],hex:r[5],price:r[6],disc:r[7],stock:r[8],sold:r[9],rating:r[10],reviews:r[11],swatch:!!r[12]};
+  s.sale=Math.round(s.price*(1-s.disc/100)/10)*10; s.rev=s.sale*s.sold; s.daily=s.sold/28; s.days=s.stock/s.daily; return s;});
+const BRANDS=['브랜드 A','브랜드 B','브랜드 C','브랜드 D','브랜드 E','브랜드 F'];
+const BRAND_CART={'브랜드 A':310,'브랜드 B':260,'브랜드 C':240,'브랜드 D':90,'브랜드 E':280,'브랜드 F':200}; // 진단 경유 장바구니 (합 1,380)
+
+const DIAG={spring:2140,summer:2610,autumn:3050,winter:2000};
+const WEEKS=['10월 3주','10월 4주','11월 1주','11월 2주'];
+const TREND={spring:[610,560,500,470],summer:[720,680,630,580],autumn:[620,740,800,890],winter:[400,460,530,610]};
+const FUNNEL=[['진단',9800],['추천 노출',9310],['셰이드 클릭',4190],['장바구니',1380],['구매',520]];
+
+const BRAND_META={'브랜드 A':{excl:2,pre:18},'브랜드 B':{excl:0,pre:0},'브랜드 C':{excl:1,pre:22},'브랜드 D':{excl:0,pre:0},'브랜드 E':{excl:1,pre:12},'브랜드 F':{excl:0,pre:0}}; // 단독 셰이드 수, 선론칭 매출 비중(%)
+/* 판촉: disc 기본할인, coupon 추가쿠폰, gift 사은품 원가(판매가 대비 %), point 적립(%) */
+const PROMO=[
+ {tone:'spring',name:'피치 글로우 립·치크 위크',type:'브랜드위크',rev:4820,disc:18,coupon:0,gift:0,point:0,orders:1270,inflow:820},
+ {tone:'summer',name:'쿨 로즈 셰이드 기획전',type:'단독 기획',rev:5960,disc:15,coupon:5,gift:0,point:5,orders:1540,inflow:1050},
+ {tone:'autumn',name:'브릭 & 브라운 섀도 선론칭',type:'단독 선론칭',rev:8410,disc:12,coupon:3,gift:3,point:0,orders:2060,inflow:1390},
+ {tone:'winter',name:'홀리데이 버건디 에디션',type:'홀리데이 에디션',rev:3970,disc:25,coupon:7,gift:4,point:0,orders:1010,inflow:760}
+];
+/* 노출 구좌 (구좌명 = 실제 W컨셉 뷰티 페이지 섹션명, 수치 = 가정) */
+const SLOTS=[
+ ['메인 배너',410000,9840,590,29500000],
+ ['MD가 추천하는 아이템',186000,7810,520,16800000],
+ ['브랜드 하이라이트',120000,3360,190,7200000],
+ ['지금 주목할 이슈',98000,2450,140,6100000],
+ ['놓치기 아쉬운 기회',152000,9120,760,20100000],
+ ['베스트 아이템',230000,11960,980,32400000]
+];
+/* ===== 실제 공개 정보: W컨셉 뷰티 메인 기획전 배너 (2026-11-12 직접 조사) =====
+   [브랜드, 배너 문구(요약), 카테고리, 키워드[], 혜택 표기(원문), 최대할인%|null, 추가혜택[]] */
+const BENCH=[
+ ['네뉴','피부 고민별 맞춤 메뉴','스킨케어',['체험딜'],'~49% + 3,500 체험딜',49,['체험딜']],
+ ['오드칠성 바이 살롱드느바에','향으로 만나는 오브제','센트',[],'~40%',40,[]],
+ ['오하입','매일의 헤어 루틴','헤어&바디',[],'~52%',52,[]],
+ ['루나','완벽한 베이스의 시작','메이크업',[],'~63%',63,[]],
+ ['유닉스','건강한 아름다움을 위한 헤어케어','디바이스',[],'(할인 표기 없음)',null,[]],
+ ['뷰티 셀렉트샵','엠디가 선택한 감각적인 뷰티 셀렉션 (W TOGETHER)','멀티 브랜드',['MD 셀렉션'],'~83%',83,[]],
+ ['아모레퍼시픽 (헤라)','홀리데이 에디션 론칭 · 헤라 단독기획','미분류',['론칭','단독','홀리데이'],'~40% + 10% 적립',40,['적립']],
+ ['플르부아','헬로키티 콜라보 론칭','미분류',['론칭','콜라보'],'~10%',10,[]],
+ ['뉴트로지나','셀럽 PICK · 인텐스 리페어 시카','스킨케어',['셀럽 PICK'],'~33%',33,[]],
+ ['지베르니','입점 기념 브랜드위크','메이크업',['입점 기념','브랜드위크'],'~50% + 20%',50,['추가 할인·쿠폰']],
+ ['럭셔리뷰티','프리미엄 뷰티 한자리에','멀티 브랜드',['MD 셀렉션'],'~70% + ~20%',70,['추가 할인·쿠폰']],
+ ['어바웃톤','베이스 론칭','메이크업',['론칭'],'~38% + 14%',38,['추가 할인·쿠폰']],
+ ['라네즈','리미티드 홀리데이 론칭','미분류',['론칭','홀리데이'],'~40% + 10% 적립',40,['적립']],
+ ['헤트라스','퍼퓸 고체탈취제 론칭','센트',['론칭'],'~54%',54,[]],
+ ['디어드라세나','헤어&바디 케어','헤어&바디',[],'~10%',10,[]],
+ ['에스쁘아','이지웨어 아이팔레트','메이크업',[],'~37% + 20% 쿠폰',37,['추가 할인·쿠폰']],
+ ['클럽클리오','클럽클리오 위크 (그룹 6개 브랜드)','멀티 브랜드',['브랜드위크'],'~77% + 20% (+ 사은품, 상세 페이지)',77,['추가 할인·쿠폰','사은품']],
+ ['피카소 x 로파서울','두 브랜드의 만남','뷰티툴',['콜라보'],'~26% + 20% + 사은품',26,['추가 할인·쿠폰','사은품']],
+ ['글램팜','단 7일 간의 단독 혜택','디바이스',['단독','기간 한정'],'~20% + 사은품 증정',20,['사은품']],
+ ['랩노쉬','단 4일 간의 혜택','이너뷰티',['기간 한정'],'~40% + 30%',40,['추가 할인·쿠폰']],
+ ['삐아','K-갸루 에디션 론칭','메이크업',['론칭'],'~40% + 사은품 증정',40,['사은품']],
+ ['디마프','NEW 미니 용량 론칭','스킨케어',['론칭'],'~35%',35,[]],
+ ['블리쉐던','룸스프레이 단독 선론칭','센트',['론칭','단독'],'~30% + 사은품 증정',30,['사은품']]
+];
+const COST=0.57, ELAS=0.025;
+
+/* 등록 대기 셰이드 */
+const PENDING=[
+ {brand:'브랜드 A',name:'글로우 립 틴트 (5colors)',shade:'05 테라코랄',tag:'가을웜',swatch:1,ingr:1,exp:1,rule:1,copy:'촉촉한 광택으로 하루 종일 생기 있는 입술'},
+ {brand:'브랜드 E',name:'4구 아이 팔레트 (4colors)',shade:'04 머스터드',tag:'가을웜',swatch:0,ingr:1,exp:1,rule:1,copy:'눈가 주름 개선 효과까지 한 번에 챙기는 팔레트'},
+ {brand:'브랜드 C',name:'벨벳 립 (4colors)',shade:'04 와인',tag:'',swatch:0,ingr:1,exp:1,rule:1,copy:'입술 각질 개선 100% 효과 보장'},
+ {brand:'브랜드 F',name:'롱웨어 쿠션 (8colors)',shade:'23C 쿨베이지',tag:'겨울쿨',swatch:1,ingr:0,exp:1,rule:1,copy:'트러블 치료 성분 함유, 피부과 테스트 완료'},
+ {brand:'브랜드 B',name:'쿨 섀도 (3colors)',shade:'03 실버그레이',tag:'여름쿨',swatch:1,ingr:1,exp:1,rule:1,copy:'은은한 펄로 맑은 눈매 연출'},
+ {brand:'브랜드 D',name:'멀티 밤 립&치크 (4colors)',shade:'04 플럼',tag:'겨울쿨',swatch:1,ingr:1,exp:0,rule:1,copy:'자외선 차단까지 되는 립앤치크'},
+ {brand:'브랜드 E',name:'무드 치크',shade:'02 브릭로즈',tag:'가을웜',swatch:1,ingr:1,exp:1,rule:0,copy:'부드럽게 물드는 자연스러운 혈색'},
+ {brand:'브랜드 C',name:'스모키 섀도 (2colors)',shade:'02 딥플럼',tag:'겨울쿨',swatch:0,ingr:1,exp:1,rule:1,copy:'부작용 없는 순한 섀도, 최고의 발색'}
+];
+const RULES=[
+ {re:/치료|완치/g,lv:'crit',why:'질병 치료 표현 — 의약품 오인'},
+ {re:/100%\s*효과|효과\s*보장|보장/g,lv:'crit',why:'효과 보장·절대적 표현'},
+ {re:/부작용\s*없/g,lv:'crit',why:'안전성 단정 표현'},
+ {re:/(세포|피부)\s*재생|염증/g,lv:'crit',why:'의약품 오인 우려 표현'},
+ {re:/주름\s*개선|미백|자외선\s*차단/g,lv:'warn',why:'기능성화장품 심사·보고 품목만 표시 가능'},
+ {re:/피부과\s*테스트/g,lv:'warn',why:'시험 근거 자료 필요'},
+ {re:/최고|1위|유일/g,lv:'warn',why:'최상급·비교 표현 — 근거 필요'}
+];
+
+/* ================= 체험 데이터 (이 브라우저 세션) ================= */
+const LIVE_KEY='wbeauty-live-v1';
+let LIVE={diag:{spring:0,summer:0,autumn:0,winter:0},shown:0,click:0,cart:0,brandCart:{}};
+try{const s=sessionStorage.getItem(LIVE_KEY); if(s){const o=JSON.parse(s); LIVE=Object.assign(LIVE,o); LIVE.diag=Object.assign({spring:0,summer:0,autumn:0,winter:0},o.diag||{}); LIVE.brandCart=o.brandCart||{};}}catch(e){}
+function saveLive(){try{sessionStorage.setItem(LIVE_KEY,JSON.stringify(LIVE))}catch(e){}}
+
+/* ================= 공통 ================= */
+const fmt=n=>Math.round(n).toLocaleString('ko-KR');
+const sum=a=>a.reduce((s,x)=>s+x,0);
+const man=v=>fmt(v/10000)+'만원';
+const eok=v=>(v/100000000).toFixed(2)+'억';
+const liveTag=n=>n?` <span class="live">+${n} 방금 체험</span>`:'';
+const toneTag=k=>`<span class="tt"><i style="background:${TONES[k].color}"></i>${TONES[k].ko}</span>`;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function table(h,rows,cls=''){return `<table class="${cls}"><tr>${h.map((x,i)=>`<th${i===0?'':''}>${x}</th>`).join('')}</tr>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</table>`}
+function kpis(id,list){document.getElementById(id).innerHTML=list.map(k=>`<div class="kpi"><div class="k">${k[0]}</div><div class="v">${k[1]}</div><div class="s">${k[2]}</div></div>`).join('')}
+function actions(id,list){document.getElementById(id).innerHTML=list.map((a,i)=>`<div class="action"><div class="n">${i+1}</div><div><b>${a[0]}</b><span>${a[1]}</span></div></div>`).join('')}
+document.addEventListener('click',e=>{const b=e.target.closest('.tbl-toggle'); if(!b) return; const t=document.getElementById(b.dataset.t); t.hidden=!t.hidden; b.textContent=t.hidden?'표로 보기':'표 닫기';});
+
+function diagNow(){const d={};ORDER.forEach(k=>d[k]=DIAG[k]+LIVE.diag[k]);return d;}
+function liveDiagTotal(){return sum(ORDER.map(k=>LIVE.diag[k]));}
+function demandShare(){const d=diagNow(),t=sum(ORDER.map(k=>d[k])),o={};ORDER.forEach(k=>o[k]=d[k]/t*100);return o;}
+function supplyShare(list){const o={};ORDER.forEach(k=>o[k]=list.filter(s=>s.tone===k).length/list.length*100);return o;}
+function catGaps(){const dem=demandShare(),cells=[];
+  CATS.forEach(c=>{const l=SKU.filter(s=>s.cat===c),sup=supplyShare(l);
+    ORDER.forEach(k=>cells.push({cat:c,tone:k,n:l.filter(s=>s.tone===k).length,total:l.length,sup:sup[k],dem:dem[k],gap:sup[k]-dem[k]}));});
+  return cells;}
+
+/* 차트 */
+const charts={}; const ink='#52514e', gridc='#eceae4';
+if(window.Chart){Chart.defaults.font.family='"Noto Sans KR",system-ui,sans-serif';Chart.defaults.font.size=12;Chart.defaults.color=ink;}
+const tooltip={backgroundColor:'#111110',padding:10,cornerRadius:8,displayColors:true,boxPadding:4};
+function base(scales={},tt={}){
+  return {responsive:true,maintainAspectRatio:false,animation:{duration:300},
+    plugins:{legend:{display:false},tooltip:Object.assign({},tooltip,{callbacks:tt})},
+    scales:Object.assign({x:{grid:{display:false},border:{color:gridc}},y:{grid:{color:gridc},border:{display:false},beginAtZero:true}},
+      Object.fromEntries(Object.entries(scales).map(([k,v])=>[k,Object.assign({grid:{color:gridc},border:{display:false},beginAtZero:true},v)])))};
+}
+function mk(id,cfg){const el=document.getElementById(id); if(!el) return; if(!window.Chart){el.parentElement.innerHTML='<div class="status">차트 라이브러리를 불러오지 못했어요. “표로 보기”를 이용해 주세요.</div>';return;}
+  if(charts[id]) charts[id].destroy(); charts[id]=new Chart(el,cfg);}
+function valueLabels(fn,horizontal){return {id:'vl',afterDatasetsDraw(ch){const {ctx}=ch;ctx.save();ctx.font='600 11px "Noto Sans KR",sans-serif';ctx.fillStyle='#52514e';
+  ch.data.datasets.forEach((ds,di)=>{ch.getDatasetMeta(di).data.forEach((el,i)=>{const v=ds.data[i];
+    if(horizontal){ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(fn(v,i),el.x+6,el.y);}else{ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText(fn(v,i),el.x,el.y-4);}})});ctx.restore();}}}
+
+/* ===== 실제 공개 정보: W컨셉 색조 상품 8개 (2026-11-12 상품 페이지 직접 조사) =====
+   품절 옵션은 옵션명 끝 "(품절)" 표기 그대로 */
+const REAL=[
+ {brand:'삐아',name:'라스트 벨벳 틴트 (32colors)',cat:'립',wcat:'메이크업 > 립메이크업',id:'305989305',list:14000,disc:15,sale:11900,rating:4.9,reviews:104,colorsInName:32,
+  attrs:'발색력 68% · 발림성 66% · 지속력 72%',rel:['더블유위크 뷰티','뷰티 셀렉트 샵'],
+  opts:['V01 여리갑(R)','V02 생기갑(R)','V03 불금갑(R)','V04 무드갑(R)','V05 잔망갑(R)','V11 침착보스(R)','V12 다정보스(R)','V13 진지보스(R)','V14 매정보스(R)','V16 꽃보다 단아(R)','V17 꽃보다 살랑(R)','V18 꽃보다 발랄(R)','V21 다큐의 정석(R)','V23 로코의 정석(R)','V24 흥행의 정석(R)','V25 막장의 정석(R)','V36 태연한척(R)','V39 그리운척(R)','V40 썸머 로즈(R)','V41 썸머 베리(R)','V42 꽤괜 피그(R)','V43 꽤괜 플럼(R)','V47 달콤한 인생','V48 즐거운 인생','V49 장미빛 인생','V50 고독한 인생','V51 보라빛 인생','V52 초코맛 인생','V53 썸머 멜로우','V54 썸머 블러쉬','V55 크림 샷','V56 더블 샷']},
+ {brand:'네이밍',name:'[NEW] 하이 듀 립 글레이즈 6 COLOR',cat:'립',wcat:'메이크업 > 립메이크업',id:'308657297',list:17000,disc:26,sale:12560,rating:5.0,reviews:104,colorsInName:6,
+  attrs:'발색력 3% · 발림성 4% · 지속력 75%',rel:['뷰티 셀렉트 샵','더블유위크 뷰티'],
+  opts:['SWEETEN(스위튼)','FLUTTER(플러터)','MELLOW(멜로우)','COZY(코지)','ADDICT(어딕트)','ENVY(앤비)']},
+ {brand:'투크',name:'볼륨 글레이즈 시럽 틴트 3.6g (8colors)',cat:'립',wcat:'메이크업 > 립메이크업',id:'308601810',list:17000,disc:29,sale:12000,rating:5.0,reviews:15,colorsInName:8,
+  attrs:'발색력 87% · 발림성 93% · 지속력 53%',rel:['뷰티 셀렉트 샵','더블유위크 뷰티'],
+  opts:['01 베이지 듀 (품절)','02 네이키드 피그 (품절)','03 네이키드 넛 (품절)','04 베이비 버니','05 몬 핑크','07 클라우드 그레이프','08 바닐라 로즈','09 차이 티']},
+ {brand:'헤라',name:'센슈얼 틴티드 샤인 스틱',cat:'립',wcat:'메이크업 > 립메이크업',id:'306663960',list:45000,disc:19,sale:36337,rating:4.9,reviews:116,colorsInName:null,
+  attrs:'발색력 77% · 발림성 90% · 지속력 55%',rel:['더블유위크 뷰티','뷰티 셀렉트 샵'],
+  opts:['#105 BOYISH','#430 TOO BEIGE','#498 ANGELS KISS','#278 FEVER','#297 ORANGE SCOTCH','#185 ELECTRIC ROSE','#99 BLACK CHERRY','#440 BLUSHED','#130 STUNNING PINK','#217 Peach Crush','#260 TANGERINE','#372 PINKCHEMISTR','#423 ROSY LACE (품절)']},
+ {brand:'라카',name:'[new] 퍼펙트 트윈 립 (12종)',cat:'립',wcat:'메이크업 > 립메이크업',id:'309068979',list:22000,disc:10,sale:19800,rating:4.9,reviews:12,colorsInName:12,
+  attrs:'발색력 100% · 발림성 100% · 지속력 83%',rel:['럭셔리뷰티 더블유위크'],
+  opts:['001_ 쿨베스트 #901트루피치','002_ 웜베스트 #902비지코랄','003_#903누드오드','004_ 쿨베스트 #904시티핑크','005_ 뉴트럴 #905로지하이','006_ 웜베스트 #906솔티피그','007_#907젠틀로즈','008_#908인카페인','009_#909길티모브','010_#910보스체리','011_#911이지핑크','012_#912레이지피그']},
+ {brand:'티르티르',name:'무드 글라이더 립앤블러쉬 스틱',cat:'립·블러셔',wcat:'메이크업 > 베이스메이크업',id:'308577933',list:20000,disc:36,sale:12800,rating:4.8,reviews:6,colorsInName:null,
+  attrs:'발색력 67% · 발림성 67%',rel:['뷰티 셀렉트 샵','더블유위크 뷰티'],
+  opts:['01 피치 밍글','02 로즈 드리즐','03 탠저린 글로우','04 칠리 블레이즈','05 멀베리 포션','06 푸시아 플래쉬']},
+ {brand:'베이지크',name:'플러쉬 립 앤 치크 밤(5종 택1)',cat:'립·블러셔',wcat:'메이크업 > 립메이크업',id:'306272400',list:36000,disc:10,sale:32400,rating:4.9,reviews:716,colorsInName:5,
+  attrs:'발색력 76% · 발림성 87% · 지속력 47%',rel:['더블유위크 뷰티','뷰티 셀렉트 샵'],
+  opts:['01 튤(Tulle)','02 어필(Appeal)','03 롱블랙(Long Black)','05 플랫 화이트(Flat White)','04 스웨이(Sway)']},
+ {brand:'홀리카홀리카',name:'마이페이브 무드 아이팔레트 16종',cat:'섀도',wcat:'메이크업 > 아이메이크업',id:'306370361',list:28000,disc:36,sale:17840,rating:4.9,reviews:536,colorsInName:16,
+  attrs:'발색력 70% · 발림성 75% · 지속력 65%',rel:['뷰티 셀렉트 샵','더블유위크 뷰티'],
+  opts:['01데이지 (품절)','02무니','03핑크올로지','04앙버터 (품절)','05닛니트','06버튼업','07쉘인더씨','08쉘온더비치 (품절)','09타로리더 (품절)','10픽더로즈','11레터프롬스프링','12폴인오트','13얼모스트 그레이프','14클래식포터리','15유자시트러스티','16시나몬롤']}
+];
+/* 셰이드 이름 기준 톤 추정 (참고용) */
+const KW={
+  spring:/피치|peach|코랄|coral|탠저린|tangerine|오렌지|orange|살몬|애프리콧|유자|시트러스|버터/i,
+  autumn:/브릭|브라운|초코|피그|시나몬|넛|테라코타|칠리|차이|오트|베이지|beige/i,
+  summer:/핑크|pink|로즈|로지|rose|rosy|모브|라벤더|라일락|블러쉬|blush/i,
+  winter:/체리|cherry|버건디|플럼|멀베리|와인|푸시아|보라|그레이프|베리/i
+};
+function realTone(o){
+  const n=o.replace(/\(품절\)/,'');
+  if(/쿨베스트/.test(n)) return {t:'cool',by:'브랜드 표기'};
+  if(/웜베스트/.test(n)) return {t:'warm',by:'브랜드 표기'};
+  if(/뉴트럴/.test(n)) return {t:'neutral',by:'브랜드 표기'};
+  const hit=ORDER.filter(k=>KW[k].test(n)); const w=hit.some(k=>WARM[k]), c=hit.some(k=>COOL[k]);
+  if(w&&!c) return {t:'warm',season:hit.filter(k=>WARM[k]),by:'이름 키워드'};
+  if(c&&!w) return {t:'cool',season:hit.filter(k=>COOL[k]),by:'이름 키워드'};
+  return {t:'unknown',by:w&&c?'웜·쿨 키워드 혼재':'키워드 없음'};
+}
+const REAL_SHADES=REAL.flatMap(p=>p.opts.map(o=>Object.assign({p,opt:o.replace(/\s*\(품절\)/,''),out:/품절/.test(o)},realTone(o))));
+const TONE_KO={warm:'웜',cool:'쿨',neutral:'뉴트럴',unknown:'판단 불가'}, TONE_C={warm:'#eb6834',cool:'#2a78d6',neutral:'#8a8984',unknown:'#c9c7c0'};
+const wcLink=p=>`https://www.wconcept.co.kr/Product/${p.id}`;
+
+function renderReal1(){
+  const n=REAL.length, shades=REAL_SHADES.length, outN=REAL_SHADES.filter(s=>s.out).length;
+  const avgDisc=sum(REAL.map(p=>p.disc))/n, topRev=[...REAL].sort((a,b)=>b.reviews-a.reviews)[0];
+  const ww=REAL.filter(p=>p.rel.some(r=>/더블유위크/.test(r))).length;
+  kpis('kpiReal1',[
+    ['조사한 색조 상품',`${n}개 · ${new Set(REAL.map(p=>p.brand)).size}개 브랜드`,`셰이드 옵션 ${shades}개`],
+    ['평균 할인율',avgDisc.toFixed(0)+'%',`범위 ${Math.min(...REAL.map(p=>p.disc))}~${Math.max(...REAL.map(p=>p.disc))}%`],
+    ['품절 옵션',`${outN}개 (${(outN/shades*100).toFixed(0)}%)`,`${REAL.filter(p=>p.opts.some(o=>/품절/.test(o))).length}개 상품에서 발생`],
+    ['더블유위크 연결',`${ww} / ${n}개`,'관련 기획전에 더블유위크 포함']
+  ]);
+  const worst=[...REAL].map(p=>({p,r:p.opts.filter(o=>/품절/.test(o)).length/p.opts.length})).sort((a,b)=>b.r-a.r)[0];
+  document.getElementById('hReal1').textContent=`조사한 색조 ${n}개 모두 더블유위크 기획전에 연결 · ${worst.p.brand}는 셰이드 ${worst.p.opts.length}개 중 ${(worst.r*worst.p.opts.length).toFixed(0)}개 품절 — 리오더 확인 대상`;
+  document.getElementById('tReal1').innerHTML=table(['브랜드 · 상품','카테고리','정가 → 판매가','평점 (리뷰)','셰이드','품절 옵션','리뷰 속성 “좋음”','관련 기획전'],
+    [...REAL].sort((a,b)=>b.reviews-a.reviews).map(p=>{const o=p.opts.filter(x=>/품절/.test(x)).length;
+      return [`<b>${p.brand}</b><br><a href="${wcLink(p)}" target="_blank" rel="noopener" style="color:var(--text-secondary)">${esc(p.name)}</a>`,p.cat,
+        `${fmt(p.list)} → <b>${fmt(p.sale)}원</b> <span style="color:var(--sale);font-weight:700">${p.disc}%</span>`,`${p.rating.toFixed(1)} (${fmt(p.reviews)})`,p.opts.length+'개',
+        o?`<span class="tag warn">${o}개 (${(o/p.opts.length*100).toFixed(0)}%)</span>`:'<span class="tag good">없음</span>',`<span style="white-space:normal;font-size:12px">${p.attrs}</span>`,
+        `<span style="white-space:normal;font-size:12px">${p.rel.join(', ')}</span>`];}));
+}
+function renderReal2(){
+  const shades=REAL_SHADES.length, cnt={}; ['warm','cool','neutral','unknown'].forEach(k=>cnt[k]=REAL_SHADES.filter(s=>s.t===k).length);
+  const brandTag=REAL_SHADES.filter(s=>s.by==='브랜드 표기').length, brandTagP=new Set(REAL_SHADES.filter(s=>s.by==='브랜드 표기').map(s=>s.p.brand));
+  const named=REAL.filter(p=>p.colorsInName!=null), match=named.filter(p=>p.colorsInName===p.opts.length).length;
+  kpis('kpiReal2',[
+    ['점검한 셰이드',shades+'개','실제 상품 8개의 색상 옵션'],
+    ['이름으로 톤을 알 수 없음',`${cnt.unknown}개 (${(cnt.unknown/shades*100).toFixed(0)}%)`,'등록 시 톤 태그가 필요한 셰이드'],
+    ['브랜드가 톤 표기',`${brandTag}개`,`${[...brandTagP].join(', ')||'-'} · 옵션명에 쿨/웜/뉴트럴`],
+    ['컬러 수 표기 일치',`${match} / ${named.length}개`,`표기 없음 ${REAL.length-named.length}개`]
+  ]);
+  document.getElementById('hTone').textContent=`실제 셰이드 ${shades}개 중 ${cnt.unknown}개(${(cnt.unknown/shades*100).toFixed(0)}%)는 이름만으로 톤을 알 수 없음 — 등록 단계 톤 태그가 필요한 이유`;
+  document.getElementById('hReal2').textContent=`실제 등록 정보 점검 — 옵션명에 톤을 직접 적은 브랜드는 ${[...brandTagP].join(', ')} 1곳`;
+  const ks=['warm','cool','neutral','unknown'];
+  mk('cTone',{type:'bar',data:{labels:ks.map(k=>TONE_KO[k]),datasets:[{label:'셰이드 수',data:ks.map(k=>cnt[k]),backgroundColor:ks.map(k=>TONE_C[k]),borderRadius:4,borderSkipped:'start',barPercentage:.6}]},
+    options:base({y:{ticks:{stepSize:10}}},{label:c=>`${c.parsed.y}개 (${(c.parsed.y/shades*100).toFixed(0)}%)`}),plugins:[valueLabels(v=>v+'개')]});
+  document.getElementById('tTone').innerHTML=table(['브랜드','셰이드','추정','근거'],REAL_SHADES.map(s=>[s.p.brand,esc(s.opt)+(s.out?' <span class="tag warn">품절</span>':''),
+    `<span class="tt"><i style="background:${TONE_C[s.t]}"></i>${TONE_KO[s.t]}${s.season?' · '+s.season.map(k=>TONES[k].ko).join('/'):''}</span>`,s.by]));
+  const ck=v=>v?'<span class="ok">✓</span>':'<span class="ng">✕</span>';
+  document.getElementById('tReal2').innerHTML=table(['상품','컬러 수 표기','옵션명 톤','품절','W컨셉 카테고리'],REAL.map(p=>{
+    const bt=p.opts.filter(o=>/쿨베스트|웜베스트|뉴트럴/.test(o)).length, o=p.opts.filter(x=>/품절/.test(x)).length;
+    const cn=p.colorsInName==null?'<span class="tag mute">표기 없음</span>':p.colorsInName===p.opts.length?`${ck(1)} ${p.colorsInName}=${p.opts.length}`:`${ck(0)} ${p.colorsInName}≠${p.opts.length}`;
+    const catNote=p.cat.includes('블러셔')&&/베이스/.test(p.wcat)?' <span class="tag warn">검토</span>':'';
+    return [`<b>${p.brand}</b><br><span style="font-size:12px;color:var(--text-secondary)">${esc(p.name)}</span>`,cn,bt?`${bt}/${p.opts.length}개`:'<span class="tag mute">없음</span>',o?`${o}개`:'-',`<span style="font-size:12px">${p.wcat}</span>${catNote}`];
+  }))+'<div class="assume">‘검토’: 립·블러셔 겸용 상품이 베이스메이크업에 분류됨 — 고객이 립·블러셔 카테고리에서 찾을 수 있게 다중 카테고리 노출을 검토할 만한 지점.</div>';
+}
+
+/* ================= ② 브랜드 운영 ================= */
+function brandRows(){
+  const cells=catGaps();
+  return BRANDS.map(b=>{
+    const l=SKU.filter(s=>s.brand===b), tones=ORDER.filter(k=>l.some(s=>s.tone===k)), cats=[...new Set(l.map(s=>s.cat))];
+    const rev=sum(l.map(s=>s.rev)), out=l.filter(s=>s.stock===0).length, noSw=l.filter(s=>!s.swatch).length;
+    const rating=sum(l.map(s=>s.rating*s.reviews))/sum(l.map(s=>s.reviews));
+    const multi=tones.length>=3, temp=k=>multi||(tones.some(t=>WARM[t])&&WARM[k])||(tones.some(t=>COOL[t])&&COOL[k]);
+    let miss=null; cells.filter(c=>cats.includes(c.cat)&&temp(c.tone)&&!l.some(s=>s.cat===c.cat&&s.tone===c.tone)).forEach(c=>{if(!miss||c.gap<miss.gap)miss=c;});
+    const props=[];
+    if(miss&&miss.gap<=-8) props.push(['crit',`${TONES[miss.tone].ko} ${miss.cat} 셰이드 없음 → 신규 셰이드 입고 협의`,`카테고리 수요 대비 ${miss.gap.toFixed(0)}%p`]);
+    if(noSw) props.push(['warn',`상세컷에 발색 스와치 추가 요청`,`스와치 누락 ${noSw}개 셰이드`]);
+    if(out/l.length>=0.15) props.push(['warn',`리오더 일정 확인`,`품절 ${out}개 / ${l.length}개 셰이드`]);
+    const meta=BRAND_META[b];
+    if(!meta.excl&&rating>=4.55) props.push(['good','단독 셰이드 선론칭 협의',`평점 ${rating.toFixed(2)} · 현재 단독 셰이드 0개`]);
+    return {b,l,tones,cats,rev,out,noSw,rating,props,excl:meta.excl,pre:meta.pre,cart:BRAND_CART[b]+(LIVE.brandCart[b]||0),liveCart:LIVE.brandCart[b]||0};
+  });
+}
+function renderBrand(){
+  renderReal1();
+  const rows=brandRows(), totRev=sum(rows.map(r=>r.rev));
+  const avgCov=sum(rows.map(r=>r.tones.length))/rows.length, outRate=SKU.filter(s=>s.stock===0).length/SKU.length*100;
+  const avgRating=sum(SKU.map(s=>s.rating*s.reviews))/sum(SKU.map(s=>s.reviews));
+  const liveCart=sum(Object.values(LIVE.brandCart));
+  kpis('kpiBrand',[
+    ['뷰티 입점 브랜드',`${rows.length}곳`,`셰이드 ${SKU.length}개 (가정)`],
+    ['평균 톤 커버리지',`${avgCov.toFixed(1)} / 4톤`,'브랜드당 대응 톤 수 (가정)'],
+    ['셰이드 품절률',`${outRate.toFixed(0)}%`,`품절 ${SKU.filter(s=>s.stock===0).length}개 (가정)`],
+    ['단독 셰이드',`${sum(rows.map(r=>r.excl))}개`,`선론칭 매출 비중 ${(sum(rows.map(r=>r.rev*r.pre))/totRev).toFixed(0)}% (가정)`],
+    ['진단 경유 장바구니',`${fmt(sum(rows.map(r=>r.cart)))}건`,`4주 누적 (가정)${liveTag(liveCart)}`]
+  ]);
+  const low=rows.filter(r=>r.tones.length<=1).map(r=>r.b);
+  document.getElementById('hBrand').textContent=`${rows.length}개 브랜드 중 ${low.length}곳은 한 가지 톤만 대응 — 셰이드 확장 협의 대상`;
+  const dots=t=>`<span class="dots">${ORDER.map(k=>`<i style="border-color:${TONES[k].color};background:${t.includes(k)?TONES[k].color:'#fff'}" title="${TONES[k].ko}"></i>`).join('')}</span>`;
+  document.getElementById('tBrand').innerHTML=table(['브랜드','주요 카테고리','매출','셰이드 수','품절률','리뷰 평점','톤 커버리지','단독 셰이드','선론칭 매출','진단 경유 장바구니','운영 제안'],
+    rows.sort((a,b)=>b.rev-a.rev).map(r=>[`<b>${r.b}</b>`,r.cats.join('·'),man(r.rev),r.l.length+'개',
+      `<span class="${r.out/r.l.length>=.15?'ng':''}">${(r.out/r.l.length*100).toFixed(0)}%</span>`,r.rating.toFixed(2),
+      dots(r.tones)+r.tones.length+'/4',r.excl+'개',r.pre+'%',fmt(r.cart)+'건'+(r.liveCart?` <span class="live">+${r.liveCart}</span>`:''),
+      r.props.map(p=>`<span class="tag ${p[0]}">${p[0]==='crit'?'●':p[0]==='warn'?'▲':'✓'} ${p[1]}</span>`).join('<br>')]));
+  const acts=[]; rows.forEach(r=>r.props.forEach(p=>acts.push({r,p,w:p[0]==='crit'?0:p[0]==='warn'?1:2})));
+  acts.sort((a,b)=>a.w-b.w||b.r.rev-a.r.rev);
+  actions('aBrand',acts.slice(0,5).map(a=>[`${a.r.b} — ${a.p[1]}`,`${a.p[2]} · 4주 매출 ${man(a.r.rev)} (가정)`]));
+}
+
+/* ================= ③ 소싱·상품등록 ================= */
+function scan(t){const hits=[];RULES.forEach(r=>{const m=t.match(r.re); if(m) m.forEach(w=>hits.push({w,lv:r.lv,why:r.why}));});return hits;}
+function highlight(t){let h=esc(t);RULES.forEach(r=>{h=h.replace(r.re,m=>`<mark class="${r.lv}">${m}</mark>`)});return h;}
+function renderSourcing(){
+  renderReal2();
+  const dem=demandShare(), sup=supplyShare(SKU), d=diagNow(), cells=catGaps();
+  const gaps=ORDER.map(k=>({k,g:sup[k]-dem[k]})).sort((a,b)=>a.g-b.g), worst=gaps[0];
+  const regIssues=PENDING.filter(p=>!p.tag||!p.swatch||!p.ingr||!p.exp||!p.rule).length;
+  const copyFlags=PENDING.filter(p=>scan(p.copy).length).length;
+  kpis('kpiSrc',[
+    ['진단 고객',fmt(sum(ORDER.map(k=>d[k])))+'명',`4주 누적 (가정)${liveTag(liveDiagTotal())}`],
+    ['가장 부족한 톤',TONES[worst.k].ko,`수요 대비 ${worst.g.toFixed(1)}%p (가정)`],
+    ['등록 보완 필요',`${regIssues} / ${PENDING.length}건`,'필수 정보 누락 (가정)'],
+    ['표현 플래그',`${copyFlags}건`,'금지·주의 표현 포함 (가정)']
+  ]);
+  document.getElementById('hGap').textContent=`${TONES[worst.k].ko} 수요는 ${dem[worst.k].toFixed(0)}%인데 셰이드는 ${sup[worst.k].toFixed(0)}%뿐 — 소싱 1순위`;
+  const labels=ORDER.map(k=>TONES[k].ko);
+  mk('cGap',{type:'bar',data:{labels,datasets:[
+      {label:'진단 비중(수요)',data:ORDER.map(k=>dem[k]),backgroundColor:'#111110',borderRadius:4,borderSkipped:'start',barPercentage:.78,categoryPercentage:.62},
+      {label:'셰이드 비중(공급)',data:ORDER.map(k=>sup[k]),backgroundColor:'#c9c7c0',borderRadius:4,borderSkipped:'start',barPercentage:.78,categoryPercentage:.62}]},
+    options:base({y:{ticks:{callback:v=>v+'%'}}},{label:c=>`${c.dataset.label}: ${c.parsed.y.toFixed(1)}%`}),plugins:[valueLabels(v=>v.toFixed(0)+'%')]});
+  document.getElementById('tGap').innerHTML=table(['톤','진단 수','수요 비중','셰이드 수','공급 비중','갭'],ORDER.map(k=>{const g=sup[k]-dem[k];
+    return [toneTag(k),fmt(d[k])+(LIVE.diag[k]?` <span class="live">+${LIVE.diag[k]}</span>`:''),dem[k].toFixed(1)+'%',SKU.filter(s=>s.tone===k).length+'개',sup[k].toFixed(1)+'%',`<span class="${g<0?'ng':''}">${g>0?'+':''}${g.toFixed(1)}%p</span>`]}));
+
+  /* 매트릭스 */
+  const worstCell=[...cells].sort((a,b)=>a.gap-b.gap)[0];
+  document.getElementById('hMx').textContent=`${worstCell.cat} 카테고리는 ${TONES[worstCell.tone].ko} 셰이드가 ${worstCell.n}개뿐 — 카테고리 중 갭이 가장 큼`;
+  document.getElementById('tMx').innerHTML=`<table class="mx"><tr><th>카테고리</th>${ORDER.map(k=>`<th style="text-align:center">${toneTag(k)}</th>`).join('')}<th>셰이드</th></tr>`+
+    CATS.map(c=>`<tr><td><b>${c}</b></td>${ORDER.map(k=>{const x=cells.find(z=>z.cat===c&&z.tone===k);const cl=x.gap<=-10?'crit':x.gap<=-3?'warn':'ok';
+      return `<td class="c ${cl}"><b>${x.n}개</b>${x.gap>0?'+':''}${x.gap.toFixed(0)}%p</td>`}).join('')}<td>${SKU.filter(s=>s.cat===c).length}개</td></tr>`).join('')+
+    `<tr><td colspan="6" style="font-size:11.5px;color:var(--text-muted);text-align:left">수요 비중: ${ORDER.map(k=>`${TONES[k].ko} ${dem[k].toFixed(0)}%`).join(' · ')}</td></tr></table>`;
+  actions('aSrc',[...cells].sort((a,b)=>a.gap-b.gap).slice(0,3).map(x=>{
+    const cands=BRANDS.map(b=>({b,l:SKU.filter(s=>s.brand===b&&s.cat===x.cat)})).filter(o=>o.l.length)
+      .map(o=>({b:o.b,r:sum(o.l.map(s=>s.rating*s.reviews))/sum(o.l.map(s=>s.reviews))})).sort((a,b)=>b.r-a.r);
+    const need=Math.max(1,Math.round(x.dem/100*x.total-x.n));
+    return [`${x.cat} · ${TONES[x.tone].ko} 셰이드 +${need}개 소싱`,`현재 ${x.n}개(${x.sup.toFixed(0)}%) vs 수요 ${x.dem.toFixed(0)}% → 갭 ${x.gap.toFixed(0)}%p. 협의 후보: ${cands.slice(0,2).map(c=>`${c.b}(평점 ${c.r.toFixed(2)})`).join(', ')} (가정)`];
+  }));
+
+  /* 등록 검수 */
+  const ck=v=>v?'<span class="ok">✓</span>':'<span class="ng">✕</span>';
+  document.getElementById('hReg').textContent=`등록 대기 ${PENDING.length}건 중 ${regIssues}건은 필수 정보 누락 — 보완 후 노출`;
+  document.getElementById('tReg').innerHTML=table(['상품 · 셰이드','톤 태그','스와치','전성분','사용기한','컬러 수 표기','판정'],PENDING.map(p=>{
+    const miss=[!p.tag&&'톤 태그',!p.swatch&&'스와치',!p.ingr&&'전성분',!p.exp&&'사용기한',!p.rule&&'컬러 수'].filter(Boolean);
+    return [`<b>${p.brand}</b><br><span style="color:var(--text-secondary)">${p.name} · ${p.shade}</span>`,p.tag||'<span class="ng">미입력</span>',ck(p.swatch),ck(p.ingr),ck(p.exp),ck(p.rule),
+      miss.length?`<span class="tag crit">보완: ${miss.join('·')}</span>`:'<span class="tag good">✓ 등록 가능</span>'];
+  }));
+  document.getElementById('tCopy').innerHTML=table(['상품','상세 문구','판정'],PENDING.map(p=>{const h=scan(p.copy);
+    const lv=h.some(x=>x.lv==='crit')?'crit':h.length?'warn':'good';
+    return [`${p.brand}<br><span style="color:var(--text-muted);font-size:12px">${p.shade}</span>`,`<span style="white-space:normal">${highlight(p.copy)}</span>`,
+      lv==='good'?'<span class="tag good">✓ 통과</span>':`<span class="tag ${lv}" title="${esc(h.map(x=>x.w+': '+x.why).join(' / '))}">${lv==='crit'?'● 수정 필수':'▲ 근거 확인'}</span>`];
+  }));
+  runCopyCheck();
+}
+function runCopyCheck(){
+  const t=document.getElementById('copyIn').value, h=scan(t), out=document.getElementById('copyOut');
+  if(!t.trim()){out.innerHTML='문구를 입력하면 바로 검사해요.';return;}
+  out.innerHTML=h.length?`<div style="margin-bottom:6px">${highlight(t)}</div>`+h.map(x=>`<span class="tag ${x.lv}">${x.lv==='crit'?'●':'▲'} “${esc(x.w)}” — ${x.why}</span>`).join(' '):'<span class="tag good">✓ 플래그된 표현이 없어요</span>';
+}
+document.getElementById('copyIn').addEventListener('input',runCopyCheck);
+
+/* ================= ④ 기획전 ================= */
+const eff=(d,c)=>1-(1-d/100)*(1-c/100);
+const marginOf=(e,g=0,pt=0)=>((1-e)*(1-(g+pt)/100)-COST)/(1-e);
+const pm=p=>marginOf(eff(p.disc,p.coupon),p.gift,p.point);
+function calc(p,d,c,g=p.gift,pt=p.point){const e0=eff(p.disc,p.coupon),e=eff(d,c),list=p.rev*10000/(1-e0),u=Math.max(0,1+ELAS*(e-e0)*100);
+  const rev=list*(1-e)*u,cost=list*COST*u,promo=rev*(g+pt)/100,profit=rev-cost-promo;return {e,rev,promo,profit,mar:rev>0?profit/rev:0};}
+function renderBench(){
+  const n=BENCH.length, stack=BENCH.filter(b=>b[6].length).length, launch=BENCH.filter(b=>b[3].includes('론칭')).length;
+  const mx=BENCH.map(b=>b[5]).filter(v=>v!=null).sort((a,b)=>a-b), med=mx.length%2?mx[(mx.length-1)/2]:(mx[mx.length/2-1]+mx[mx.length/2])/2;
+  const mk_=BENCH.filter(b=>b[2]==='메이크업').length;
+  kpis('kpiBench',[
+    ['조사한 메인 기획전',n+'개','2026.11.12 뷰티 메인 배너'],
+    ['혜택을 겹쳐 주는 기획전',`${stack}개 (${(stack/n*100).toFixed(0)}%)`,'할인 + 쿠폰·적립·사은품·체험딜'],
+    ['최대 할인율 중앙값',med+'%',`범위 ${mx[0]}~${mx[mx.length-1]}% (“~” 표기 기준)`],
+    ['메이크업 기획전',`${mk_}개 (${(mk_/n*100).toFixed(0)}%)`,'나머지는 스킨케어·헤어·센트 등']
+  ]);
+  document.getElementById('hBench').textContent=`W컨셉 뷰티 메인 기획전 ${n}개 중 ${stack}개(${(stack/n*100).toFixed(0)}%)가 할인에 쿠폰·적립·사은품을 겹쳐 줌 — 할인율만으로는 마진을 볼 수 없음`;
+  const kw={}; BENCH.forEach(b=>b[3].forEach(k=>kw[k]=(kw[k]||0)+1));
+  const kws=Object.entries(kw).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('hBenchKw').textContent=`‘${kws[0][0]}’ 문구가 ${kws[0][1]}개로 가장 많음 — 할인보다 신상·단독 소식이 메인 구좌를 차지`;
+  mk('cBenchKw',{type:'bar',data:{labels:kws.map(k=>k[0]),datasets:[{label:'기획전 수',data:kws.map(k=>k[1]),backgroundColor:kws.map((k,i)=>i===0?'#111110':'#c9c7c0'),borderRadius:4,borderSkipped:'start',barPercentage:.7}]},
+    options:Object.assign(base({x:{suggestedMax:10,ticks:{stepSize:2}},y:{grid:{display:false}}},{label:c=>`${c.parsed.x}개`}),{indexAxis:'y'}),plugins:[valueLabels(v=>v+'개',true)]});
+  document.getElementById('tBenchKw').innerHTML=table(['키워드','기획전 수','해당 브랜드'],kws.map(k=>[k[0],k[1]+'개',`<span style="white-space:normal">${BENCH.filter(b=>b[3].includes(k[0])).map(b=>b[0]).join(', ')}</span>`]));
+  const ben={'할인만':BENCH.filter(b=>!b[6].length&&b[5]!=null).length}; BENCH.forEach(b=>b[6].forEach(k=>ben[k]=(ben[k]||0)+1));
+  const bens=Object.entries(ben).sort((a,b)=>b[1]-a[1]);
+  const extra=bens.filter(b=>b[0]!=='할인만');
+  document.getElementById('hBenchBen').textContent=`추가 혜택은 ‘${extra[0][0]}’ ${extra[0][1]}개, ‘${extra[1][0]}’ ${extra[1][1]}개 순`;
+  mk('cBenchBen',{type:'bar',data:{labels:bens.map(k=>k[0]),datasets:[{label:'기획전 수',data:bens.map(k=>k[1]),backgroundColor:bens.map(k=>k[0]==='할인만'?'#c9c7c0':'#111110'),borderRadius:4,borderSkipped:'start',barPercentage:.7}]},
+    options:Object.assign(base({x:{suggestedMax:12,ticks:{stepSize:2}},y:{grid:{display:false}}},{label:c=>`${c.parsed.x}개`}),{indexAxis:'y'}),plugins:[valueLabels(v=>v+'개',true)]});
+  document.getElementById('tBenchBen').innerHTML=table(['혜택 구조','기획전 수','해당 브랜드'],bens.map(k=>[k[0],k[1]+'개',`<span style="white-space:normal">${BENCH.filter(b=>k[0]==='할인만'?(!b[6].length&&b[5]!=null):b[6].includes(k[0])).map(b=>b[0]).join(', ')}</span>`]));
+  document.getElementById('tBenchList').innerHTML=table(['#','브랜드','배너 문구','카테고리','키워드','혜택 표기'],BENCH.map((b,i)=>[i+1,`<b>${esc(b[0])}</b>`,`<span style="white-space:normal">${esc(b[1])}</span>`,b[2],b[3].map(k=>`<span class="tag mute">${k}</span>`).join('')||'-',esc(b[4])]))+
+    '<div class="assume">카테고리는 배너 문구로 판단 가능한 것만 분류하고, 문구만으로 알 수 없는 것은 ‘미분류’로 둠.</div>';
+}
+function renderPromo(){
+  renderBench();
+  const totRev=sum(PROMO.map(p=>p.rev)), wEff=sum(PROMO.map(p=>p.rev*eff(p.disc,p.coupon)))/totRev, wMar=sum(PROMO.map(p=>p.rev*pm(p)))/totRev;
+  const wGP=sum(PROMO.map(p=>p.rev*(p.gift+p.point)))/totRev;
+  const inflow=sum(PROMO.map(p=>p.inflow))+liveDiagTotal();
+  kpis('kpiPromo',[
+    ['톤 기획전 매출',eok(totRev*10000),'4개 기획전 합계 (가정)'],
+    ['평균 실효 할인',(wEff*100).toFixed(1)+'%',`할인+쿠폰 · 사은품·적립 ${wGP.toFixed(1)}% 별도 (가정)`],
+    ['판촉비 포함 마진율',(wMar*100).toFixed(1)+'%','매출 가중 (가정)'],
+    ['진단 유입',fmt(inflow)+'명',`진단 → 기획전 (가정)${liveTag(liveDiagTotal())}`]
+  ]);
+  const w=PROMO.reduce((a,b)=>pm(a)<pm(b)?a:b), we=eff(w.disc,w.coupon), wm0=marginOf(we);
+  document.getElementById('hPromo').textContent=`${TONES[w.tone].ko} 기획전은 할인 ${w.disc}%+쿠폰 ${w.coupon}%에 사은품 ${w.gift}%까지 더해 마진이 ${(pm(w)*100).toFixed(0)}%까지 떨어짐 (사은품 빼면 ${(wm0*100).toFixed(0)}%)`;
+  const sk=k=>SKU.filter(s=>s.tone===k&&s.days<7).length;
+  document.getElementById('tPromo').innerHTML=table(['기획전','형태','매출','할인 + 쿠폰','사은품 · 적립','실효 할인','판촉비 포함 마진','구매','진단 유입','상태'],PROMO.map(p=>{
+    const e=eff(p.disc,p.coupon), m=pm(p)*100, lowStock=sk(p.tone);
+    const st=m<22?'<span class="tag crit">● 마진 위험</span>':lowStock>=2?`<span class="tag warn">▲ 품절 임박 셰이드 ${lowStock}개</span>`:'<span class="tag good">✓ 양호</span>';
+    const gp=[p.gift?`사은품 ${p.gift}%`:'',p.point?`적립 ${p.point}%`:''].filter(Boolean).join(' · ')||'-';
+    return [`${toneTag(p.tone)}<br><b>${p.name}</b>`,p.type,man(p.rev*10000),`${p.disc}% + ${p.coupon}%`,gp,(e*100).toFixed(1)+'%',m.toFixed(0)+'%',fmt(p.orders)+'건',
+      fmt(p.inflow+LIVE.diag[p.tone])+'명'+(LIVE.diag[p.tone]?` <span class="live">+${LIVE.diag[p.tone]}</span>`:''),st];
+  }));
+  initSim();
+}
+let simReady=false;
+const SIMIDS=['simR','simCR','simGR','simPR'], SIMKEYS=['disc','coupon','gift','point'];
+function initSim(){
+  const sel=document.getElementById('simSel');
+  const setP=p=>SIMIDS.forEach((id,i)=>document.getElementById(id).value=p[SIMKEYS[i]]);
+  if(!simReady){
+    sel.innerHTML=PROMO.map((p,i)=>`<option value="${i}">${TONES[p.tone].ko} · ${p.name}</option>`).join('');
+    sel.value='3'; setP(PROMO[3]);
+    sel.addEventListener('change',()=>{setP(PROMO[+sel.value]);sim();});
+    SIMIDS.forEach(id=>document.getElementById(id).addEventListener('input',sim)); simReady=true;
+  }
+  sim();
+}
+function sim(){
+  const p=PROMO[+document.getElementById('simSel').value], [d,c,g,pt]=SIMIDS.map(id=>+document.getElementById(id).value);
+  const x=calc(p,d,c,g,pt), x0=calc(p,p.disc,p.coupon);
+  document.getElementById('simD').textContent=`${d}%  (현재 ${p.disc}%)`;
+  document.getElementById('simC').textContent=`${c}%  (현재 ${p.coupon}%) · 실효 할인 ${(x.e*100).toFixed(1)}%`;
+  document.getElementById('simG').textContent=`${g}%  (현재 ${p.gift}%)`;
+  document.getElementById('simP').textContent=`${pt}%  (현재 ${p.point}%)`;
+  document.getElementById('soRev').textContent=man(x.rev);
+  document.getElementById('soPro').textContent=man(x.profit);
+  document.getElementById('soMar').textContent=(x.mar*100).toFixed(1)+'%';
+  let best=0,bp=-Infinity; for(let i=0;i<=40;i++){const v=calc(p,i,c,g,pt).profit; if(v>bp){bp=v;best=i;}}
+  const diff=x.profit-x0.profit, same=d===p.disc&&c===p.coupon&&g===p.gift&&pt===p.point;
+  document.getElementById('simMsg').innerHTML=same?`현재 조건입니다. 쿠폰·사은품·적립을 그대로 둘 때 이익이 가장 큰 기본 할인율은 <b>${best}%</b>예요 (가정). 판촉비 ${man(x.promo)}.`:
+    `현재 대비 이익 <b style="color:${diff>=0?'var(--good)':'var(--crit)'}">${diff>=0?'+':''}${man(diff)}</b> · 판촉비 ${man(x.promo)} · 이 혜택 조합에서 이익 최대 기본 할인율 <b>${best}%</b> (가정)`;
+  const xs=[...Array(41).keys()];
+  mk('cSim',{type:'line',data:{labels:xs.map(v=>v+'%'),datasets:[{label:'예상 이익',data:xs.map(v=>calc(p,v,c,g,pt).profit/10000),borderColor:'#2a78d6',borderWidth:2,
+      pointRadius:xs.map(v=>v===d?6:0),pointBackgroundColor:'#2a78d6',pointBorderColor:'#fff',pointBorderWidth:2,tension:.2}]},
+    options:Object.assign(base({y:{beginAtZero:false,ticks:{callback:v=>fmt(v)+'만'}},x:{grid:{display:false},ticks:{maxTicksLimit:9}}},
+      {title:t=>`기본 할인 ${t[0].label} + 쿠폰 ${c}% · 사은품 ${g}% · 적립 ${pt}%`,label:t=>`예상 이익 ${fmt(t.parsed.y)}만원 · 마진율 ${(calc(p,t.dataIndex,c,g,pt).mar*100).toFixed(1)}%`}),
+      {interaction:{mode:'index',intersect:false}})});
+  if(charts.cSim){charts.cSim.options.plugins.title={display:true,text:`기본 할인율별 예상 이익 (만원, 쿠폰·사은품·적립 고정)`,align:'start',color:ink,font:{weight:'700',size:12}};charts.cSim.update('none');}
+  document.getElementById('tSim').innerHTML=table(['기본 할인','실효 할인','예상 매출','판촉비','예상 이익','마진율'],[0,5,10,15,20,25,30,35,40].map(v=>{const y=calc(p,v,c,g,pt);
+    return [(v===best?'★ ':'')+v+'%',(y.e*100).toFixed(1)+'%',man(y.rev),man(y.promo),man(y.profit),(y.mar*100).toFixed(1)+'%'];}));
+}
+
+/* ================= ⑤ 매출 ================= */
+function renderSales(){
+  const totUnits=sum(SKU.map(s=>s.sold)), totRev=sum(SKU.map(s=>s.rev));
+  const soon=SKU.filter(s=>s.stock>0&&s.days<14).sort((a,b)=>a.days-b.days), urgent=soon.filter(s=>s.days<7);
+  const f=FUNNEL.map(x=>x[1]), ld=liveDiagTotal(), funnel=[f[0]+ld,f[1]+LIVE.shown,f[2]+LIVE.click,f[3]+LIVE.cart,f[4]];
+  kpis('kpiSales',[
+    ['셰이드 매출',eok(totRev),`4주 · ${fmt(totUnits)}개 판매 (가정)`],
+    ['품절 임박 (7일 이내)',urgent.length+'개',`이미 품절 ${SKU.filter(s=>s.stock===0).length}개 (가정)`],
+    ['추천 클릭률',(funnel[2]/funnel[1]*100).toFixed(1)+'%',`클릭 ${fmt(funnel[2])}명 (가정)${liveTag(LIVE.click)}`],
+    ['진단 → 구매',(funnel[4]/funnel[0]*100).toFixed(1)+'%',`구매 ${fmt(funnel[4])}명 (가정)`]
+  ]);
+  /* TOP10 */
+  const top=[...SKU].sort((a,b)=>b.sold-a.sold).slice(0,10);
+  const aw=top.filter(s=>s.tone==='autumn'||s.tone==='winter').length;
+  document.getElementById('hTop').textContent=`판매 TOP 10 중 ${aw}개가 가을웜·겨울쿨 셰이드 — F/W 시즌 수요 집중`;
+  document.getElementById('lgTop').innerHTML=ORDER.map(k=>`<span><i class="key" style="background:${TONES[k].color}"></i>${TONES[k].ko}</span>`).join('');
+  mk('cTop',{type:'bar',data:{labels:top.map(s=>`${s.brand} ${s.shade}`),datasets:[{label:'판매 수량',data:top.map(s=>s.sold),backgroundColor:top.map(s=>TONES[s.tone].color),borderRadius:4,borderSkipped:'start',barPercentage:.72}]},
+    options:Object.assign(base({x:{suggestedMax:1200,ticks:{callback:v=>fmt(v)}},y:{grid:{display:false}}},{label:c=>`${fmt(c.parsed.x)}개 · ${TONES[top[c.dataIndex].tone].ko} · ${top[c.dataIndex].prod}`}),{indexAxis:'y'}),
+    plugins:[valueLabels(v=>fmt(v)+'개',true)]});
+  document.getElementById('tTop').innerHTML=table(['순위','셰이드','톤','판매','매출'],top.map((s,i)=>[i+1,`<span class="sw" style="background:${s.hex}"></span>${s.brand} ${s.prod} ${s.shade}`,toneTag(s.tone),fmt(s.sold)+'개',man(s.rev)]));
+  /* 품절 임박 */
+  const awU=urgent.filter(s=>s.tone==='autumn'||s.tone==='winter').length;
+  document.getElementById('hOut').textContent=`7일 안에 품절될 셰이드 ${urgent.length}개 중 ${awU}개가 가을웜·겨울쿨 — 리오더 우선`;
+  document.getElementById('tOut').innerHTML=table(['셰이드','톤','재고','일평균 판매','소진 예상','액션'],soon.map(s=>[
+    `<span class="sw" style="background:${s.hex}"></span><b>${s.brand}</b> ${s.shade}<br><span style="color:var(--text-muted);font-size:12px">${s.prod}</span>`,toneTag(s.tone),fmt(s.stock)+'개',s.daily.toFixed(1)+'개',
+    `<span class="tag ${s.days<7?'crit':'warn'}">${s.days.toFixed(1)}일</span>`,s.days<7?'브랜드 리오더 요청 · 기획전 노출 조정':'재고 모니터링']));
+  /* 퍼널 */
+  document.getElementById('hFunnel').textContent=`진단 고객 100명 중 ${(funnel[4]/funnel[0]*100).toFixed(0)}명이 구매로 이어짐 — 클릭→장바구니 구간 이탈이 가장 큼`;
+  const fl=FUNNEL.map(x=>x[0]);
+  mk('cFunnel',{type:'bar',data:{labels:fl,datasets:[{label:'고객 수',data:funnel,backgroundColor:['#104281','#1c5cab','#2a78d6','#5598e7','#86b6ef'],borderRadius:4,borderSkipped:'start',barPercentage:.7}]},
+    options:Object.assign(base({x:{suggestedMax:12500,ticks:{callback:v=>fmt(v)}},y:{grid:{display:false}}},{label:c=>`${fmt(c.parsed.x)}명 (진단 대비 ${(c.parsed.x/funnel[0]*100).toFixed(1)}%)`}),{indexAxis:'y'}),
+    plugins:[valueLabels((v,i)=>fmt(v)+'명'+(i?` · ${(v/funnel[i-1]*100).toFixed(0)}%`:''),true)]});
+  const lv=[ld,LIVE.shown,LIVE.click,LIVE.cart,0];
+  document.getElementById('tFunnel').innerHTML=table(['단계','고객 수','이전 단계 대비'],fl.map((l,i)=>[l,fmt(funnel[i])+(lv[i]?` <span class="live">+${lv[i]}</span>`:''),i?(funnel[i]/funnel[i-1]*100).toFixed(1)+'%':'-']));
+  /* 추이 */
+  const tr={};ORDER.forEach(k=>{tr[k]=[...TREND[k]];tr[k][3]+=LIVE.diag[k];});
+  const up=ORDER.filter(k=>tr[k][3]>tr[k][0]);
+  document.getElementById('hTrend').textContent=`11월 들어 ${up.map(k=>TONES[k].ko).join('·')} 진단이 증가 — 해당 톤 셰이드 재고 확보 필요`;
+  document.getElementById('lgTrend').innerHTML=ORDER.map(k=>`<span><i class="key" style="background:${TONES[k].color}"></i>${TONES[k].ko}</span>`).join('');
+  mk('cTrend',{type:'line',data:{labels:WEEKS,datasets:ORDER.map(k=>({label:TONES[k].ko,data:tr[k],borderColor:TONES[k].color,backgroundColor:TONES[k].color,borderWidth:2,pointRadius:4,pointHoverRadius:6,pointBorderColor:'#fff',pointBorderWidth:2,tension:.25}))},
+    options:Object.assign(base({},{label:c=>`${c.dataset.label}: ${fmt(c.parsed.y)}명`}),{interaction:{mode:'index',intersect:false}})});
+  document.getElementById('tTrend').innerHTML=table(['톤',...WEEKS],ORDER.map(k=>[toneTag(k),...tr[k].map((v,i)=>fmt(v)+(i===3&&LIVE.diag[k]?` <span class="live">+${LIVE.diag[k]}</span>`:''))]));
+  /* 노출 구좌 */
+  const avgOrder=sum(SKU.map(s=>s.rev))/sum(SKU.map(s=>s.sold))*1.9; // 주문당 평균 1.9개 (가정)
+  const diagSlot=['퍼컬 진단 추천',FUNNEL[1][1]+LIVE.shown,FUNNEL[2][1]+LIVE.click,FUNNEL[4][1],FUNNEL[4][1]*avgOrder];
+  const rows=SLOTS.map(r=>({n:r[0],imp:r[1],clk:r[2],ord:r[3],rev:r[4]})).map(r=>Object.assign(r,{ctr:r.clk/r.imp*100,rpm:r.rev/r.imp*1000}));
+  const dg={n:diagSlot[0],imp:diagSlot[1],clk:diagSlot[2],ord:diagSlot[3],rev:diagSlot[4]}; dg.ctr=dg.clk/dg.imp*100; dg.rpm=dg.rev/dg.imp*1000;
+  const srt=[...rows].sort((a,b)=>b.rpm-a.rpm), main=rows.find(r=>r.n==='메인 배너');
+  document.getElementById('hSlot').textContent=`‘${srt[0].n}’ 구좌의 노출 1천 회당 매출이 메인 배너의 ${(srt[0].rpm/main.rpm).toFixed(1)}배(${man(srt[0].rpm)}) — 노출량보다 효율로 구좌 배분`;
+  mk('cSlot',{type:'bar',data:{labels:srt.map(r=>r.n),datasets:[{label:'노출 1천 회당 매출',data:srt.map(r=>r.rpm/10000),backgroundColor:srt.map((r,i)=>i===0?'#111110':'#c9c7c0'),borderRadius:4,borderSkipped:'start',barPercentage:.7}]},
+    options:Object.assign(base({x:{suggestedMax:18,ticks:{callback:v=>v+'만'}},y:{grid:{display:false}}},{label:c=>{const r=srt[c.dataIndex];return `1천 회당 ${man(r.rpm)} · 클릭률 ${r.ctr.toFixed(1)}% · 매출 ${man(r.rev)}`}}),{indexAxis:'y'}),
+    plugins:[valueLabels(v=>fmt(v)+'만원',true)]});
+  document.getElementById('tSlot').innerHTML=table(['구좌','노출','클릭','클릭률','구매','매출','1천 회당 매출'],[...srt,dg].map(r=>[r.n===dg.n?`<b>${r.n}</b>`:r.n,
+    fmt(r.imp)+(r.n===dg.n&&LIVE.shown?` <span class="live">+${LIVE.shown}</span>`:''),fmt(r.clk)+(r.n===dg.n&&LIVE.click?` <span class="live">+${LIVE.click}</span>`:''),r.ctr.toFixed(1)+'%',fmt(r.ord)+'건',man(r.rev),man(r.rpm)]));
+  document.getElementById('slotNote').innerHTML=`<b>🧭 퍼컬 진단 추천 구좌</b><br>노출은 ${fmt(dg.imp)}회로 메인 배너의 ${(dg.imp/main.imp*100).toFixed(1)}%뿐이지만, 클릭률 <b>${dg.ctr.toFixed(0)}%</b>, 노출 1천 회당 매출 <b>${man(dg.rpm)}</b>. 고객이 직접 고른 톤이라 관심도가 높음 (가정)${liveTag(LIVE.shown)}`;
+  const low=[...rows].sort((a,b)=>a.rpm-b.rpm)[0];
+  actions('aSlot',[
+    [`‘${srt[0].n}’에 품절 임박 셰이드 대신 재고 충분한 대체 셰이드 노출`,`효율 1위 구좌에 곧 품절될 상품이 걸리면 클릭이 매출로 이어지지 않음`],
+    [`‘${low.n}’ 구좌 소재 교체 검토`,`1천 회당 매출 ${man(low.rpm)}로 최하위 — 셰이드 스와치 컷·단독 문구로 교체 테스트`],
+    ['메인 배너에 “내 톤 찾기” 진입 배너 테스트',`진단 추천 구좌 효율이 높아, 진단 진입을 늘리면 전체 효율 개선 기대 (가정)`]
+  ]);
+}
+
+/* ================= ① 진단 ================= */
+const stage=document.getElementById('stage'), statusEl=document.getElementById('status');
+let landmarker=null, loading=null, stream=null;
+async function getLandmarker(){
+  if(landmarker) return landmarker; if(loading) return loading;
+  loading=(async()=>{
+    statusEl.textContent='AI 모델 불러오는 중… (처음 1회, 몇 초 걸려요)';
+    const CDN='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.2.2/';
+    const mod=await import(CDN+'vision_bundle.mjs');
+    const fileset=await mod.FilesetResolver.forVisionTasks(CDN+'wasm');
+    landmarker=await mod.FaceLandmarker.createFromOptions(fileset,{
+      baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',delegate:'CPU'},
+      runningMode:'IMAGE',numFaces:1});
+    return landmarker;
+  })();
+  try{return await loading;}catch(e){loading=null;throw e;}
+}
+const SKIN_IDX=[117,118,119,100,101,50,205,36, 346,347,348,329,330,280,425,266, 10,151,9,108,337];
+function srgb2lin(c){c/=255;return c<=0.04045?c/12.92:Math.pow((c+0.055)/1.055,2.4)}
+function rgb2lab(r,g,b){const R=srgb2lin(r),G=srgb2lin(g),B=srgb2lin(b);
+  let X=(R*0.4124+G*0.3576+B*0.1805)/0.95047,Y=(R*0.2126+G*0.7152+B*0.0722),Z=(R*0.0193+G*0.1192+B*0.9505)/1.08883;
+  const f=t=>t>0.008856?Math.cbrt(t):(7.787*t+16/116); X=f(X);Y=f(Y);Z=f(Z); return [116*Y-16,500*(X-Y),200*(Y-Z)];}
+function analyze(canvas,points){
+  const ctx=canvas.getContext('2d'),W=canvas.width,H=canvas.height,rad=Math.max(2,Math.round(Math.min(W,H)/160)),samples=[];
+  points.forEach(([x,y])=>{const d=ctx.getImageData(Math.max(0,x-rad),Math.max(0,y-rad),rad*2+1,rad*2+1).data;for(let i=0;i<d.length;i+=4)samples.push(rgb2lab(d[i],d[i+1],d[i+2]));});
+  samples.sort((a,b)=>a[0]-b[0]); const cut=Math.floor(samples.length*0.15),use=samples.slice(cut,samples.length-cut);
+  const m=[0,0,0];use.forEach(s=>{m[0]+=s[0];m[1]+=s[1];m[2]+=s[2]});m.forEach((_,i)=>m[i]/=use.length);
+  const [L,a,b]=m,hue=Math.atan2(b,a)*180/Math.PI;
+  ctx.save();points.forEach(([x,y])=>{ctx.beginPath();ctx.arc(x,y,rad+2,0,7);ctx.fillStyle='rgba(255,255,255,.9)';ctx.fill();ctx.lineWidth=1.5;ctx.strokeStyle='#111';ctx.stroke();});ctx.restore();
+  return {L,a,b,hue};
+}
+function classify({L,hue}){const warm=hue>=57,light=L>=63;return warm?(light?'spring':'autumn'):(light?'summer':'winter');}
+async function runOnImage(img){
+  const s=Math.min(1,720/img.width),c=document.createElement('canvas');c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);
+  c.getContext('2d').drawImage(img,0,0,c.width,c.height); stage.innerHTML=''; stage.appendChild(c);
+  let pts=null,how='';
+  try{const lm=await getLandmarker(); statusEl.textContent='얼굴 지점 찾는 중…'; const res=lm.detect(c);
+    if(res.faceLandmarks&&res.faceLandmarks.length){const f=res.faceLandmarks[0];pts=SKIN_IDX.map(i=>[f[i].x*c.width,f[i].y*c.height]);how='MediaPipe가 얼굴 478개 지점 중 볼·이마 21곳에서 피부색을 추출했어요.';}
+    else{statusEl.textContent='얼굴을 찾지 못했어요. 정면 사진으로 다시 시도해 주세요.';return;}
+  }catch(e){console.warn(e);const cx=c.width/2,cy=c.height*0.48,rx=c.width*0.12,ry=c.height*0.1;pts=[];
+    for(let k=0;k<16;k++){const t=k/16*Math.PI*2;pts.push([cx+Math.cos(t)*rx,cy+Math.sin(t)*ry]);}
+    how='이 환경에서는 AI 모델을 불러올 수 없어 사진 중앙 영역으로 간이 분석했어요. (배포 버전에서는 AI 얼굴 인식으로 동작)';}
+  const r=analyze(c,pts); statusEl.textContent=how; showResult(classify(r),r);
+}
+document.getElementById('file').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;
+  const img=new Image();img.onload=()=>{runOnImage(img);URL.revokeObjectURL(img.src)};img.src=URL.createObjectURL(f);e.target.value='';});
+const camBtn=document.getElementById('camBtn'),snapBtn=document.getElementById('snapBtn');
+camBtn.addEventListener('click',async()=>{
+  try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});
+    const v=document.createElement('video');v.autoplay=true;v.playsInline=true;v.muted=true;v.srcObject=stream;
+    stage.innerHTML='';stage.appendChild(v);snapBtn.hidden=false;camBtn.hidden=true;
+    statusEl.textContent='얼굴을 화면 가운데에 맞추고 [촬영 · 진단]을 누르세요.';getLandmarker().catch(()=>{});
+  }catch(e){statusEl.textContent='이 화면에서는 카메라를 쓸 수 없어요. [사진 올리기]로 진행해 주세요.';}
+});
+snapBtn.addEventListener('click',()=>{const v=stage.querySelector('video');if(!v)return;
+  const c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);
+  stream&&stream.getTracks().forEach(t=>t.stop());snapBtn.hidden=true;camBtn.hidden=false;
+  const img=new Image();img.onload=()=>runOnImage(img);img.src=c.toDataURL('image/jpeg',.92);});
+let demoI=0;
+document.getElementById('demoBtn').addEventListener('click',()=>{
+  const samples=[{L:57,a:14,b:23,hue:58.7},{L:55,a:16,b:16,hue:45},{L:68,a:13,b:22,hue:59.4},{L:66,a:15,b:17,hue:48.6}];
+  const r=samples[demoI++%4]; stage.innerHTML='<div class="ph">예시 결과입니다 (사진 없이 시연용).</div>'; statusEl.textContent=''; showResult(classify(r),r);
+});
+function recommend(tone){
+  const ok=REAL_SHADES.filter(x=>!x.out);
+  const kw=ok.filter(x=>x.season&&x.season.includes(tone));
+  const tag=ok.filter(x=>x.by==='브랜드 표기'&&((x.t==='warm'&&WARM[tone])||(x.t==='cool'&&COOL[tone])));
+  const pick=[],seen=new Set();
+  [...kw,...tag].forEach(x=>{if(pick.length<6&&!seen.has(x.p.id)){pick.push(x);seen.add(x.p.id);}});
+  [...kw,...tag].forEach(x=>{if(pick.length<6&&!pick.includes(x))pick.push(x);});
+  return pick;
+}
+function showResult(tone,r){
+  const t=TONES[tone]; LIVE.diag[tone]++; LIVE.shown++; saveLive();
+  const huePos=Math.max(0,Math.min(100,(r.hue-35)/(75-35)*100)),lumPos=Math.max(0,Math.min(100,(r.L-40)/(80-40)*100));
+  const items=recommend(tone), dem=demandShare(), sup=supplyShare(SKU), g=sup[tone]-dem[tone];
+  const cells=catGaps().filter(c=>c.tone===tone).sort((a,b)=>a.gap-b.gap), wc=cells[0];
+  document.getElementById('resultBody').innerHTML=`
+    <div class="result-hero"><div class="tone-dot" style="background:${t.color}"></div><div><div class="t">${t.ko} <span style="font-size:13px;font-weight:500;color:var(--text-muted)">· 참고용</span></div><div class="d">${t.desc}</div></div></div>
+    <div class="meter"><div class="lab"><span>쿨 (붉은·핑크기)</span><span>색상각 ${r.hue.toFixed(1)}°</span><span>웜 (노란기)</span></div><div class="bar"><div class="pin" style="left:${huePos}%"></div></div></div>
+    <div class="meter"><div class="lab"><span>깊은 톤</span><span>명도 L* ${r.L.toFixed(1)}</span><span>밝은 톤</span></div><div class="bar lum"><div class="pin" style="left:${lumPos}%"></div></div></div>
+    <div style="font-size:12.5px;font-weight:700;margin:10px 0 6px">${t.ko}에 어울릴 만한 실제 판매 셰이드 <span class="tag real" style="font-size:10.5px">실제 상품 · 2026.11.12 가격</span></div>
+    <div class="prod-grid">${items.map((s,i)=>`
+      <div class="prod" data-i="${i}"><div class="img" style="background:${t.color}1f"><i>${s.p.cat} · ${esc(s.opt)}</i><i style="top:auto;bottom:8px;background:${t.color};color:#fff">${s.by==='브랜드 표기'?'브랜드 표기 '+TONE_KO[s.t]:'이름 기준 추정'}</i></div>
+      <div class="body"><span class="br">${s.p.brand}</span><span class="nm">${esc(s.p.name)}</span>
+      <div class="pr"><span>${s.p.disc?`<em>${s.p.disc}%</em>`:''}<b>${fmt(s.p.sale)}원</b></span><button data-i="${i}">담기</button></div>
+      <a href="${wcLink(s.p)}" target="_blank" rel="noopener" style="font-size:11px;color:var(--text-muted)">W컨셉에서 보기 ↗</a></div></div>`).join('')}</div>
+    <div class="assume">셰이드 이름(또는 브랜드가 옵션명에 적은 쿨/웜 표기)으로 추정한 참고용 추천이에요. 실제 발색은 상품 페이지 스와치로 확인하세요. 아래 MD 수치는 브랜드 A~F 가정 데이터 기준입니다.</div>
+    <div class="md-link"><b>🧭 MD 화면으로 이어지는 데이터</b><br>
+      지금 ${t.ko}는 수요 <b>${dem[tone].toFixed(1)}%</b> vs 셰이드 <b>${sup[tone].toFixed(1)}%</b> (${g>0?'+':''}${g.toFixed(1)}%p).
+      ${g<0?`가장 부족한 칸은 <b>${wc.cat}</b>(셰이드 ${wc.n}개, ${wc.gap.toFixed(0)}%p) → <a href="#sourcing">③ 소싱 우선순위</a>에 반영돼요.`:`공급이 충분한 톤이라 <a href="#promo">④ 기획전</a> 노출로 소진을 돕는 쪽이 맞아요.`}
+      <br>이번 결과는 <a href="#brand">②</a>~<a href="#sales">⑤</a> 수치에 익명으로 <span class="live">+1</span> 더해졌어요.</div>`;
+  document.querySelectorAll('#resultBody .prod').forEach(el=>el.addEventListener('click',()=>{if(!el.dataset.c){el.dataset.c=1;LIVE.click++;saveLive();}}));
+  document.querySelectorAll('#resultBody button[data-i]').forEach(b=>b.addEventListener('click',ev=>{ev.stopPropagation();
+    if(b.classList.contains('done'))return; const card=b.closest('.prod'); if(!card.dataset.c){card.dataset.c=1;LIVE.click++;}
+    b.classList.add('done');b.textContent='담김 ✓';LIVE.cart++;saveLive();}));
+}
+
+/* ================= ⑥ 설명 (수치 자동 연동) ================= */
+function renderStory(){
+  const dem=demandShare(),sup=supplyShare(SKU),k=ORDER.reduce((a,b)=>(sup[a]-dem[a])<(sup[b]-dem[b])?a:b);
+  document.getElementById('pfGap').textContent=`${(sup[k]-dem[k]).toFixed(0)}%p`;
+  document.getElementById('pfGapCap').textContent=`${TONES[k].ko} 수요 ${dem[k].toFixed(0)}% vs 셰이드 ${sup[k].toFixed(0)}% — 부족 톤을 찾아 소싱 1순위로 제시`;
+  const urgent=SKU.filter(s=>s.stock>0&&s.days<7);
+  document.getElementById('pfOut').textContent=urgent.length+'개';
+  document.getElementById('pfOutCap').textContent=`7일 안에 품절될 셰이드 자동 표시 — ${urgent.filter(s=>s.tone==='autumn'||s.tone==='winter').length}개가 가을웜·겨울쿨`;
+  const p=PROMO[3],a=calc(p,p.disc,p.coupon),b=calc(p,15,p.coupon);
+  document.getElementById('pfMar').textContent=`${(a.mar*100).toFixed(0)}% → ${(b.mar*100).toFixed(0)}%`;
+  document.getElementById('pfMarCap').textContent=`겨울쿨 기획전 기본 할인 ${p.disc}%→15%(쿠폰 ${p.coupon}%·사은품 ${p.gift}% 유지) 시 판촉비 포함 예상 마진율, 이익 +${man(b.profit-a.profit)} (시뮬레이터)`;
+}
+
+/* ================= 탭 ================= */
+const VIEWS={diagnose:null,brand:renderBrand,sourcing:renderSourcing,promo:renderPromo,sales:renderSales,story:renderStory};
+function show(){let h=(location.hash||'').slice(1); if(!(h in VIEWS)) h='diagnose';
+  Object.keys(VIEWS).forEach(v=>document.getElementById('v-'+v).classList.toggle('on',v===h));
+  document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.dataset.v===h));
+  if(VIEWS[h]) VIEWS[h](); window.scrollTo(0,0);}
+window.addEventListener('hashchange',show);
+show();
+</script>
+</body>
+</html>
