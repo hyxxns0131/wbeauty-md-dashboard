@@ -177,6 +177,32 @@
   .card.bench{border:1.5px solid #1b1a1c}
   .jobline .chip{border-radius:999px;padding:3px 10px}
   @media (max-width:900px){.frame{margin:0;border-radius:0;padding:10px}.guides .h1{font-size:52px}header.hero{padding:26px 18px 18px}.guides::before{left:-18px;right:-18px;background:linear-gradient(#d9d7d1,#d9d7d1) 0 14px/100% 1px no-repeat,linear-gradient(#d9d7d1,#d9d7d1) 0 30px/100% 1px no-repeat,linear-gradient(#d9d7d1,#d9d7d1) 0 58px/100% 1px no-repeat,linear-gradient(#d9d7d1,#d9d7d1) 0 70px/100% 1px no-repeat}.content{padding:16px 12px 20px}}
+
+  /* trend tab */
+  .newslist{margin-top:8px;display:grid;gap:0}
+  .newslist a{display:grid;grid-template-columns:1fr auto;gap:10px;padding:9px 2px;border-bottom:1px solid #f0efea;color:var(--text-primary);text-decoration:none;font-size:13.5px}
+  .newslist a:hover b{text-decoration:underline}
+  .newslist a span{font-size:12px;color:var(--text-muted);white-space:nowrap}
+  .newslist mark{background:#fff3c4;border-radius:3px;padding:0 2px}
+  .qchip{border:1.5px solid #1b1a1c;border-radius:999px;padding:3px 11px;font:600 12.5px "Noto Sans KR",sans-serif;background:#fff;cursor:pointer}
+  .qchip.on{background:#1b1a1c;color:#fff}
+  .todo{display:grid;gap:8px}
+  .todo label{display:grid;grid-template-columns:auto auto 1fr;gap:10px;align-items:start;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;font-size:13px;cursor:pointer}
+  .todo label.done{opacity:.5}.todo label.done b{text-decoration:line-through}
+  .todo .dd{font:700 11.5px "IBM Plex Mono",monospace;border-radius:6px;padding:2px 6px;background:var(--soft);white-space:nowrap}
+  .todo .dd.over{background:#fbe6e5;color:var(--crit)} .todo .dd.today{background:#111110;color:#fff}
+  .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:12px}
+  .calgrid .h{text-align:center;color:var(--text-muted);font-weight:700;padding:3px 0}
+  .calgrid .d{min-height:58px;border-radius:8px;background:#f6f5f2;padding:4px 5px;position:relative;overflow:hidden}
+  .calgrid .d.o{background:transparent}
+  .calgrid .d.t{outline:2px solid #111110}
+  .calgrid .d.hol .n{color:var(--crit);font-weight:700}
+  .calgrid .d .n{font-size:11.5px}
+  .calgrid .d .e{display:block;font-size:10.5px;line-height:1.25;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .calgrid .d .e i{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:3px;vertical-align:1px}
+  .stage-chips{display:flex;gap:3px;flex-wrap:wrap}
+  .stage-chips span{font:600 10.5px "IBM Plex Mono","Noto Sans KR",monospace;border-radius:5px;padding:1px 5px;background:var(--soft);color:var(--text-muted);white-space:nowrap}
+  .stage-chips span.now{background:#111110;color:#fff} .stage-chips span.past{text-decoration:line-through}
 </style>
 </head>
 <body>
@@ -200,7 +226,8 @@
       <a href="#sourcing" data-v="sourcing"><b>↗</b>③ 소싱·상품등록<span class="jd">업무2</span></a>
       <a href="#promo" data-v="promo"><b>↗</b>④ 기획전·프로모션<span class="jd">업무3</span></a>
       <a href="#sales" data-v="sales"><b>↗</b>⑤ 매출 분석<span class="jd">업무4</span></a>
-      <a href="#story" data-v="story"><b>↗</b>⑥ 프로젝트 설명</a>
+      <a href="#trend" data-v="trend"><b>↗</b>⑥ 트렌드·행사 캘린더<span class="jd">NEW</span></a>
+      <a href="#story" data-v="story"><b>↗</b>⑦ 프로젝트 설명</a>
     </nav>
   </header>
   <div class="content">
@@ -445,7 +472,63 @@
     </div>
   </section>
 
-  <!-- ⑥ 설명 -->
+  <!-- ⑥ 트렌드·행사 캘린더 -->
+  <section class="view" id="v-trend">
+    <div class="jobline"><span class="chip">업무3·4 지원</span><b>트렌드 · 행사 캘린더</b><span class="s">구글 RSS로 요즘 트렌드 파악 → 한국 주요 행사에 맞춰 프로모션 준비 일정 관리</span></div>
+    <div class="notice top" id="trendSrc">📡 데이터 불러오는 중…</div>
+    <div class="grid g4" id="kpiTrend"></div>
+
+    <div class="grid g2 mt">
+      <div class="card bench">
+        <div class="row" style="justify-content:space-between"><span class="tag real">실제 데이터 · Google Trends RSS</span><span class="cap" style="margin:0" id="trUpd"></span></div>
+        <h3 style="margin-top:10px" id="hTr">오늘의 구글 인기 검색어 (한국)</h3>
+        <p class="cap">구글 일간 인기 검색어 · 검색량은 구글 표기(예: 1000+) 그대로. 뷰티 관련 키워드는 표시</p>
+        <div class="scroll" id="tTr"></div>
+      </div>
+      <div class="card bench">
+        <div class="row" style="justify-content:space-between"><span class="tag real">실제 데이터 · Google News RSS</span><span class="cap" style="margin:0">최근 30일</span></div>
+        <h3 style="margin-top:10px" id="hKw">뷰티 뉴스 키워드</h3>
+        <p class="cap">뷰티 뉴스 제목에 나온 키워드 수 (중복 기사 제외, 건)</p>
+        <div class="chartbox"><canvas id="cKw"></canvas></div>
+        <button class="tbl-toggle" data-t="tKw">표로 보기</button>
+        <div id="tKw" hidden></div>
+        <div class="md-link" id="kwNote"></div>
+      </div>
+    </div>
+
+    <div class="card mt bench">
+      <div class="row" style="justify-content:space-between"><span class="tag real">실제 데이터 · Google News RSS</span><span class="cap" style="margin:0">제목·출처·링크만 표시, 클릭하면 원문으로 이동</span></div>
+      <h3 style="margin-top:10px">뷰티 뉴스 헤드라인</h3>
+      <div class="row" id="newsQ" style="margin:8px 0 6px"></div>
+      <label style="font-size:12.5px;color:var(--text-secondary)"><input type="checkbox" id="newsOnly" checked> 뷰티 관련 제목만 보기</label>
+      <div id="newsList" class="newslist"></div>
+    </div>
+
+    <div class="grid g2 mt">
+      <div class="card">
+        <h3 id="hTodo">이번 주 MD 할 일</h3>
+        <p class="cap">행사별 준비 일정(D-30 기획 → D-21 브랜드 협의 → D-14 상품·쿠폰 세팅 → D-7 배너·푸시 → D-day 운영 → D+7 성과 리뷰) 중 오늘부터 7일 안에 할 일 · 체크는 이 브라우저에 저장</p>
+        <div id="todoList" class="todo"></div>
+      </div>
+      <div class="card">
+        <h3 id="hCal">행사 달력</h3>
+        <p class="cap">공휴일(구글 캘린더) + 커머스·뷰티 행사 · 점 색 = 행사 유형</p>
+        <div class="row" style="justify-content:space-between;margin-bottom:6px"><button class="btn ghost sm" id="calPrev">‹ 이전</button><b id="calTitle"></b><button class="btn ghost sm" id="calNext">다음 ›</button></div>
+        <div id="calGrid" class="calgrid"></div>
+        <div class="legend" id="calLg" style="margin-top:8px"></div>
+      </div>
+    </div>
+
+    <div class="card mt">
+      <h3 id="hEv">다가오는 행사 · 프로모션 준비 일정</h3>
+      <p class="cap">날짜가 정해진 공휴일·기념일·대형 행사만 표시. 뷰티 프로모션 아이디어와 관련 톤(퍼컬)을 함께 제안 · 준비 단계는 오늘 날짜 기준 자동 표시</p>
+      <div class="row" id="evFilter" style="margin-bottom:8px"></div>
+      <div class="scroll" id="tEv"></div>
+      <div class="assume">날짜 출처: 공휴일·기념일은 Google Calendar ‘대한민국의 휴일’, 수능은 교육부·평가원 발표(2026.11.19 / 2027.11.18), K-세일페스타(코리아 그랜드 페스티벌)는 정부 발표(2026.10.29~11.15), 블랙프라이데이는 미국 추수감사절 다음 날. W컨셉 자체 행사(더블유위크 등)는 공개 일정이 없어 넣지 않음 — 확정되면 직접 추가.</div>
+    </div>
+  </section>
+
+  <!-- ⑦ 설명 -->
   <section class="view" id="v-story">
     <div class="pf-hero">
       <div class="eyebrow">한 줄 요약</div>
@@ -496,7 +579,7 @@
       <div class="split" style="margin-top:8px">
         <div class="ai"><b>🤖 AI가 한 일</b><ul>
           <li><b>MediaPipe Face Landmarker</b>: 사진에서 얼굴 478개 지점 위치 인식</li>
-          <li><b>Claude</b>: 화면·차트 코드 작성, 피부색 계산식(Lab 색공간) 구현 보조, 화장품 표현 검수 사전 초안, W컨셉 공개 기획전 페이지 열람·텍스트 정리 보조</li></ul></div>
+          <li><b>Claude</b>: 화면·차트 코드 작성, 피부색 계산식(Lab 색공간) 구현 보조, 화장품 표현 검수 사전 초안, W컨셉 공개 기획전 페이지 열람·텍스트 정리 보조, 구글 RSS 자동 수집 스크립트·GitHub Actions 작성</li></ul></div>
         <div class="me"><b>🙋 내가 한 일</b><ul>
           <li>피부색을 뽑을 위치(볼·이마) 선정, 웜/쿨·명도 판정 기준 설계</li>
           <li>셰이드 톤 태깅 기준 설계 (베이스는 호수 + 언더톤 C/N/W로 분류)</li>
@@ -504,7 +587,8 @@
           <li>브랜드 운영 제안 규칙과 등록 검수 항목 설계, 금지·주의 표현 분류 검토</li>
           <li>개인정보 리스크 검토 후 설계 전환</li>
           <li>기획전 벤치마크 분류 기준(문구 키워드·혜택 구조)과 셰이드 이름 기준 톤 추정 규칙 설계, robots.txt 확인 후 수집 방식 결정</li>
-          <li>실제 브랜드에는 공개 정보만, 가정 수치는 익명(브랜드 A~F)으로 분리하는 원칙 결정</li></ul></div>
+          <li>실제 브랜드에는 공개 정보만, 가정 수치는 익명(브랜드 A~F)으로 분리하는 원칙 결정</li>
+          <li>행사별 준비 단계(D-30~D+7)와 뷰티 프로모션·톤 연결 아이디어 정리, 뉴스 키워드 사전 설계</li></ul></div>
       </div>
       <div class="assume">표현 검수 아이디어는 6인 팀 프로젝트 “Reboot”(팀 성과: 1등)의 광고문구 검수 기능에서 출발했으며, 이 대시보드에서는 화장품 표현 기준으로 새로 정리했습니다.</div>
     </div>
@@ -516,6 +600,7 @@
         <tr><td class="l">업무1 입점 브랜드 운영/관리</td><td class="l">② 탭 — 브랜드 스코어카드(매출·셰이드 수·품절률·평점·톤 커버리지·단독/선론칭) → 운영 제안 자동 생성</td></tr>
         <tr><td class="l">업무2 제품 소싱 및 상품 등록</td><td class="l">③ 탭 — 카테고리×톤 갭으로 소싱 우선순위, 등록 필수 정보·과장 표현 검수</td></tr>
         <tr><td class="l">업무3 기획전, 프로모션 운영/관리</td><td class="l">④ 탭 — W컨셉 실제 기획전 23개 벤치마크, 톤별 기획전 성과, 할인·쿠폰·사은품·적립 포함 마진 시뮬레이션</td></tr>
+        <tr><td class="l">업무3·4 보조</td><td class="l">⑥ 탭 — 구글 트렌드·뉴스 RSS로 뷰티 키워드·컬러 흐름 파악, 한국 공휴일·커머스 행사 캘린더와 D-30~D+7 준비 일정·할 일 관리</td></tr>
         <tr><td class="l">업무4 매출 데이터 관리 및 분석</td><td class="l">⑤ 탭 — 셰이드 판매 TOP, 소진 예상일, 진단 퍼널, 주차별 톤 추이, 노출 구좌별 성과</td></tr>
       </table></div>
       <div class="assume">패션 MD 대시보드와 같은 4탭 구조 — 카테고리가 바뀌어도 같은 틀로 일하는 MD를 보여주려는 설계입니다.</div>
@@ -531,6 +616,7 @@
   </footer>
 </div>
 
+<script type="application/json" id="trendSnapshot">{"updated": "2026-11-13T10:46+09:00", "sources": {"trends": "https://trends.google.com/trending/rss?geo=KR", "news": "https://news.google.com/rss", "holidays": "Google Calendar 대한민국의 휴일"}, "trends": [{"title": "평가", "traffic": "500+", "date": "2026-11-13T09:40+09:00", "news": [{"title": "ESG 성적 'A+' 자랑한 KB·신한금융…옥에 티는 'LTV 담합'", "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4444583", "source": "연합인포맥스"}, {"title": "영진약품, 한국ESG기준원 ESG 평가 통합 'A' 등급 획득", "url": "https://www.newstown.co.kr/news/articleView.html?idxno=721800", "source": "뉴스타운"}]}, {"title": "아시아 프로야구 챔피언십", "traffic": "2000+", "date": "2026-11-13T09:30+09:00", "news": [{"title": "호주에도 지는 한국야구", "url": "https://www.donga.com/news/Sports/article/all/20261113/135017424/2", "source": "동아일보"}, {"title": "‘호주전 7-8 충격패→결승 탈락 위기’ 한국, 日 11승 대형 좌완신인 만난다 “한국 좋은 타자 많아”", "url": "https://www.chosun.com/sports/baseball/2026/11/13/MQYDKOJTGMYDMNZYHFTDEOJWG4/", "source": "조선일보"}]}, {"title": "금융통화위원회", "traffic": "100+", "date": "2026-11-13T09:30+09:00", "news": [{"title": "11월엔 올린다지만 그다음은…금통위가 주목한 소비의 온도", "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4444388", "source": "연합인포맥스"}, {"title": "[현승윤 칼럼] 한은, 기준금리 인상에 신중할 때", "url": "https://www.hankyung.com/article/2026111109361", "source": "한국경제"}]}, {"title": "메르세데스-벤츠", "traffic": "1000+", "date": "2026-11-13T09:20+09:00", "news": [{"title": "벤츠도 독일 공장 폐쇄 검토…\"국내 투자 중단\"", "url": "https://www.yna.co.kr/view/AKR20261113005800082", "source": "연합뉴스"}, {"title": "벤츠마저 독일 공장 투자 중단…폐쇄 카드까지 꺼냈다", "url": "https://marketin.edaily.co.kr/News/ReadE?newsId=02814246645645392", "source": "마켓인"}]}, {"title": "gemini 4 hydrogen", "traffic": "100+", "date": "2026-11-13T09:10+09:00", "news": [{"title": "Introducing Gemini 4 Hydrogen for Agentic Workflows", "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/", "source": "blog.google"}, {"title": "Gemini 4 Carbon in GitHub Copilot", "url": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot/", "source": "The GitHub Blog"}]}, {"title": "m365", "traffic": "200+", "date": "2026-11-13T08:50+09:00", "news": [{"title": "Microsoft Starts Limiting Copilot Chat Usage For Users Without Paid Licenses", "url": "https://www.crn.com/news/ai/2026/microsoft-starts-limiting-copilot-chat-usage-for-users-without-paid-licenses", "source": "CRN"}, {"title": "Microsoft extends undisclosed usage restrictions on Copilot Chat for enterprise users", "url": "https://www.computerworld.com/article/4245658/microsoft-extends-undisclosed-usage-restrictions-on-copilot-chat-for-enterprise-users.html", "source": "Computerworld"}]}, {"title": "양승조", "traffic": "200+", "date": "2026-11-13T08:50+09:00", "news": [{"title": "한국수자원공사 신임 사장에 양승조 전 충남지사", "url": "https://www.yna.co.kr/view/AKR20261112179200063", "source": "연합뉴스"}, {"title": "수자원공사 17대 사장에 양승조 전 충남지사…13일 업무 시작", "url": "https://www.news1.kr/local/daejeon-chungnam/6352895", "source": "뉴스1"}]}, {"title": "김영훈", "traffic": "200+", "date": "2026-11-13T08:40+09:00", "news": [{"title": "노동장관, 반도체 기업 간담회…초광역특구 사회적 대화에 참고", "url": "https://www.yna.co.kr/view/AKR20261112178500530", "source": "연합뉴스"}, {"title": "반도체 업계 만난 노동장관…“지속적 혁신·좋은 일자리, 두 과제에 역량 집중해야”", "url": "https://biz.chosun.com/topics/topics_social/2026/11/13/OET4E3NDM5FAZONDZFIWDVGGAI/", "source": "Chosunbiz"}]}, {"title": "헤그세스", "traffic": "100+", "date": "2026-11-13T08:40+09:00", "news": [{"title": "헤그세스, 자기 꾸짖은 병사에 훈장 수여… \"잘했다, 상병\"", "url": "https://www.chosun.com/international/us/2026/11/13/NXMEZQGXVZED5NNRARRJ42TEQ4/", "source": "조선일보"}, {"title": "무명용사 묘서 '호통' 들은 헤그세스…보초병에 표창 수여", "url": "https://marketin.edaily.co.kr/News/ReadE?newsId=03116006645645392", "source": "마켓인"}]}, {"title": "두산에너빌리티", "traffic": "5000+", "date": "2026-11-13T08:10+09:00", "news": [{"title": "'DL이앤씨·두산 협력사' 엑스에너지 미국 SMR 건설 승인, \"실제 착공 여부는 미지수\"", "url": "https://www.businesspost.co.kr/BP?command=article_view&num=451730", "source": "비즈니스포스트"}, {"title": "두산에너빌리티, NuScale 원자로 계약 체결: 034020, 상승세 이어갈까?", "url": "https://tradersunion.com/ko/news/stocks/show/4206554-doosan-enerbility-slides-0-21percent-today/", "source": "Traders Union"}]}], "news": {"뷰티 트렌드": [{"title": "10월 티몰 뷰티 트렌드 리포트③: 베이스메이크업 TOP10 판매량 34.4%↓...K-뷰티 16.3%↓ 선방", "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9odm9yM3J3eWxSZlEtYWJGSXpzQmVoMkUtVGQ3cnJTdUtjVmVyWkQzaGNHU0V3enNaRTQwUkhDQkZLYXprNlRaTmRLM0RmUXBaWjc2dnlUYjZNMHIzWHVSZGZGVzBQSXJ6blE?oc=5", "source": "뷰티경제", "date": "2026-11-13T10:15+09:00"}, {"title": "[뷰티트렌드] 아모레퍼시픽, 진도군 중학생 대상 ‘밋유어뷰티 멘토링’ 1기 성료 外", "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9rSnBoMnB3S1V2MEx0c2JBcEloY3lwMzNTeW1wejJEUTBZQmRYRFlFVmtqY3VkcVVWU0dBdEU2c0F6SFBNUFR4bXluN2RtUVFSd0xVSjNXOFVqU0Flc1FFZFFiOTE0NHJSRElVdw?oc=5", "source": "베이비뉴스", "date": "2026-11-12T15:06+09:00"}, {"title": "[뷰티 트렌드] 마리엔메이, ‘무신사 뷰티 성수점’ 입점 外", "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBrQk9BZmFnY1ROeXREbU9xX2V0SHFvblpOSlFEUGVyZEhEQ3lzR2dwbEl5S3JzMzFsMHNDRHVCem9vcDNoM3hYOWxSSHFJaWRWWFpPWWZJa2RqRlFvbnBQbGtQamVBTWhlMnFOZQ?oc=5", "source": "베이비뉴스", "date": "2026-11-12T12:27+09:00"}, {"title": "10월 티몰 뷰티 트렌드 리포트②: 선케어 TOP10 판매량 17.6% 증가...한국관은 34.4% 감소", "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5KZ1JINEpWSEpaMThSTXpiT3JiZlJFSUs1dDVsNk1IWE1UZG4tc3RJWTAxbHNiR3BXV2lJNEpZZm5ndlZDRUZDdmdZazltTWZjM1pWZWtsSHRTN1pLbUR1NGN6cTVFOU80MGc?oc=5", "source": "뷰티경제", "date": "2026-11-12T10:45+09:00"}, {"title": "화장품신문 (Beautynury.com) :: 아시아, 글로벌 뷰티 트렌드 주도한다", "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE15M3lhYVNnLWl4cmFYSFVSanc0MlpoWHVUNnJfTGt5N19aQTRaVVV2c0hSWTBDMWFTbS1ZRDJCZk9rQWk2bmRZMEpHbmo3LUFHVDA4Nnd0ZXNma2JBeVlycTlhM2QzZjA?oc=5", "source": "뷰티누리", "date": "2026-11-11T16:20+09:00"}, {"title": "10월 티몰 뷰티 트렌드 리포트①: 마스크팩 TOP10 판매량 41.9%↓...K-뷰티 68.4%↓", "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5pNnUwb2ljT0IwS3lvZTR3d25aRF9STUJZRHhiRjlzQzRaSk1ObWtfZXp2Q0xaWlRlLUs2NDlCLVF6RVJabUViMHQ2QmNwNFlqYy00OXhJZlJLODlOR2RsZl9mUTJWSE85Mnc?oc=5", "source": "뷰티경제", "date": "2026-11-11T09:35+09:00"}, {"title": "고점 대비 45% 하락 에이피알…\"K뷰티 트렌드 계속\" [클릭 e종목]", "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBtSWNsQk1LN1d1dUsyTkNVbjJMRDdfN05WbUx1WEhSQ0NMNEU4Tm01WEo2RWRyQ2JBMHRKRTZKQS1TYW1ScGhXTWp4ZnhDLS1JYzNQZU5mZGdmM2pBblA1cQ?oc=5", "source": "아시아경제", "date": "2026-11-11T07:05+09:00"}, {"title": "[뷰티 트렌드] 더샘, '커버 퍼펙션 트리플 팟 컨실러 글로우’ 올리브영 오특서 16% 할인 外", "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9WZDBTWnF3R1REUmxSV3B2LTVVWklieW5XdFNLd2RBck9jQVhqaVBOZkRJUndtaDdLS1dMeEdaV1pnZTFUS1hMZ2lZM1ZqZlB3OFpiUkgzSVprWC03dlRhaE5scmIzMlJpcjZDRw?oc=5", "source": "베이비뉴스", "date": "2026-11-10T11:52+09:00"}, {"title": "타낫(TANNAT), 2026 WINTER 컬렉션 공개", "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1YWS1tV1A1bTBPQnVHMXlnZDZxWnNlUnFtMXJiV0hWRkNNQmFTLV80eVU1ajYxQ08zOHVWQUtjU09lZlJWdzhuVGJjbVhUQnp2VnpBc2dZc19LUGdPZTBvaktkRQ?oc=5", "source": "RNX뉴스", "date": "2026-11-10T09:45+09:00"}, {"title": "\"호두과자 팔러 일본 갑니다\"…명품 팔던 백화점들 '대변신' [트렌드+]", "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9rVFZFMEVDb2RQMEE1RXBrajFOU2F3UE9qTmE2NTM1b1k2RlVNcGV0aWpKbVNjSFNqekZyQ0xYMzBqbWwzVmo3dHc0STVTRm5GcENnQkdiSnlSQQ?oc=5", "source": "한국경제", "date": "2026-11-09T20:00+09:00"}], "메이크업 트렌드": [{"title": "10월 티몰 뷰티 트렌드 리포트③: 베이스메이크업 TOP10 판매량 34.4%↓...K-뷰티 16.3%↓ 선방", "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9odm9yM3J3eWxSZlEtYWJGSXpzQmVoMkUtVGQ3cnJTdUtjVmVyWkQzaGNHU0V3enNaRTQwUkhDQkZLYXprNlRaTmRLM0RmUXBaWjc2dnlUYjZNMHIzWHVSZGZGVzBQSXJ6blE?oc=5", "source": "뷰티경제", "date": "2026-11-13T10:15+09:00"}, {"title": "더큐브 아카데미, ‘저스트 메이크업’ 출연 김도현 실장 글로벌 매거진 메이크업 클래스 11월 개설", "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBJbTdLZTIwTkhLbXQ2d3FJMHZQbE9hZl9tcTdjcEVTeUNqQnYyQ3ZnVHY0ckJwUnJGQ0R0aGNxM2J6N0UyX2FwNUxsMHVkVTJ6SXBISTlXZFRlUXdhaTdLNFRLMm1VaHE2NmN5Z25vVTJyZ9IBckFVX3lxTFBJbTdLZTIwTkhLbXQ2d3FJMHZQbE9hZl9tcTdjcEVTeUNqQnYyQ3ZnVHY0ckJwUnJGQ0R0aGNxM2J6N0UyX2FwNUxsMHVkVTJ6SXBISTlXZFRlUXdhaTdLNFRLMm1VaHE2NmN5Z25vVTJyZw?oc=5", "source": "잡포스트", "date": "2026-11-11T14:25+09:00"}, {"title": "제니 수키 메이크업, 원조 데본 아오키도 반응했습니다", "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9qZGpjb2pkSUFpTTB6OS1WZHpQZGxmdi1wMVZ0YTVsOXFIMkV5WEg2Q1ZGZS0zRmUwZEU1dk05NGtvTDBYcGZLUUh0b0dtRGxsWHFUMkZKOWZLUQ?oc=5", "source": "www.cosmopolitan.co.kr", "date": "2026-11-10T11:00+09:00"}, {"title": "[뷰티 트렌드] 코리아나화장품 브랜드 앰플엔, 다이소 전용 ‘앰플 샷’ 4종 출시 外", "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBKdGM3U3FqeTA3bVRCVkYxMTl5ZEl0SDdOdjI1SjJLeVZ0bnJKOEc1MUZDMk5hZVo1eTR6R2lqWHQ5SkY2YTA0UGhfTGVpYm50cGw4OTRadDdjMzc1WVpndDN6TE1rajg4ZmtidQ?oc=5", "source": "베이비뉴스", "date": "2026-11-09T11:51+09:00"}, {"title": "똥손도 가능한 '이 메이크업'이 올 가을 트렌드로 떠올랐습니다", "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE9QeUhYQjhnbFpRZWlkQVdsRGV2UUZjSlB5U0F5S3ZTYllwY2ZWb1FlTXczVUhfaEpmNXl6M2xXRDZpckNZZjU1cXM0UUY5dW1sckFPVDNTWQ?oc=5", "source": "www.harpersbazaar.co.kr", "date": "2026-11-08T08:58+09:00"}, {"title": "똥손도 가능한 '이 메이크업'이 올 가을 트렌드로 떠올랐습니다", "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBfbmh1bzFVRTVnNGVLd1gzUDBCZ2FLT1F6U2FveUFmM2tOYWFMSzRWdDVzaHFyaE1DNXpXWEcxTnpMWW9Jci1NV29wQ2U4X0VrX3VSb1dGMVNlemc?oc=5", "source": "하퍼스 바자 코리아", "date": "2026-11-08T07:00+09:00"}, {"title": "블러 립 메이크업, 번질 수록 더 감각적입니다", "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1kRFZ5aVkyY1N1UFhIZXNWaEo3RFEzZnBHXzNjSU1QTmY2aUJ6NHNja2gtdzlPTGdvTDdBWXM5dlF2VkdiS0w3YUhhTGxydTNoS0ZaMU9Hd0xVZw?oc=5", "source": "www.cosmopolitan.co.kr", "date": "2026-11-07T14:35+09:00"}, {"title": "레이부터 김채원까지, 요즘 여돌들이 꽂힌 '이 네일' 트렌드", "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5jTDNQY1RMS3VXQUpiVGVGY0tRR1VyYWJPcmYzWnN3LTV4ZjBHa1NmWWJLMXVyZ2Z0UVdSMzM0QVFNT0QyUVEwbnI2WU1mN05oM291REsxQkhnZw?oc=5", "source": "www.cosmopolitan.co.kr", "date": "2026-11-07T11:25+09:00"}, {"title": "헤일리 비버부터 제니까지, 얼굴에 첫눈 내린 듯한 스타더스트 메이크업", "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBqdnpaU0d6Y19ncW1LMy1tSFNWc1U3QXpOY0taUVZaV05teVZSc3BjY3drbElkMzBBLVFtNnNpbHhZdXo2WTVzamNoblRQSkhMOTFmMUdkNmRQUQ?oc=5", "source": "www.cosmopolitan.co.kr", "date": "2026-11-06T14:02+09:00"}, {"title": "긴 앞머리도 트렌드, 손질 거의 필요 없는 앞머리 5", "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE91cmNoU0JtR0dKTkI0dnBkTHdFbG5wQjBqa0IyTWMxQkltTDZ1SUVKNzUyRU42RDdJRy0xUEpzQmVZM21KWVhWbllhc2RUZWt5M1lLQ0doQ3VWUQ?oc=5", "source": "www.cosmopolitan.co.kr", "date": "2026-11-05T17:50+09:00"}], "립 컬러 트렌드": [{"title": "“당신의 립스틱 색깔 만듭니다”…컬러 트렌드 이끄는 씨앤씨인터 [제3회 대한민국 AI 광고대상]", "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBxVUdwamU1QmsyRHdHamF5SFQ1QzZaeXBIRkFBeXoyTl9PT0tqYjNjR1NiSmtndmdtaTJZTjFoYTNKWkdLNVRJM01nUFBTWXlsZU9uNlln?oc=5", "source": "매일경제", "date": "2026-11-11T14:20+09:00"}, {"title": "페리페라, '무드 글로이 틴트 키' 등 신규 컬러 공개", "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE14LUkwblFFazNjMnFmSzJzenBYYXo2eHItdU9qNy1CZ01ndlNNaWVpOTk1QWg2WnNQOGtVek1zZXpvbVJPSWx2aDBMXzlnREdNNzVUSGVQRDE2UFpPbkZtODRVQWlpUQ?oc=5", "source": "싱글리스트", "date": "2026-11-04T14:26+09:00"}, {"title": "2026년을 이끈 메이크업 트렌드 4, 여기서 확인하세요", "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1wSnZobmhRUHRHY3RkUjhiV0ZHV1lDX2hUZWl4ajZoTWtIMkdqbmNjVFpOTi1FdnNYME5MeDBEWFlLVUJaajRBUHo3Zmo1UDRxOG5PdFJOU1ZzZw?oc=5", "source": "www.cosmopolitan.co.kr", "date": "2026-11-03T17:00+09:00"}, {"title": "A2O LITE 'NEON' 영향으로 번진 네온 메이크업 트렌드, 형광 컬러 하나로 무드 바꾸기", "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPZXhqaFcyR1dmRzI2WWlINGR5OXpaT0tpb3NNb1dJeVJKdFBiMFVBZkdyTWx1eUZmOWpZV21sRGtxbHY0RGNaTHQxam9kNVNHakFKV3JDS2c5UmFzeUl3UmJSMnZxeF9TZUhHeEhYTi1TRmxxRF9ZN3ZHemlTUkt5cGNvSQ?oc=5", "source": "PAP Magazine", "date": "2026-11-02T17:00+09:00"}, {"title": "“‘국민 틴트 밤’의 화려한 부활”… 마몽드, ‘크리미 틴트 컬러 밤’ 10년 만의 대변신", "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1EUE5Wc2pfeWk5Z0sxWnN6SGhiczhkSFdyMWVxZDExUklpMWpacE1Nc0h1dnA5SmVYMDRoS3JRbEZOZVZIR0VoSXNLR2FpQVRqZV9XSk5reTRrT2pITzJYalgyc3FSLTg?oc=5", "source": "지이코노미", "date": "2026-10-19T16:00+09:00"}, {"title": "\"1000만개 팔린 국민 틴트\"...마몽드, 5년 만에 부활 왜?", "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5CekVXVDdSTVZSS3F1aVpMMmJ1cjFOakVSTUFpMU1tU3dkTnpaY0hqQ21iTFZlNFgtckE3RDdnbVJDLUo1d05pOXNiVkh2YWdUYkZmQTluekxfMjR5Znp5VTV0dkZjakNWZE9zZkllVQ?oc=5", "source": "https://www.trend-korea.co.kr/", "date": "2026-10-19T16:00+09:00"}, {"title": "옅은 립글로스는 잠시 안녕…짙은 립스틱이 돌아온다", "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE04Rm9KV3ZrMWpLaFJUNFJJWjFMUUNFZG93bTByclhQb3NaUWp4dERGZGE4OXhoUzJqMzlSLXJzcmQxYnNMMlBfN083d0JhWlFCOWVJTzJwc2xoZ9IBX0FVX3lxTE5PSUlFQmlDeXZUSnlHWVROdGpyZ01UY0tBbS1CQmQyUm9TU0N3b01STzJIMF9RZnJ1M0l4aUFsVzY3QjlUX3lXUlJ5bUo2dlFfckVUUGt4dm5BNkw0MTBz?oc=5", "source": "경향신문", "date": "2026-10-17T16:00+09:00"}, {"title": "올가을엔 입술에 힘 좀 주셔야겠어요", "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBmZG5pcl9PcWUzVVEtczMtcXJoVk1rMWtkTzRJaFFIZEFRcTA1Xy1ESVgwYVNwQUpjcGVxQWdVN2VBUmZ3SVhRM1c0bEstWFE?oc=5", "source": "엘르 코리아 │ ELLE KOREA", "date": "2026-10-15T16:00+09:00"}, {"title": "2027 봄 패션위크를 장악한 세 가지 뷰티 트렌드", "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFB2dWhFSDNZSGtyWF9fd1RrX2hWZUZES20xX3J0dEJMbFlIUWxZcDRKMEVPOFVyeXluZGloVXNKU0FsM01Wa0JmejRYRDlEanVrdUpNWDRocU5vYy1oX3h4LWJIWlhGLXBNUHc?oc=5", "source": "더블유더블유디코리아", "date": "2026-10-15T16:00+09:00"}], "퍼스널컬러": [{"title": "퍼스널 컬러가 ‘망한 사랑’…화제성 1위→입소문 터진 ‘재혼황후’ 그 커플, 벌써 3번째 연기 호흡", "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFAwb292Z1huaEtUTjNkbGJlNFloRzFQX3RVcnVLc0xiYi0zdUFpcGZiaWhJdGFYVGIyY3FVUXNFdDNUdExfNXRKUzlZVmNvb3hQcDdEb3dQV2oyS2xZZklPM2lrYw?oc=5", "source": "MHN스포츠", "date": "2026-11-12T17:27+09:00"}, {"title": "‘문원♥’ 신지, 42kg 되더니 美서 폭풍 쇼핑 “내 퍼스널 컬러, 빽가 언니”", "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBJVGFvVFVmM1ROZUlsalJUbVEyV2h5RU00OEdyOGxFbDQ4bGNLeE1vNk9oRF9yZUlyUjY5NkZuYlV6aUZPVXQ2WXQyQVBwVERVOE9nYXg5ZFBMWDQ0VnR4eWJKSGVOYmYt?oc=5", "source": "뉴스엔", "date": "2026-11-12T15:31+09:00"}, {"title": "“내 퍼스널 컬러는 빽가 언니”…코요태 신지, 빽가와 벤쿠버서 쇼핑 삼매경", "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9obUwwcEtsbm1yQ05TSVU1dXdJZktxXzFXS0RVRGpGT04xTGlERkI5TVpBOGhlVTNiTmpLZ2stNjFTUS1CTkhjb1NJdFR0SEM3dG1hMVJMYUg?oc=5", "source": "스포츠서울", "date": "2026-11-12T09:44+09:00"}, {"title": "신지, 캐나다에서 물욕 터졌다..길가에 널부러진 쇼핑백 \"찾았다 내 퍼스널 컬러\"", "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE51NkY3RW96ekUtUGRZOTBXM2hlc2I4WGRlUGhJb2Q2aV9wU041MEJyV0hRVnhkOXE5d2c5NVdpZmJaRkFoRjctM0h0Mzd2bTlFRUNicQ?oc=5", "source": "OSEN", "date": "2026-11-12T08:52+09:00"}, {"title": "김제시육아종합지원센터, 보육교직원 대상 퍼스널 컬러 교육 성료", "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1pY3FMcUh2S3hQcGJBVkVJRFEtSjhreE5LbEUxSDVfWEN6UnJoeGdYT2NrSjg2VEJWN1FqSGlJckdrblhUeHpIT1QteXRzNWVFZkxMZTM0WF9DQ1pkMFVoajJNX0TSAWdBVV95cUxQZDVTNDNRVnlyTGxleDZpdHFQYUU2ZmVHa1FRODNxNlJEZHRYMFBoOEtlRWhvanhGbVVEU05DQWxCS0h5NENmNHhtMzFacVZhSGp1TTY4Zm0xU2V2Y1ZPVkpTSGhkVjU0?oc=5", "source": "국민기자뉴스", "date": "2026-11-11T13:51+09:00"}, {"title": "(주)코코리컬러, 도쿄 ‘2026 K-BEAUTY WEEK’ 참가… 퍼스널컬러 분석으로 K-뷰티 관광 경험 확대", "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE11MmYxbWtFLUg5Q1FGWUZ3UFIxOUxULXExMDhLb1FwMWlQVEpxQXR0NjNDakV6TWp5T0ZNRkprNnI4bk1YRTl4ZU5penBZUUY2cGJxVnZ1LXdnU25WVklvNkZ2MzB6NjN2b2dGRjhsT3hqd9IBckFVX3lxTE11MmYxbWtFLUg5Q1FGWUZ3UFIxOUxULXExMDhLb1FwMWlQVEpxQXR0NjNDakV6TWp5T0ZNRkprNnI4bk1YRTl4ZU5penBZUUY2cGJxVnZ1LXdnU25WVklvNkZ2MzB6NjN2b2dGRjhsT3hqdw?oc=5", "source": "시선뉴스", "date": "2026-11-11T10:57+09:00"}, {"title": "“진짜 왕자님 나타나” 이종석, 이쯤 되면 로판이 퍼스널컬러(재혼황후)", "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5NbXlGY0p0dUV2X0xDWHBvLTdSbFJSMGRCQThpbTlYX0hOQk9hLTJlb3VRakpNRlA4djFyN09uU0dzNWc4WGc5R1BOTW4tY2pMTlBqU3ZQc0h4bFNMajZoc1FRTG9wUzhH?oc=5", "source": "뉴스엔", "date": "2026-11-11T10:35+09:00"}, {"title": "\"내 최애 디즈니 왕자님\"..'재혼 황후' 이종석, 로판이 곧 퍼스널 컬러 '글로벌 최다시청 핵심'", "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE93VEVLLTZQSGtMUHF3OU5HRzB6YTgtM3pXd01JVE5ZLUk1OGxpZUM3bkdBdnNzUnRrOWFBY2d6VjJaRDBHTkJfUERpVGRTcEVYNFZCNw?oc=5", "source": "OSEN", "date": "2026-11-11T09:19+09:00"}, {"title": "창원대 남해캠퍼스, 퍼스널컬러 진단 등 맞춤형 이미지 관리 지원", "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9Ed1ZjeDZFbE5Sa1FoSGZQSEhXZkYxTklLa1ZHZXk2N2xhQlBiYnpHLVVLWjRodU1KQkdzT2tFNTBScEI3N2Nxa1FHZXk5bG1XWFQ3d09fQWFIT0M4VDg5M1N5MFlJX19iQWJOU2x3?oc=5", "source": "국제뉴스", "date": "2026-11-10T16:46+09:00"}, {"title": "김해시, 퍼스널컬러 진단 교육 직원 호응 높아", "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBUd25sbkx5X0RHRUVwOHNIaHhNdjlZVno2SV8wQlZIazlEeGtIVm1DX1k1WVpxR1RlY3BwbTFCaWtTeUx0eng5LXRBRWxCVmZ2STljMjQ5eGN1TDR0REpBdlJoVjBVOUE?oc=5", "source": "영남매일", "date": "2026-11-10T13:40+09:00"}], "화장품 신제품 출시": [{"title": "코스맥스, 국내외 쌍끌이 성장…3분기 실적 '고공행진' : 네이버 블로그", "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPSDlEWHBxMnhpRWRDVkNPNkQ4bVJWUldhc3I2QnRxTVNUQ09jSS1NcmRqSHMwcGJxRVZyTEZvbTFvd3pkZ0tmMEhDVnhFY2FrVHNSWUtkYmptS081SVZ3d05HN0xpODhyeVFlQ19TeEJMcFJpNDJwOVNucFhIallJeXUyWmpseEJpSHd1WTllbw?oc=5", "source": "Naver Blog", "date": "2026-11-12T13:36+09:00"}, {"title": "숫자놀이 캐릭터가 화장품에…차앤맘, 한정판 출시", "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9qdGkzcUs0bXFQLXI1ODF6b3ZCbmoza2gyZC1oTlBwMmRfYndkaTZybGlzVXRXelFjRUpBVi1Ec25YNnlUY2FHX2d0NEFzM3g3VWJOVnVOM0ZMX01EbHhEWFo4VnU?oc=5", "source": "인더뉴스", "date": "2026-11-12T11:02+09:00"}, {"title": "코스맥스, 국내·미국 쌍끌이 성장…증권가 목표주가 줄상향", "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE0ydVA3eTRhc09XMGI2eXhDMm94cEZ5WkZSb0w3VFMxVnpmMFJlQlQ4eUxJcW5nOFoxeHFvcUdXU1lYel9VWHdON3p3dDNRNDFCblhkb1RiTXcwaUtKNHBQWWloR3NtNl9KdHdNMXN2SDNURExGYnZYN2V3blBuNDg?oc=5", "source": "스타뉴스", "date": "2026-11-12T10:59+09:00"}, {"title": "코스맥스 영업익 95% 급증…주가 8%대 강세", "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1uRG9xVkhUcmNrbzNSRkQ4bjdobkh1QWEzYmg5c1Jsbl94N04xRXpoSDlGajhYbWlNektZN1pwUWFDUmtPNno3Qkd0dUpCRWhaRWlSNnpyclNxZWxPdlV3UzByQWhpcGRsX3BEMk5TMGPSAXBBVV95cUxNbkRvcVZIVHJja28zUkZEOG43aG5IdUFhM2JoOXNSbG5feDdOMUV6aEg5Rmo4WG1pTXpLWTdacFFhQ1JrTzZ6N0JHdHVKQkVoWkVpUjZ6cnJTcWVsT3ZVd1MwckFoaXBkbF9wRDJOUzBj?oc=5", "source": "엠에스투데이", "date": "2026-11-12T10:07+09:00"}, {"title": "코스맥스, 한·미 법인 고성장에 실적 호조…목표가 41만원 상향-신한", "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxON0JFUFFVX2hSYmNjNkdWZEdLal9SMlBmeVZzZEtNSmJGc2dvLXdRT2RqMVAwSHVuOU5ZZm5BUkp6UFN2SXhTRzVSSFY4dGNEVllaN2J2UGtYV3BJbjBoYVp0RTZiTEI4S3lxMG9aRnE1bzg1a3hRcFBZOXFVNHpJNw?oc=5", "source": "이데일리", "date": "2026-11-12T07:52+09:00"}, {"title": "K뷰티 훈풍에 코스맥스 ‘활짝’…美 매출 88% 급증", "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE8tMXpRNW5GNnVmZmRya0llbVI4cjI3alIwdS1PRkNReUtvMzJVVGR3MnJFeWxwdmxQcHNnc1R0ZFRRclRIUW00UEREZFN2Yi1lRjJESTc3bVFWcDhka0lFZ1R6M28?oc=5", "source": "서울경제TV", "date": "2026-11-11T19:30+09:00"}, {"title": "“K-뷰티 타고 날았다”…코스맥스, 3분기 영업익 833억 전년比 95% ↑", "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1FVVNvZFVfX003aU9acFRBX0oxb204MG5DbzB4UHJXNlhKZjZvUmc0QW9KNHc2MGFXTnIwYlhHTmJHU0ZXWEd6YUV2bTRROW5mQXI0anF4LVhSVWktMWdnNw?oc=5", "source": "마이데일리", "date": "2026-11-11T18:28+09:00"}, {"title": "롯데는 재도전, 한섬·신세계는 재정비…백화점 PB 화장품 승부수", "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTFB2S25FbTF6X1VlWWtGc09Oa2ZQMDd5VFIybWpkWURncHFWQkE3TTBoWFh1THBUNFRUcEFaak5tYTVOeHc5MFZvbFNaRzBGV2ZGQS1J0gFTQVVfeXFMUHZLbkVtMXpfVWVZa0ZzT05rZlAwN3lUUjJtamRZRGdwcVZCQTdNMGhYWHVMcFQ0VFRwQVpqTm1hNU54dzkwVm9sU1pHMEZXZkZBLUk?oc=5", "source": "KPI뉴스", "date": "2026-11-11T17:41+09:00"}, {"title": "코스맥스, 3분기 매출 8758억원···분기 최대 실적 경신", "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1nT0dWcVVsZVZmSVI2Vk0zNFhLaGp1VXlhUlFTNGVoM3FTTm1BRUVaVUtMQ25jeXFzVmdoNUJ5eV9sZ19Xai04cWtWcGQ0VzRkOXd6Ti1qQzVrM0FTUC1hdmR4RzVQVE3SAWtBVV95cUxQakFPUTJra0kzOUtGaXF5QzFKblFJR0hiV1VoN2ctRklDWlRRYVdYNEItZlZYdDhyMVhvNTRiaENHQzJ4dWVWT3RuYUdXY3p2WHh2LXBScklQM1pUaDdtTFl3bnNNZ1pGZFFQZw?oc=5", "source": "현대경제신문", "date": "2026-11-11T17:26+09:00"}, {"title": "코스맥스, 3분기 매출 사상 최대…영업익 95%↑", "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5MSmVyQXF2M1FuMW5feFBSR0lKMVgtZ0cxVUtlODdJc2E5aS1sNmpicEZWNEVJOUgxVFE0TTY1clduUXBRTjhUQ3AyY3VyZ2RIeU5MMEQ4bFVYUThuckhkZ1RMV2JMZUNyLVBBVA?oc=5", "source": "프라임경제", "date": "2026-11-11T17:24+09:00"}], "W컨셉 뷰티": [{"title": "W컨셉, 도쿄 하라주쿠·시부야서 팝업…국내 패션·뷰티 브랜드 소개", "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1kQVduMkhXSUNqZGxWRkFTa1ZiMkJjVUUtWW9KZjFkOGl2ZlhmY2NxZGc0ekh5aWNVaTF6ZTQtT045NDRVcUw2c2NrQnNsUHRtR0F2ME9ibTl2NUxPdWZ5V1NVMlAwNDMwTXBQZkZiWGVBMFU?oc=5", "source": "어패럴뉴스", "date": "2026-11-12T15:48+09:00"}, {"title": "W컨셉, 도쿄 하라주쿠·시부야서 팝업…국내 패션·뷰티 브랜드 소개", "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTFA0d3BQaWh5SGZrTkRldGVUX3ZGXzlseG5hbzltS3RpMU9UdmR2T3kwQVVQTURPU3dteVU4YkVYQ3gwMWtjd0ZlaTdHb04wY2ZiZTg3WE8xV2x2c2FvR0MtSjRfOXFnVFdRTmNvd05ORmp1a3Yxc2Rn?oc=5", "source": "어패럴뉴스", "date": "2026-11-12T15:48+09:00"}, {"title": "도쿄 하라주쿠·시부야에 K패션 물결···日 공략 속도내는 W컨셉", "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1zX3k3MjZDbzVWTU0wY3RLcV9HcC1UTms4TE9wU3JSdjBHSE5wZVRtbGNIWFJlNUZwVTJDd0Q5TzFEZDBldzBVb0h5cE81U2RTRm1XRi1QLW9JMkVkWG9OaXRoVjB4bmdUWUg0WFNMdmbSAXRBVV95cUxNMU1weURCTi1CcnJMNHBVcEZnZVpkWmlpVi1yWWNoOVZLcUhIUVNIOHZ4MGo0V3ppeWhXQzE1ZDRlc1J0bS12RGVlc3U4SEowVFV3Z0x3WnJrN2djSDljUVVHeUNIM3JXeTJSVndhaTBCeTBfbg?oc=5", "source": "이뉴스투데이", "date": "2026-11-12T09:35+09:00"}, {"title": "W컨셉, 日 도쿄서 릴레이 팝업...패션∙뷰티∙리빙 선봬", "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1KV3F6ZUxKc1I3NDZ4MW82VFUxUFhoS2RLeXBXUS1mc0lReUpUaS1ZYmt5RXZkWF9uSzV6LXBpSWdrSTRTdVBQVVk5eG9rX1NoTjh1U1R1WTE0NklfMkF2cFdldWhXQQ?oc=5", "source": "싱글리스트", "date": "2026-11-10T17:00+09:00"}, {"title": "W컨셉, 25일까지 '더블유위크'…패션·뷰티·라이프 할인", "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9CYU9iNGU3R2xLdUFTRHlVY19qZktCUUxuMFp2eGU1UGtDYjYyZ2hTeU8yMjhzLXNONHBHLVc1WUlPeWwxeTUtcHZhVVF0VzZ5M0h1M3VHR0Z0Ymw3WW5PN0RWalgxYVltRktGb3d1SzVGZ1dZX2ZR?oc=5", "source": "어패럴뉴스", "date": "2026-11-09T15:46+09:00"}, {"title": "W컨셉, 연중 최대 '더블유위크'…최대 85% 할인", "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBkX01BZTh5X0RjZGRWOUtzaDRVMkNCeU4wNWU4OWJBbzc1ODRjT29HYld6a00zVFFGMVBvOGNPMEdudW9UR1YtMTFmT3JVWWRfZWQ4c183V3NrVC0wNmJpaHh4dzd3eTBOQjhJZFRScjRPYzVy?oc=5", "source": "파이낸셜포스트", "date": "2026-11-09T15:06+09:00"}, {"title": "W컨셉, 17일간 ‘더블유위크’... 20만개 상품 최대 85% 할인", "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1wcWRrUEtORXp5SnRkdjhWWFhoZWpXWUVaSTd2OXAwZ19TWTIxMG1YUkpxY1RFOVlrQlhtZV91M3VWTlhlb05PRFJUbnhSd1FV?oc=5", "source": "패션비즈", "date": "2026-11-09T10:22+09:00"}, {"title": "언뮤트, W컨셉 '더블유위크'서 스킨케어 6종 최대 54% 할인", "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1iZFpkRmt1aUpvNXZTMGM0M09JVmt0bWhUTnN6LW1OUGwya2I1VjRlOE5jREZMQVRISUk3OWdfOEJGY2hVNDF3SllXLS1sa3N0ZmxxWkY0YUxyalhGZmh0THNQV2tUZw?oc=5", "source": "싱글리스트", "date": "2026-11-09T09:47+09:00"}, {"title": "W컨셉, 연중 최대 '더블유위크' 개최…패션·뷰티 최대 85% 할인", "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9XYXQ3cDJQVjlvcVVKLVpDRHJaNUlwb2tHOHRRcHE0WE5TTWZlRk96MUczcVNyRUlaZERlSHp3amNGY1VZVFVCWkd3Q0lWQQ?oc=5", "source": "전자신문", "date": "2026-11-09T08:29+09:00"}, {"title": "W컨셉, 25일까지 '더블유위크'…패션·뷰티·라이프 할인", "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1CTXhCUXc5aGUxR3BXXzcyVXg2WVF1aEktZjVEVms1ajBWbVhJR01peWt1WWFKc3lkUGZvLV9ROXFHY0U1MW10V0t1bjg3RjMtYTlCYWRFQnc1YmFPSWtadXJseS0zWlIyeUZEUnF3aGJwanFMc3c?oc=5", "source": "어패럴뉴스", "date": "2026-11-09T00:00+09:00"}]}, "holidays": [{"date": "2026-12-24", "name": "크리스마스 이브", "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."}, {"date": "2026-12-25", "name": "크리스마스", "kind": "공휴일"}, {"date": "2026-12-31", "name": "섣달 그믐날", "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."}, {"date": "2027-01-01", "name": "새해첫날", "kind": "공휴일"}, {"date": "2027-02-07", "name": "설날", "kind": "공휴일"}, {"date": "2027-02-08", "name": "설날 연휴", "kind": "공휴일"}, {"date": "2027-02-09", "name": "쉬는 날 설날", "kind": "공휴일"}, {"date": "2027-03-01", "name": "삼일절", "kind": "공휴일"}, {"date": "2027-04-05", "name": "식목일", "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."}, {"date": "2027-05-01", "name": "노동절", "kind": "공휴일"}, {"date": "2027-05-03", "name": "쉬는 날 노동절", "kind": "공휴일"}, {"date": "2027-05-05", "name": "어린이날", "kind": "공휴일"}, {"date": "2027-05-08", "name": "어버이날", "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."}, {"date": "2027-05-13", "name": "부처님오신날", "kind": "공휴일"}, {"date": "2027-05-15", "name": "스승의날", "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."}, {"date": "2027-06-06", "name": "현충일", "kind": "공휴일"}, {"date": "2027-07-17", "name": "제헌절", "kind": "공휴일"}, {"date": "2027-07-19", "name": "쉬는 날 제헌절", "kind": "공휴일"}, {"date": "2027-08-15", "name": "광복절", "kind": "공휴일"}, {"date": "2027-08-16", "name": "쉬는 날 광복절", "kind": "공휴일"}, {"date": "2027-09-14", "name": "추석 연휴", "kind": "공휴일"}, {"date": "2027-09-15", "name": "추석", "kind": "공휴일"}, {"date": "2027-09-16", "name": "추석 연휴", "kind": "공휴일"}, {"date": "2027-10-01", "name": "국군의날", "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."}, {"date": "2027-10-03", "name": "개천절", "kind": "공휴일"}, {"date": "2027-10-04", "name": "쉬는 날 개천절", "kind": "공휴일"}, {"date": "2027-10-09", "name": "한글날", "kind": "공휴일"}, {"date": "2027-10-11", "name": "쉬는 날 한글날", "kind": "공휴일"}, {"date": "2027-12-24", "name": "크리스마스 이브", "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."}, {"date": "2027-12-25", "name": "크리스마스", "kind": "공휴일"}, {"date": "2027-12-27", "name": "쉬는 날 크리스마스", "kind": "공휴일"}, {"date": "2027-12-31", "name": "섣달 그믐날", "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."}, {"date": "2028-01-01", "name": "새해첫날", "kind": "공휴일"}, {"date": "2028-01-26", "name": "설날", "kind": "공휴일"}, {"date": "2028-01-27", "name": "설날 연휴", "kind": "공휴일"}], "errors": []}</script>
 <script>
 /* ================= 데이터 (모두 가정) ================= */
 const TONES = {
@@ -1155,7 +1241,183 @@ function showResult(tone,r){
     b.classList.add('done');b.textContent='담김 ✓';LIVE.cart++;saveLive();}));
 }
 
-/* ================= ⑥ 설명 (수치 자동 연동) ================= */
+/* ================= ⑥ 트렌드·행사 캘린더 ================= */
+/* 뷰티 키워드 사전 (뉴스 제목 분석용) */
+const DICT=[
+ ['카테고리','립',/립|틴트|립스틱|글로스/],['카테고리','베이스',/쿠션|파운데이션|베이스|프라이머|컨실러/],['카테고리','블러셔',/블러셔|블러쉬|치크/],
+ ['카테고리','아이',/섀도|아이팔레트|아이라이너|마스카라|브로우/],['카테고리','스킨케어',/스킨케어|앰플|세럼|크림|토너|패드|마스크팩/],['카테고리','선케어',/선크림|선케어|선스틱|자외선/],['카테고리','향',/향수|퍼퓸|프래그런스|향기/],
+ ['컬러','봄웜 계열',/코랄|피치|오렌지|살구|애프리콧/,'spring'],['컬러','여름쿨 계열',/핑크|로즈|라벤더|모브/,'summer'],
+ ['컬러','가을웜 계열',/브라운|브릭|모카|카멜|테라코타|초코/,'autumn'],['컬러','겨울쿨 계열',/버건디|와인|플럼|체리|레드|네온/,'winter'],
+ ['테마','홀리데이·연말',/홀리데이|크리스마스|연말|윈터/],['테마','글로우·광',/글로우|광채|윤광|물광/],['테마','매트·블러',/매트|블러|보송/],
+ ['테마','클린·저자극',/비건|클린뷰티|저자극|민감/],['테마','선물·세트',/선물|기프트|세트|한정판/],['테마','팝업·매장',/팝업|매장|입점|오프라인/],
+ ['테마','글로벌 K뷰티',/K뷰티|K-뷰티|글로벌|일본|도쿄|중국|티몰|미국|아마존/],['테마','퍼스널컬러',/퍼스널\s?컬러|톤업|웜톤|쿨톤/]
+];
+const BEAUTY_RE=/뷰티|화장품|메이크업|코스메틱|립|틴트|쿠션|파운데이션|블러셔|섀도|스킨케어|앰플|세럼|선크림|향수|퍼퓸|올리브영|컬러|색조/;
+const CAT_C={'카테고리':'#111110','컬러':'#eb6834','테마':'#9a999c'};
+
+/* 커머스·뷰티 행사 (날짜 확인된 것만). tone = 연결할 퍼컬 톤 */
+const EVENTS=[
+ {d:'2026-10-29',end:'2026-11-15',name:'K-세일페스타 (코리아 그랜드 페스티벌)',type:'커머스',idea:'정부 주관 소비축제 — 행사 참여 시 할인+쿠폰 겹침 마진을 ④ 시뮬레이터로 먼저 확인'},
+ {d:'2026-11-15',name:'W컨셉 온라인MD 지원 마감 (14:59)',type:'개인',idea:'서류 제출 · 포트폴리오 링크 최종 점검'},
+ {d:'2026-11-19',name:'수능',type:'시즌',idea:'“수험생 첫 메이크업” 립 틴트·쿠션 입문 기획전 · 퍼컬 진단 이벤트로 첫 셰이드 추천',tone:['spring','summer']},
+ {d:'2026-11-27',name:'블랙프라이데이',type:'커머스',idea:'연중 최대 할인 시즌 — 할인 상한은 ④ 시뮬레이터 이익 최대 할인율로 관리'},
+ {d:'2026-11-27',name:'채용박람회 (포트폴리오 QR)',type:'개인',idea:'PPT 링크 QR 준비'},
+ {d:'2026-12-25',name:'크리스마스',type:'기념일',idea:'홀리데이 에디션 · 버건디/레드 립 · 기프트 세트 단독 구성',tone:['winter']},
+ {d:'2026-12-31',name:'연말 · 새해',type:'시즌',idea:'연말 파티 메이크업(글리터 섀도·레드 립) → 1/1 신년 “올해의 컬러” 기획전',tone:['winter','autumn']},
+ {d:'2027-02-07',name:'설날',type:'명절',idea:'설 선물세트(스킨케어·향) · 연휴 배송 마감 공지 · 연휴 직후 리셋 프로모션'},
+ {d:'2027-02-14',name:'발렌타인데이',type:'기념일',idea:'립 기프트 · 로즈·체리 셰이드 선물 포장',tone:['summer','winter']},
+ {d:'2027-03-02',name:'입학·개강 시즌',type:'시즌',idea:'“첫 쿠션 찾기” 호수·톤 진단 연계 기획전 (졸업·입학 2월 중순~3월 초)',tone:['spring','summer']},
+ {d:'2027-03-14',name:'화이트데이',type:'기념일',idea:'핑크·라벤더 립·블러셔 기프트',tone:['summer']},
+ {d:'2027-03-20',name:'봄 신상 시즌',type:'시즌',idea:'봄웜 코랄·피치 신상 선론칭 · 봄 컬러 트렌드 기획전',tone:['spring']},
+ {d:'2027-05-08',name:'어버이날',type:'기념일',idea:'부모님 선물 스킨케어·향 세트 (5/5 어린이날과 묶어 5월 가정의 달 기획)'},
+ {d:'2027-05-14',name:'로즈데이',type:'기념일',idea:'로즈 셰이드 립·블러셔 기획전',tone:['summer']},
+ {d:'2027-05-17',name:'성년의날',type:'기념일',idea:'첫 향수 · 첫 립 기프트'},
+ {d:'2027-07-15',name:'여름 휴가 시즌',type:'시즌',idea:'선케어 · 워터프루프 베이스 · 휴가 키트 (7월 중순~8월 초)'},
+ {d:'2027-09-01',name:'F/W 시즌 오픈',type:'시즌',idea:'가을웜 브라운·브릭 신상 선론칭 — 가을웜 셰이드 갭 보완 시점',tone:['autumn']},
+ {d:'2027-09-15',name:'추석',type:'명절',idea:'추석 선물세트 · 연휴 배송 마감 공지'},
+ {d:'2027-11-11',name:'빼빼로데이',type:'기념일',idea:'소확행 미니 기프트 · 미니 립·핸드크림'},
+ {d:'2027-11-18',name:'수능 (2028학년도)',type:'시즌',idea:'수험생 첫 메이크업 기획전',tone:['spring','summer']},
+ {d:'2027-11-26',name:'블랙프라이데이',type:'커머스',idea:'연중 최대 할인 시즌'}
+];
+const EV_C={'커머스':'#e0352b','기념일':'#2a78d6','명절':'#eda100','시즌':'#1baf7a','공휴일':'#8a8984','개인':'#111110'};
+const STAGES=[[-30,'기획 확정'],[-21,'브랜드 협의·단독 구성'],[-14,'상품 등록·쿠폰 세팅'],[-7,'배너·푸시·라이브 준비'],[0,'행사 운영'],[7,'성과 리뷰']];
+const PREP_TYPES={'커머스':1,'기념일':1,'명절':1,'시즌':1};
+
+let TR=null, trQ=null, calOff=0, evType='전체';
+const TODO_KEY='wbeauty-todo-v1';
+let TODO={}; try{TODO=JSON.parse(localStorage.getItem(TODO_KEY)||'{}')}catch(e){}
+const saveTodo=()=>{try{localStorage.setItem(TODO_KEY,JSON.stringify(TODO))}catch(e){}};
+const dt=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);};
+const ymd=x=>`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
+const addD=(x,n)=>{const y=new Date(x);y.setDate(y.getDate()+n);return y;};
+const today0=()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate());};
+const dday=d=>{const n=Math.round((dt(d)-today0())/864e5);return n===0?'D-day':n>0?`D-${n}`:`D+${-n}`;};
+const md=s=>{const x=dt(s);return `${x.getMonth()+1}/${x.getDate()}(${'일월화수목금토'[x.getDay()]})`;};
+const gcal=e=>`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('[뷰티MD] '+e.name)}&dates=${e.d.replace(/-/g,'')}/${ymd(addD(dt(e.end||e.d),1)).replace(/-/g,'')}&details=${encodeURIComponent(e.idea||'')}`;
+
+async function loadTrends(){
+  if(TR) return TR;
+  let snap=null; try{snap=JSON.parse(document.getElementById('trendSnapshot').textContent)}catch(e){}
+  let live=null; if(location.protocol!=='file:') try{const r=await fetch('data/trends.json',{cache:'no-store'}); if(r.ok) live=await r.json();}catch(e){}
+  TR=(live&&(!snap||live.updated>=snap.updated))?Object.assign(live,{_from:'data/trends.json'}):Object.assign(snap||{trends:[],news:{},holidays:[]},{_from:'페이지에 내장된 스냅샷'});
+  return TR;
+}
+function allEvents(){
+  const hol=(TR&&TR.holidays||[]).filter(h=>!/^쉬는 날|연휴|이브|그믐/.test(h.name)&&!EVENTS.some(e=>e.d===h.date))
+    .map(h=>({d:h.date,name:h.name,type:'공휴일',idea:''}));
+  return [...EVENTS,...hol].sort((a,b)=>a.d<b.d?-1:1);
+}
+function uniqNews(){
+  const seen=new Set(), out=[]; Object.values(TR.news||{}).flat().forEach(n=>{const k=n.title.replace(/\s+/g,'').slice(0,28); if(!seen.has(k)){seen.add(k);out.push(n);}});
+  return out;
+}
+function hl(t){let h=esc(t);DICT.forEach(([,, re])=>{h=h.replace(new RegExp(re.source,'g'),m=>`<mark>${m}</mark>`)});return h;}
+
+async function renderTrend(){
+  await loadTrends();
+  const upd=TR.updated?new Date(TR.updated):null, updTxt=upd?`${upd.getFullYear()}.${upd.getMonth()+1}.${upd.getDate()} ${String(upd.getHours()).padStart(2,'0')}:${String(upd.getMinutes()).padStart(2,'0')}`:'-';
+  document.getElementById('trendSrc').innerHTML=`📡 <b>${TR._from}</b> 기준 · 마지막 수집 <b>${updTxt}</b> (KST). GitHub Pages에 배포하면 GitHub Actions가 매일 06:00에 구글 RSS를 다시 받아 자동 갱신돼요. 이 화면(아티팩트)에서는 외부 요청이 막혀 수집 시점 스냅샷을 보여줍니다.`;
+  document.getElementById('trUpd').textContent=updTxt+' 수집';
+  const news=uniqNews(), beauty=news.filter(n=>BEAUTY_RE.test(n.title));
+  const evs=allEvents().filter(e=>dt(e.end||e.d)>=today0()), next=evs.find(e=>PREP_TYPES[e.type]&&dt(e.d)>=today0())||evs[0];
+  const todos=buildTodos();
+  kpis('kpiTrend',[
+    ['구글 인기 검색어',(TR.trends||[]).length+'개','오늘 한국 일간 트렌드'],
+    ['뷰티 뉴스 헤드라인',beauty.length+'건',`전체 ${news.length}건 중 뷰티 관련 · 최근 30일`],
+    ['다음 행사',next?`${dday(next.d)}`:'-',next?`${next.name} · ${md(next.d)}`:''],
+    ['이번 주 할 일',todos.filter(t=>!TODO[t.id]).length+'개',`완료 ${todos.filter(t=>TODO[t.id]).length}개 · 밀린 일 ${todos.filter(t=>t.over&&!TODO[t.id]).length}개`]
+  ]);
+
+  /* 인기 검색어 */
+  const tr=TR.trends||[], bHits=tr.filter(t=>BEAUTY_RE.test(t.title+' '+t.news.map(n=>n.title).join(' ')));
+  document.getElementById('hTr').textContent=bHits.length?`오늘 인기 검색어 ${tr.length}개 중 뷰티 관련 ${bHits.length}개`:`오늘 인기 검색어 ${tr.length}개 중 뷰티 관련은 없음 — 뷰티 흐름은 오른쪽 뉴스 키워드로 확인`;
+  document.getElementById('tTr').innerHTML=tr.length?table(['#','검색어','검색량','관련 기사'],tr.map((t,i)=>{const b=BEAUTY_RE.test(t.title+' '+t.news.map(n=>n.title).join(' '));
+    return [i+1,`<b>${esc(t.title)}</b>${b?' <span class="tag good">뷰티</span>':''}`,esc(t.traffic),`<span style="white-space:normal;font-size:12px">${t.news[0]?`<a href="${esc(t.news[0].url)}" target="_blank" rel="noopener" style="color:var(--text-secondary)">${esc(t.news[0].title)}</a> · ${esc(t.news[0].source)}`:'-'}</span>`];})):'<div class="status">데이터가 없어요.</div>';
+
+  /* 키워드 */
+  const cnt=DICT.map(([g,name,re,tone])=>({g,name,tone,n:beauty.filter(n=>re.test(n.title)).length})).filter(x=>x.n>0).sort((a,b)=>b.n-a.n);
+  const topCat=cnt.find(x=>x.g==='카테고리'), topTheme=cnt.find(x=>x.g==='테마'), colors=cnt.filter(x=>x.g==='컬러');
+  document.getElementById('hKw').textContent=cnt.length?`최근 30일 뷰티 뉴스에서 ‘${cnt[0].name}’ 언급이 가장 많음${topCat&&topCat!==cnt[0]?` · 카테고리 1위는 ‘${topCat.name}’`:''}`:'뷰티 뉴스 키워드';
+  const top=cnt.slice(0,12);
+  mk('cKw',{type:'bar',data:{labels:top.map(x=>x.name),datasets:[{label:'기사 수',data:top.map(x=>x.n),backgroundColor:top.map(x=>x.tone?TONES[x.tone].color:CAT_C[x.g]),borderRadius:4,borderSkipped:'start',barPercentage:.7}]},
+    options:Object.assign(base({x:{suggestedMax:Math.ceil((top[0]?top[0].n:1)*1.2),ticks:{stepSize:2}},y:{grid:{display:false}}},{label:c=>`${c.parsed.x}건 · ${top[c.dataIndex].g}`}),{indexAxis:'y'}),plugins:[valueLabels(v=>v+'건',true)]});
+  document.getElementById('tKw').innerHTML=table(['구분','키워드','기사 수'],cnt.map(x=>[x.g,x.tone?toneTag(x.tone)+' '+x.name:x.name,x.n+'건']));
+  const ct=colors[0];
+  document.getElementById('kwNote').innerHTML=`<b>🧭 MD 액션으로 연결</b><br>`+
+    (ct?`뉴스 속 컬러 언급 1위는 ${toneTag(ct.tone)} <b>${ct.name}</b> (${ct.n}건). <a href="#sales">⑤</a>의 해당 톤 품절 임박 셰이드를 먼저 확인하고, <a href="#promo">④</a> 기획전 노출을 맞춰 보세요.`:'이번 주 뉴스 제목에서는 컬러 키워드가 뚜렷하지 않아요.')+
+    (topCat?`<br>카테고리는 <b>${topCat.name}</b> 언급이 가장 많아요 (${topCat.n}건) — 해당 카테고리 구좌·기획전 소재를 점검할 시점.`:'')+
+    `<div class="assume" style="margin-top:6px">키워드 사전은 페이지 코드의 DICT에서 수정할 수 있어요. 제목만 분석하므로 참고용입니다.</div>`;
+
+  /* 뉴스 목록 */
+  const qs=Object.keys(TR.news||{}); if(!trQ||!qs.includes(trQ)) trQ=qs[0];
+  document.getElementById('newsQ').innerHTML=qs.map(q=>`<button class="qchip${q===trQ?' on':''}" data-q="${esc(q)}">${esc(q)} ${(TR.news[q]||[]).length}</button>`).join('');
+  drawNews();
+  renderTodos(todos); drawCal(); drawEvents();
+}
+function drawNews(){
+  const only=document.getElementById('newsOnly').checked;
+  const l=(TR.news[trQ]||[]).filter(n=>!only||BEAUTY_RE.test(n.title));
+  document.getElementById('newsList').innerHTML=l.length?l.map(n=>{const d=n.date?new Date(n.date):null;
+    return `<a href="${esc(n.link)}" target="_blank" rel="noopener"><b style="font-weight:500">${hl(n.title)}</b><span>${esc(n.source)}${d?' · '+(d.getMonth()+1)+'/'+d.getDate():''}</span></a>`}).join(''):'<div class="status">조건에 맞는 기사가 없어요. “뷰티 관련 제목만 보기”를 꺼 보세요.</div>';
+}
+document.getElementById('newsQ').addEventListener('click',e=>{const b=e.target.closest('.qchip');if(!b)return;trQ=b.dataset.q;document.querySelectorAll('#newsQ .qchip').forEach(x=>x.classList.toggle('on',x===b));drawNews();});
+document.getElementById('newsOnly').addEventListener('change',drawNews);
+
+/* 할 일 */
+function buildTodos(){
+  const t0=today0(), t7=addD(t0,7), out=[];
+  allEvents().filter(e=>PREP_TYPES[e.type]).forEach(e=>STAGES.forEach(([off,label])=>{
+    const due=addD(dt(e.d),off); const id=`${e.d}|${e.name}|${off}`;
+    if(due<=t7 && due>=addD(t0,-14)) out.push({id,e,label,off,due,over:due<t0,isToday:+due===+t0});
+  }));
+  return out.sort((a,b)=>a.due-b.due);
+}
+function renderTodos(todos){
+  todos=todos||buildTodos();
+  document.getElementById('hTodo').textContent=`이번 주 MD 할 일 ${todos.filter(t=>!TODO[t.id]).length}개${todos.some(t=>t.over&&!TODO[t.id])?` · 밀린 일 ${todos.filter(t=>t.over&&!TODO[t.id]).length}개 먼저`:''}`;
+  document.getElementById('todoList').innerHTML=todos.length?todos.map(t=>`<label class="${TODO[t.id]?'done':''}"><input type="checkbox" data-id="${esc(t.id)}" ${TODO[t.id]?'checked':''}>
+    <span class="dd ${t.over?'over':t.isToday?'today':''}">${md(ymd(t.due))}</span>
+    <span><b>${esc(t.e.name)} · ${t.label}</b><br><span style="color:var(--text-secondary);font-size:12px">${t.off>0?'행사 '+t.off+'일 후':t.off<0?'행사 '+(-t.off)+'일 전':'행사 당일'} · ${esc(t.e.idea||'')}</span></span></label>`).join(''):'<div class="status">이번 주에 할 일이 없어요.</div>';
+}
+document.getElementById('todoList').addEventListener('change',e=>{const c=e.target.closest('input[data-id]');if(!c)return;if(c.checked)TODO[c.dataset.id]=1;else delete TODO[c.dataset.id];saveTodo();renderTodos();
+  const k=document.querySelectorAll('#kpiTrend .kpi')[3]; if(k){const td=buildTodos();k.querySelector('.v').textContent=td.filter(t=>!TODO[t.id]).length+'개';}});
+
+/* 달력 */
+function drawCal(){
+  const t0=today0(), first=new Date(t0.getFullYear(),t0.getMonth()+calOff,1), y=first.getFullYear(), m=first.getMonth();
+  document.getElementById('calTitle').textContent=`${y}년 ${m+1}월`;
+  const evs=allEvents(), hol=new Set((TR.holidays||[]).map(h=>h.date));
+  const cells=['일','월','화','수','목','금','토'].map(h=>`<div class="h">${h}</div>`);
+  for(let i=0;i<first.getDay();i++) cells.push('<div class="d o"></div>');
+  const last=new Date(y,m+1,0).getDate();
+  for(let d=1;d<=last;d++){const x=new Date(y,m,d), k=ymd(x);
+    const es=evs.filter(e=>k>=e.d&&k<=(e.end||e.d)&&(k===e.d||x.getDate()===1||x.getDay()===0));
+    const holN=(TR.holidays||[]).filter(h=>h.date===k).map(h=>h.name);
+    cells.push(`<div class="d${+x===+t0?' t':''}${hol.has(k)||x.getDay()===0?' hol':''}" title="${esc([...holN,...es.map(e=>e.name)].join(', '))}"><span class="n">${d}</span>${es.slice(0,2).map(e=>`<span class="e"><i style="background:${EV_C[e.type]}"></i>${esc(e.name)}</span>`).join('')}${!es.length&&holN.length?`<span class="e" style="color:var(--crit)">${esc(holN[0])}</span>`:''}</div>`);}
+  document.getElementById('calGrid').innerHTML=cells.join('');
+  document.getElementById('calLg').innerHTML=Object.entries(EV_C).map(([k,c])=>`<span><i class="key" style="background:${c}"></i>${k}</span>`).join('');
+}
+document.getElementById('calPrev').addEventListener('click',()=>{calOff--;drawCal();});
+document.getElementById('calNext').addEventListener('click',()=>{calOff++;drawCal();});
+
+/* 행사 목록 */
+function drawEvents(){
+  const t0=today0(), types=['전체','커머스','기념일','명절','시즌','공휴일','개인'];
+  document.getElementById('evFilter').innerHTML=types.map(t=>`<button class="qchip${t===evType?' on':''}" data-t="${t}">${t}</button>`).join('');
+  const evs=allEvents().filter(e=>dt(e.end||e.d)>=t0&&(evType==='전체'||e.type===evType)).slice(0,24);
+  const nextBig=evs.find(e=>PREP_TYPES[e.type]&&dt(e.d)>=t0);
+  const cur=nextBig?STAGES.filter(([o])=>addD(dt(nextBig.d),o)<=t0).pop():null;
+  document.getElementById('hEv').textContent=nextBig?`다음 준비 대상은 ${nextBig.name} (${dday(nextBig.d)}) — 지금은 ‘${cur?cur[1]:'기획 전'}’ 단계`:'다가오는 행사 · 프로모션 준비 일정';
+  document.getElementById('tEv').innerHTML=table(['날짜','D-day','행사','유형','뷰티 프로모션 아이디어','관련 톤','준비 단계',''],evs.map(e=>{
+    const st=PREP_TYPES[e.type]?`<div class="stage-chips">${STAGES.map(([o,l])=>{const d=addD(dt(e.d),o),nx=addD(d,7);const cls=nx<=t0?'past':(d<=t0||+d<=+addD(t0,6))&&nx>t0?'now':'';return `<span class="${cls}" title="${l} · ${md(ymd(d))}">${o===0?'D':o>0?'D+'+o:'D'+o}</span>`}).join('')}</div>`:'-';
+    return [`${md(e.d)}${e.end?' ~ '+md(e.end):''}`,`<b>${e.end&&dt(e.d)<=t0?'진행 중':dday(e.d)}</b>`,`<b style="white-space:normal">${esc(e.name)}</b>`,`<span class="tag mute"><i class="key" style="background:${EV_C[e.type]};margin-right:4px"></i>${e.type}</span>`,
+      `<span style="white-space:normal;font-size:12.5px">${esc(e.idea||'-')}</span>`,(e.tone||[]).map(toneTag).join('<br>')||'-',st,
+      `<a href="${gcal(e)}" target="_blank" rel="noopener" style="font-size:12px;color:var(--text-secondary)">구글 캘린더에 추가 ↗</a>`];}));
+}
+document.getElementById('evFilter').addEventListener('click',e=>{const b=e.target.closest('.qchip');if(!b)return;evType=b.dataset.t;drawEvents();});
+
+
+/* ================= ⑦ 설명 (수치 자동 연동) ================= */
 function renderStory(){
   const dem=demandShare(),sup=supplyShare(SKU),k=ORDER.reduce((a,b)=>(sup[a]-dem[a])<(sup[b]-dem[b])?a:b);
   document.getElementById('pfGap').textContent=`${(sup[k]-dem[k]).toFixed(0)}%p`;
@@ -1169,7 +1431,7 @@ function renderStory(){
 }
 
 /* ================= 탭 ================= */
-const VIEWS={diagnose:null,brand:renderBrand,sourcing:renderSourcing,promo:renderPromo,sales:renderSales,story:renderStory};
+const VIEWS={diagnose:null,brand:renderBrand,sourcing:renderSourcing,promo:renderPromo,sales:renderSales,trend:renderTrend,story:renderStory};
 function show(){let h=(location.hash||'').slice(1); if(!(h in VIEWS)) h='diagnose';
   Object.keys(VIEWS).forEach(v=>document.getElementById('v-'+v).classList.toggle('on',v===h));
   document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.dataset.v===h));

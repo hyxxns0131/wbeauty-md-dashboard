@@ -1,0 +1,726 @@
+{
+ "updated": "2026-11-13T10:46+09:00",
+ "sources": {
+  "trends": "https://trends.google.com/trending/rss?geo=KR",
+  "news": "https://news.google.com/rss",
+  "holidays": "Google Calendar 대한민국의 휴일"
+ },
+ "trends": [
+  {
+   "title": "평가",
+   "traffic": "500+",
+   "date": "2026-11-13T09:40+09:00",
+   "news": [
+    {
+     "title": "ESG 성적 'A+' 자랑한 KB·신한금융…옥에 티는 'LTV 담합'",
+     "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4444583",
+     "source": "연합인포맥스"
+    },
+    {
+     "title": "영진약품, 한국ESG기준원 ESG 평가 통합 'A' 등급 획득",
+     "url": "https://www.newstown.co.kr/news/articleView.html?idxno=721800",
+     "source": "뉴스타운"
+    }
+   ]
+  },
+  {
+   "title": "아시아 프로야구 챔피언십",
+   "traffic": "2000+",
+   "date": "2026-11-13T09:30+09:00",
+   "news": [
+    {
+     "title": "호주에도 지는 한국야구",
+     "url": "https://www.donga.com/news/Sports/article/all/20261113/135017424/2",
+     "source": "동아일보"
+    },
+    {
+     "title": "‘호주전 7-8 충격패→결승 탈락 위기’ 한국, 日 11승 대형 좌완신인 만난다 “한국 좋은 타자 많아”",
+     "url": "https://www.chosun.com/sports/baseball/2026/11/13/MQYDKOJTGMYDMNZYHFTDEOJWG4/",
+     "source": "조선일보"
+    }
+   ]
+  },
+  {
+   "title": "금융통화위원회",
+   "traffic": "100+",
+   "date": "2026-11-13T09:30+09:00",
+   "news": [
+    {
+     "title": "11월엔 올린다지만 그다음은…금통위가 주목한 소비의 온도",
+     "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4444388",
+     "source": "연합인포맥스"
+    },
+    {
+     "title": "[현승윤 칼럼] 한은, 기준금리 인상에 신중할 때",
+     "url": "https://www.hankyung.com/article/2026111109361",
+     "source": "한국경제"
+    }
+   ]
+  },
+  {
+   "title": "메르세데스-벤츠",
+   "traffic": "1000+",
+   "date": "2026-11-13T09:20+09:00",
+   "news": [
+    {
+     "title": "벤츠도 독일 공장 폐쇄 검토…\"국내 투자 중단\"",
+     "url": "https://www.yna.co.kr/view/AKR20261113005800082",
+     "source": "연합뉴스"
+    },
+    {
+     "title": "벤츠마저 독일 공장 투자 중단…폐쇄 카드까지 꺼냈다",
+     "url": "https://marketin.edaily.co.kr/News/ReadE?newsId=02814246645645392",
+     "source": "마켓인"
+    }
+   ]
+  },
+  {
+   "title": "gemini 4 hydrogen",
+   "traffic": "100+",
+   "date": "2026-11-13T09:10+09:00",
+   "news": [
+    {
+     "title": "Introducing Gemini 4 Hydrogen for Agentic Workflows",
+     "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/",
+     "source": "blog.google"
+    },
+    {
+     "title": "Gemini 4 Carbon in GitHub Copilot",
+     "url": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot/",
+     "source": "The GitHub Blog"
+    }
+   ]
+  },
+  {
+   "title": "m365",
+   "traffic": "200+",
+   "date": "2026-11-13T08:50+09:00",
+   "news": [
+    {
+     "title": "Microsoft Starts Limiting Copilot Chat Usage For Users Without Paid Licenses",
+     "url": "https://www.crn.com/news/ai/2026/microsoft-starts-limiting-copilot-chat-usage-for-users-without-paid-licenses",
+     "source": "CRN"
+    },
+    {
+     "title": "Microsoft extends undisclosed usage restrictions on Copilot Chat for enterprise users",
+     "url": "https://www.computerworld.com/article/4245658/microsoft-extends-undisclosed-usage-restrictions-on-copilot-chat-for-enterprise-users.html",
+     "source": "Computerworld"
+    }
+   ]
+  },
+  {
+   "title": "양승조",
+   "traffic": "200+",
+   "date": "2026-11-13T08:50+09:00",
+   "news": [
+    {
+     "title": "한국수자원공사 신임 사장에 양승조 전 충남지사",
+     "url": "https://www.yna.co.kr/view/AKR20261112179200063",
+     "source": "연합뉴스"
+    },
+    {
+     "title": "수자원공사 17대 사장에 양승조 전 충남지사…13일 업무 시작",
+     "url": "https://www.news1.kr/local/daejeon-chungnam/6352895",
+     "source": "뉴스1"
+    }
+   ]
+  },
+  {
+   "title": "김영훈",
+   "traffic": "200+",
+   "date": "2026-11-13T08:40+09:00",
+   "news": [
+    {
+     "title": "노동장관, 반도체 기업 간담회…초광역특구 사회적 대화에 참고",
+     "url": "https://www.yna.co.kr/view/AKR20261112178500530",
+     "source": "연합뉴스"
+    },
+    {
+     "title": "반도체 업계 만난 노동장관…“지속적 혁신·좋은 일자리, 두 과제에 역량 집중해야”",
+     "url": "https://biz.chosun.com/topics/topics_social/2026/11/13/OET4E3NDM5FAZONDZFIWDVGGAI/",
+     "source": "Chosunbiz"
+    }
+   ]
+  },
+  {
+   "title": "헤그세스",
+   "traffic": "100+",
+   "date": "2026-11-13T08:40+09:00",
+   "news": [
+    {
+     "title": "헤그세스, 자기 꾸짖은 병사에 훈장 수여… \"잘했다, 상병\"",
+     "url": "https://www.chosun.com/international/us/2026/11/13/NXMEZQGXVZED5NNRARRJ42TEQ4/",
+     "source": "조선일보"
+    },
+    {
+     "title": "무명용사 묘서 '호통' 들은 헤그세스…보초병에 표창 수여",
+     "url": "https://marketin.edaily.co.kr/News/ReadE?newsId=03116006645645392",
+     "source": "마켓인"
+    }
+   ]
+  },
+  {
+   "title": "두산에너빌리티",
+   "traffic": "5000+",
+   "date": "2026-11-13T08:10+09:00",
+   "news": [
+    {
+     "title": "'DL이앤씨·두산 협력사' 엑스에너지 미국 SMR 건설 승인, \"실제 착공 여부는 미지수\"",
+     "url": "https://www.businesspost.co.kr/BP?command=article_view&num=451730",
+     "source": "비즈니스포스트"
+    },
+    {
+     "title": "두산에너빌리티, NuScale 원자로 계약 체결: 034020, 상승세 이어갈까?",
+     "url": "https://tradersunion.com/ko/news/stocks/show/4206554-doosan-enerbility-slides-0-21percent-today/",
+     "source": "Traders Union"
+    }
+   ]
+  }
+ ],
+ "news": {
+  "뷰티 트렌드": [
+   {
+    "title": "10월 티몰 뷰티 트렌드 리포트③: 베이스메이크업 TOP10 판매량 34.4%↓...K-뷰티 16.3%↓ 선방",
+    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9odm9yM3J3eWxSZlEtYWJGSXpzQmVoMkUtVGQ3cnJTdUtjVmVyWkQzaGNHU0V3enNaRTQwUkhDQkZLYXprNlRaTmRLM0RmUXBaWjc2dnlUYjZNMHIzWHVSZGZGVzBQSXJ6blE?oc=5",
+    "source": "뷰티경제",
+    "date": "2026-11-13T10:15+09:00"
+   },
+   {
+    "title": "[뷰티트렌드] 아모레퍼시픽, 진도군 중학생 대상 ‘밋유어뷰티 멘토링’ 1기 성료 外",
+    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9rSnBoMnB3S1V2MEx0c2JBcEloY3lwMzNTeW1wejJEUTBZQmRYRFlFVmtqY3VkcVVWU0dBdEU2c0F6SFBNUFR4bXluN2RtUVFSd0xVSjNXOFVqU0Flc1FFZFFiOTE0NHJSRElVdw?oc=5",
+    "source": "베이비뉴스",
+    "date": "2026-11-12T15:06+09:00"
+   },
+   {
+    "title": "[뷰티 트렌드] 마리엔메이, ‘무신사 뷰티 성수점’ 입점 外",
+    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBrQk9BZmFnY1ROeXREbU9xX2V0SHFvblpOSlFEUGVyZEhEQ3lzR2dwbEl5S3JzMzFsMHNDRHVCem9vcDNoM3hYOWxSSHFJaWRWWFpPWWZJa2RqRlFvbnBQbGtQamVBTWhlMnFOZQ?oc=5",
+    "source": "베이비뉴스",
+    "date": "2026-11-12T12:27+09:00"
+   },
+   {
+    "title": "10월 티몰 뷰티 트렌드 리포트②: 선케어 TOP10 판매량 17.6% 증가...한국관은 34.4% 감소",
+    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5KZ1JINEpWSEpaMThSTXpiT3JiZlJFSUs1dDVsNk1IWE1UZG4tc3RJWTAxbHNiR3BXV2lJNEpZZm5ndlZDRUZDdmdZazltTWZjM1pWZWtsSHRTN1pLbUR1NGN6cTVFOU80MGc?oc=5",
+    "source": "뷰티경제",
+    "date": "2026-11-12T10:45+09:00"
+   },
+   {
+    "title": "화장품신문 (Beautynury.com) :: 아시아, 글로벌 뷰티 트렌드 주도한다",
+    "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE15M3lhYVNnLWl4cmFYSFVSanc0MlpoWHVUNnJfTGt5N19aQTRaVVV2c0hSWTBDMWFTbS1ZRDJCZk9rQWk2bmRZMEpHbmo3LUFHVDA4Nnd0ZXNma2JBeVlycTlhM2QzZjA?oc=5",
+    "source": "뷰티누리",
+    "date": "2026-11-11T16:20+09:00"
+   },
+   {
+    "title": "10월 티몰 뷰티 트렌드 리포트①: 마스크팩 TOP10 판매량 41.9%↓...K-뷰티 68.4%↓",
+    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5pNnUwb2ljT0IwS3lvZTR3d25aRF9STUJZRHhiRjlzQzRaSk1ObWtfZXp2Q0xaWlRlLUs2NDlCLVF6RVJabUViMHQ2QmNwNFlqYy00OXhJZlJLODlOR2RsZl9mUTJWSE85Mnc?oc=5",
+    "source": "뷰티경제",
+    "date": "2026-11-11T09:35+09:00"
+   },
+   {
+    "title": "고점 대비 45% 하락 에이피알…\"K뷰티 트렌드 계속\" [클릭 e종목]",
+    "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBtSWNsQk1LN1d1dUsyTkNVbjJMRDdfN05WbUx1WEhSQ0NMNEU4Tm01WEo2RWRyQ2JBMHRKRTZKQS1TYW1ScGhXTWp4ZnhDLS1JYzNQZU5mZGdmM2pBblA1cQ?oc=5",
+    "source": "아시아경제",
+    "date": "2026-11-11T07:05+09:00"
+   },
+   {
+    "title": "[뷰티 트렌드] 더샘, '커버 퍼펙션 트리플 팟 컨실러 글로우’ 올리브영 오특서 16% 할인 外",
+    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9WZDBTWnF3R1REUmxSV3B2LTVVWklieW5XdFNLd2RBck9jQVhqaVBOZkRJUndtaDdLS1dMeEdaV1pnZTFUS1hMZ2lZM1ZqZlB3OFpiUkgzSVprWC03dlRhaE5scmIzMlJpcjZDRw?oc=5",
+    "source": "베이비뉴스",
+    "date": "2026-11-10T11:52+09:00"
+   },
+   {
+    "title": "타낫(TANNAT), 2026 WINTER 컬렉션 공개",
+    "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1YWS1tV1A1bTBPQnVHMXlnZDZxWnNlUnFtMXJiV0hWRkNNQmFTLV80eVU1ajYxQ08zOHVWQUtjU09lZlJWdzhuVGJjbVhUQnp2VnpBc2dZc19LUGdPZTBvaktkRQ?oc=5",
+    "source": "RNX뉴스",
+    "date": "2026-11-10T09:45+09:00"
+   },
+   {
+    "title": "\"호두과자 팔러 일본 갑니다\"…명품 팔던 백화점들 '대변신' [트렌드+]",
+    "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9rVFZFMEVDb2RQMEE1RXBrajFOU2F3UE9qTmE2NTM1b1k2RlVNcGV0aWpKbVNjSFNqekZyQ0xYMzBqbWwzVmo3dHc0STVTRm5GcENnQkdiSnlSQQ?oc=5",
+    "source": "한국경제",
+    "date": "2026-11-09T20:00+09:00"
+   }
+  ],
+  "메이크업 트렌드": [
+   {
+    "title": "10월 티몰 뷰티 트렌드 리포트③: 베이스메이크업 TOP10 판매량 34.4%↓...K-뷰티 16.3%↓ 선방",
+    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9odm9yM3J3eWxSZlEtYWJGSXpzQmVoMkUtVGQ3cnJTdUtjVmVyWkQzaGNHU0V3enNaRTQwUkhDQkZLYXprNlRaTmRLM0RmUXBaWjc2dnlUYjZNMHIzWHVSZGZGVzBQSXJ6blE?oc=5",
+    "source": "뷰티경제",
+    "date": "2026-11-13T10:15+09:00"
+   },
+   {
+    "title": "더큐브 아카데미, ‘저스트 메이크업’ 출연 김도현 실장 글로벌 매거진 메이크업 클래스 11월 개설",
+    "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBJbTdLZTIwTkhLbXQ2d3FJMHZQbE9hZl9tcTdjcEVTeUNqQnYyQ3ZnVHY0ckJwUnJGQ0R0aGNxM2J6N0UyX2FwNUxsMHVkVTJ6SXBISTlXZFRlUXdhaTdLNFRLMm1VaHE2NmN5Z25vVTJyZ9IBckFVX3lxTFBJbTdLZTIwTkhLbXQ2d3FJMHZQbE9hZl9tcTdjcEVTeUNqQnYyQ3ZnVHY0ckJwUnJGQ0R0aGNxM2J6N0UyX2FwNUxsMHVkVTJ6SXBISTlXZFRlUXdhaTdLNFRLMm1VaHE2NmN5Z25vVTJyZw?oc=5",
+    "source": "잡포스트",
+    "date": "2026-11-11T14:25+09:00"
+   },
+   {
+    "title": "제니 수키 메이크업, 원조 데본 아오키도 반응했습니다",
+    "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9qZGpjb2pkSUFpTTB6OS1WZHpQZGxmdi1wMVZ0YTVsOXFIMkV5WEg2Q1ZGZS0zRmUwZEU1dk05NGtvTDBYcGZLUUh0b0dtRGxsWHFUMkZKOWZLUQ?oc=5",
+    "source": "www.cosmopolitan.co.kr",
+    "date": "2026-11-10T11:00+09:00"
+   },
+   {
+    "title": "[뷰티 트렌드] 코리아나화장품 브랜드 앰플엔, 다이소 전용 ‘앰플 샷’ 4종 출시 外",
+    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBKdGM3U3FqeTA3bVRCVkYxMTl5ZEl0SDdOdjI1SjJLeVZ0bnJKOEc1MUZDMk5hZVo1eTR6R2lqWHQ5SkY2YTA0UGhfTGVpYm50cGw4OTRadDdjMzc1WVpndDN6TE1rajg4ZmtidQ?oc=5",
+    "source": "베이비뉴스",
+    "date": "2026-11-09T11:51+09:00"
+   },
+   {
+    "title": "똥손도 가능한 '이 메이크업'이 올 가을 트렌드로 떠올랐습니다",
+    "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE9QeUhYQjhnbFpRZWlkQVdsRGV2UUZjSlB5U0F5S3ZTYllwY2ZWb1FlTXczVUhfaEpmNXl6M2xXRDZpckNZZjU1cXM0UUY5dW1sckFPVDNTWQ?oc=5",
+    "source": "www.harpersbazaar.co.kr",
+    "date": "2026-11-08T08:58+09:00"
+   },
+   {
+    "title": "똥손도 가능한 '이 메이크업'이 올 가을 트렌드로 떠올랐습니다",
+    "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBfbmh1bzFVRTVnNGVLd1gzUDBCZ2FLT1F6U2FveUFmM2tOYWFMSzRWdDVzaHFyaE1DNXpXWEcxTnpMWW9Jci1NV29wQ2U4X0VrX3VSb1dGMVNlemc?oc=5",
+    "source": "하퍼스 바자 코리아",
+    "date": "2026-11-08T07:00+09:00"
+   },
+   {
+    "title": "블러 립 메이크업, 번질 수록 더 감각적입니다",
+    "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1kRFZ5aVkyY1N1UFhIZXNWaEo3RFEzZnBHXzNjSU1QTmY2aUJ6NHNja2gtdzlPTGdvTDdBWXM5dlF2VkdiS0w3YUhhTGxydTNoS0ZaMU9Hd0xVZw?oc=5",
+    "source": "www.cosmopolitan.co.kr",
+    "date": "2026-11-07T14:35+09:00"
+   },
+   {
+    "title": "레이부터 김채원까지, 요즘 여돌들이 꽂힌 '이 네일' 트렌드",
+    "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5jTDNQY1RMS3VXQUpiVGVGY0tRR1VyYWJPcmYzWnN3LTV4ZjBHa1NmWWJLMXVyZ2Z0UVdSMzM0QVFNT0QyUVEwbnI2WU1mN05oM291REsxQkhnZw?oc=5",
+    "source": "www.cosmopolitan.co.kr",
+    "date": "2026-11-07T11:25+09:00"
+   },
+   {
+    "title": "헤일리 비버부터 제니까지, 얼굴에 첫눈 내린 듯한 스타더스트 메이크업",
+    "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBqdnpaU0d6Y19ncW1LMy1tSFNWc1U3QXpOY0taUVZaV05teVZSc3BjY3drbElkMzBBLVFtNnNpbHhZdXo2WTVzamNoblRQSkhMOTFmMUdkNmRQUQ?oc=5",
+    "source": "www.cosmopolitan.co.kr",
+    "date": "2026-11-06T14:02+09:00"
+   },
+   {
+    "title": "긴 앞머리도 트렌드, 손질 거의 필요 없는 앞머리 5",
+    "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE91cmNoU0JtR0dKTkI0dnBkTHdFbG5wQjBqa0IyTWMxQkltTDZ1SUVKNzUyRU42RDdJRy0xUEpzQmVZM21KWVhWbllhc2RUZWt5M1lLQ0doQ3VWUQ?oc=5",
+    "source": "www.cosmopolitan.co.kr",
+    "date": "2026-11-05T17:50+09:00"
+   }
+  ],
+  "립 컬러 트렌드": [
+   {
+    "title": "“당신의 립스틱 색깔 만듭니다”…컬러 트렌드 이끄는 씨앤씨인터 [제3회 대한민국 AI 광고대상]",
+    "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBxVUdwamU1QmsyRHdHamF5SFQ1QzZaeXBIRkFBeXoyTl9PT0tqYjNjR1NiSmtndmdtaTJZTjFoYTNKWkdLNVRJM01nUFBTWXlsZU9uNlln?oc=5",
+    "source": "매일경제",
+    "date": "2026-11-11T14:20+09:00"
+   },
+   {
+    "title": "페리페라, '무드 글로이 틴트 키' 등 신규 컬러 공개",
+    "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE14LUkwblFFazNjMnFmSzJzenBYYXo2eHItdU9qNy1CZ01ndlNNaWVpOTk1QWg2WnNQOGtVek1zZXpvbVJPSWx2aDBMXzlnREdNNzVUSGVQRDE2UFpPbkZtODRVQWlpUQ?oc=5",
+    "source": "싱글리스트",
+    "date": "2026-11-04T14:26+09:00"
+   },
+   {
+    "title": "2026년을 이끈 메이크업 트렌드 4, 여기서 확인하세요",
+    "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1wSnZobmhRUHRHY3RkUjhiV0ZHV1lDX2hUZWl4ajZoTWtIMkdqbmNjVFpOTi1FdnNYME5MeDBEWFlLVUJaajRBUHo3Zmo1UDRxOG5PdFJOU1ZzZw?oc=5",
+    "source": "www.cosmopolitan.co.kr",
+    "date": "2026-11-03T17:00+09:00"
+   },
+   {
+    "title": "A2O LITE 'NEON' 영향으로 번진 네온 메이크업 트렌드, 형광 컬러 하나로 무드 바꾸기",
+    "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPZXhqaFcyR1dmRzI2WWlINGR5OXpaT0tpb3NNb1dJeVJKdFBiMFVBZkdyTWx1eUZmOWpZV21sRGtxbHY0RGNaTHQxam9kNVNHakFKV3JDS2c5UmFzeUl3UmJSMnZxeF9TZUhHeEhYTi1TRmxxRF9ZN3ZHemlTUkt5cGNvSQ?oc=5",
+    "source": "PAP Magazine",
+    "date": "2026-11-02T17:00+09:00"
+   },
+   {
+    "title": "“‘국민 틴트 밤’의 화려한 부활”… 마몽드, ‘크리미 틴트 컬러 밤’ 10년 만의 대변신",
+    "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1EUE5Wc2pfeWk5Z0sxWnN6SGhiczhkSFdyMWVxZDExUklpMWpacE1Nc0h1dnA5SmVYMDRoS3JRbEZOZVZIR0VoSXNLR2FpQVRqZV9XSk5reTRrT2pITzJYalgyc3FSLTg?oc=5",
+    "source": "지이코노미",
+    "date": "2026-10-19T16:00+09:00"
+   },
+   {
+    "title": "\"1000만개 팔린 국민 틴트\"...마몽드, 5년 만에 부활 왜?",
+    "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5CekVXVDdSTVZSS3F1aVpMMmJ1cjFOakVSTUFpMU1tU3dkTnpaY0hqQ21iTFZlNFgtckE3RDdnbVJDLUo1d05pOXNiVkh2YWdUYkZmQTluekxfMjR5Znp5VTV0dkZjakNWZE9zZkllVQ?oc=5",
+    "source": "https://www.trend-korea.co.kr/",
+    "date": "2026-10-19T16:00+09:00"
+   },
+   {
+    "title": "옅은 립글로스는 잠시 안녕…짙은 립스틱이 돌아온다",
+    "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE04Rm9KV3ZrMWpLaFJUNFJJWjFMUUNFZG93bTByclhQb3NaUWp4dERGZGE4OXhoUzJqMzlSLXJzcmQxYnNMMlBfN083d0JhWlFCOWVJTzJwc2xoZ9IBX0FVX3lxTE5PSUlFQmlDeXZUSnlHWVROdGpyZ01UY0tBbS1CQmQyUm9TU0N3b01STzJIMF9RZnJ1M0l4aUFsVzY3QjlUX3lXUlJ5bUo2dlFfckVUUGt4dm5BNkw0MTBz?oc=5",
+    "source": "경향신문",
+    "date": "2026-10-17T16:00+09:00"
+   },
+   {
+    "title": "올가을엔 입술에 힘 좀 주셔야겠어요",
+    "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBmZG5pcl9PcWUzVVEtczMtcXJoVk1rMWtkTzRJaFFIZEFRcTA1Xy1ESVgwYVNwQUpjcGVxQWdVN2VBUmZ3SVhRM1c0bEstWFE?oc=5",
+    "source": "엘르 코리아 │ ELLE KOREA",
+    "date": "2026-10-15T16:00+09:00"
+   },
+   {
+    "title": "2027 봄 패션위크를 장악한 세 가지 뷰티 트렌드",
+    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFB2dWhFSDNZSGtyWF9fd1RrX2hWZUZES20xX3J0dEJMbFlIUWxZcDRKMEVPOFVyeXluZGloVXNKU0FsM01Wa0JmejRYRDlEanVrdUpNWDRocU5vYy1oX3h4LWJIWlhGLXBNUHc?oc=5",
+    "source": "더블유더블유디코리아",
+    "date": "2026-10-15T16:00+09:00"
+   }
+  ],
+  "퍼스널컬러": [
+   {
+    "title": "퍼스널 컬러가 ‘망한 사랑’…화제성 1위→입소문 터진 ‘재혼황후’ 그 커플, 벌써 3번째 연기 호흡",
+    "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFAwb292Z1huaEtUTjNkbGJlNFloRzFQX3RVcnVLc0xiYi0zdUFpcGZiaWhJdGFYVGIyY3FVUXNFdDNUdExfNXRKUzlZVmNvb3hQcDdEb3dQV2oyS2xZZklPM2lrYw?oc=5",
+    "source": "MHN스포츠",
+    "date": "2026-11-12T17:27+09:00"
+   },
+   {
+    "title": "‘문원♥’ 신지, 42kg 되더니 美서 폭풍 쇼핑 “내 퍼스널 컬러, 빽가 언니”",
+    "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBJVGFvVFVmM1ROZUlsalJUbVEyV2h5RU00OEdyOGxFbDQ4bGNLeE1vNk9oRF9yZUlyUjY5NkZuYlV6aUZPVXQ2WXQyQVBwVERVOE9nYXg5ZFBMWDQ0VnR4eWJKSGVOYmYt?oc=5",
+    "source": "뉴스엔",
+    "date": "2026-11-12T15:31+09:00"
+   },
+   {
+    "title": "“내 퍼스널 컬러는 빽가 언니”…코요태 신지, 빽가와 벤쿠버서 쇼핑 삼매경",
+    "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9obUwwcEtsbm1yQ05TSVU1dXdJZktxXzFXS0RVRGpGT04xTGlERkI5TVpBOGhlVTNiTmpLZ2stNjFTUS1CTkhjb1NJdFR0SEM3dG1hMVJMYUg?oc=5",
+    "source": "스포츠서울",
+    "date": "2026-11-12T09:44+09:00"
+   },
+   {
+    "title": "신지, 캐나다에서 물욕 터졌다..길가에 널부러진 쇼핑백 \"찾았다 내 퍼스널 컬러\"",
+    "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE51NkY3RW96ekUtUGRZOTBXM2hlc2I4WGRlUGhJb2Q2aV9wU041MEJyV0hRVnhkOXE5d2c5NVdpZmJaRkFoRjctM0h0Mzd2bTlFRUNicQ?oc=5",
+    "source": "OSEN",
+    "date": "2026-11-12T08:52+09:00"
+   },
+   {
+    "title": "김제시육아종합지원센터, 보육교직원 대상 퍼스널 컬러 교육 성료",
+    "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1pY3FMcUh2S3hQcGJBVkVJRFEtSjhreE5LbEUxSDVfWEN6UnJoeGdYT2NrSjg2VEJWN1FqSGlJckdrblhUeHpIT1QteXRzNWVFZkxMZTM0WF9DQ1pkMFVoajJNX0TSAWdBVV95cUxQZDVTNDNRVnlyTGxleDZpdHFQYUU2ZmVHa1FRODNxNlJEZHRYMFBoOEtlRWhvanhGbVVEU05DQWxCS0h5NENmNHhtMzFacVZhSGp1TTY4Zm0xU2V2Y1ZPVkpTSGhkVjU0?oc=5",
+    "source": "국민기자뉴스",
+    "date": "2026-11-11T13:51+09:00"
+   },
+   {
+    "title": "(주)코코리컬러, 도쿄 ‘2026 K-BEAUTY WEEK’ 참가… 퍼스널컬러 분석으로 K-뷰티 관광 경험 확대",
+    "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE11MmYxbWtFLUg5Q1FGWUZ3UFIxOUxULXExMDhLb1FwMWlQVEpxQXR0NjNDakV6TWp5T0ZNRkprNnI4bk1YRTl4ZU5penBZUUY2cGJxVnZ1LXdnU25WVklvNkZ2MzB6NjN2b2dGRjhsT3hqd9IBckFVX3lxTE11MmYxbWtFLUg5Q1FGWUZ3UFIxOUxULXExMDhLb1FwMWlQVEpxQXR0NjNDakV6TWp5T0ZNRkprNnI4bk1YRTl4ZU5penBZUUY2cGJxVnZ1LXdnU25WVklvNkZ2MzB6NjN2b2dGRjhsT3hqdw?oc=5",
+    "source": "시선뉴스",
+    "date": "2026-11-11T10:57+09:00"
+   },
+   {
+    "title": "“진짜 왕자님 나타나” 이종석, 이쯤 되면 로판이 퍼스널컬러(재혼황후)",
+    "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5NbXlGY0p0dUV2X0xDWHBvLTdSbFJSMGRCQThpbTlYX0hOQk9hLTJlb3VRakpNRlA4djFyN09uU0dzNWc4WGc5R1BOTW4tY2pMTlBqU3ZQc0h4bFNMajZoc1FRTG9wUzhH?oc=5",
+    "source": "뉴스엔",
+    "date": "2026-11-11T10:35+09:00"
+   },
+   {
+    "title": "\"내 최애 디즈니 왕자님\"..'재혼 황후' 이종석, 로판이 곧 퍼스널 컬러 '글로벌 최다시청 핵심'",
+    "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE93VEVLLTZQSGtMUHF3OU5HRzB6YTgtM3pXd01JVE5ZLUk1OGxpZUM3bkdBdnNzUnRrOWFBY2d6VjJaRDBHTkJfUERpVGRTcEVYNFZCNw?oc=5",
+    "source": "OSEN",
+    "date": "2026-11-11T09:19+09:00"
+   },
+   {
+    "title": "창원대 남해캠퍼스, 퍼스널컬러 진단 등 맞춤형 이미지 관리 지원",
+    "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9Ed1ZjeDZFbE5Sa1FoSGZQSEhXZkYxTklLa1ZHZXk2N2xhQlBiYnpHLVVLWjRodU1KQkdzT2tFNTBScEI3N2Nxa1FHZXk5bG1XWFQ3d09fQWFIT0M4VDg5M1N5MFlJX19iQWJOU2x3?oc=5",
+    "source": "국제뉴스",
+    "date": "2026-11-10T16:46+09:00"
+   },
+   {
+    "title": "김해시, 퍼스널컬러 진단 교육 직원 호응 높아",
+    "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBUd25sbkx5X0RHRUVwOHNIaHhNdjlZVno2SV8wQlZIazlEeGtIVm1DX1k1WVpxR1RlY3BwbTFCaWtTeUx0eng5LXRBRWxCVmZ2STljMjQ5eGN1TDR0REpBdlJoVjBVOUE?oc=5",
+    "source": "영남매일",
+    "date": "2026-11-10T13:40+09:00"
+   }
+  ],
+  "화장품 신제품 출시": [
+   {
+    "title": "코스맥스, 국내외 쌍끌이 성장…3분기 실적 '고공행진' : 네이버 블로그",
+    "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPSDlEWHBxMnhpRWRDVkNPNkQ4bVJWUldhc3I2QnRxTVNUQ09jSS1NcmRqSHMwcGJxRVZyTEZvbTFvd3pkZ0tmMEhDVnhFY2FrVHNSWUtkYmptS081SVZ3d05HN0xpODhyeVFlQ19TeEJMcFJpNDJwOVNucFhIallJeXUyWmpseEJpSHd1WTllbw?oc=5",
+    "source": "Naver Blog",
+    "date": "2026-11-12T13:36+09:00"
+   },
+   {
+    "title": "숫자놀이 캐릭터가 화장품에…차앤맘, 한정판 출시",
+    "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9qdGkzcUs0bXFQLXI1ODF6b3ZCbmoza2gyZC1oTlBwMmRfYndkaTZybGlzVXRXelFjRUpBVi1Ec25YNnlUY2FHX2d0NEFzM3g3VWJOVnVOM0ZMX01EbHhEWFo4VnU?oc=5",
+    "source": "인더뉴스",
+    "date": "2026-11-12T11:02+09:00"
+   },
+   {
+    "title": "코스맥스, 국내·미국 쌍끌이 성장…증권가 목표주가 줄상향",
+    "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE0ydVA3eTRhc09XMGI2eXhDMm94cEZ5WkZSb0w3VFMxVnpmMFJlQlQ4eUxJcW5nOFoxeHFvcUdXU1lYel9VWHdON3p3dDNRNDFCblhkb1RiTXcwaUtKNHBQWWloR3NtNl9KdHdNMXN2SDNURExGYnZYN2V3blBuNDg?oc=5",
+    "source": "스타뉴스",
+    "date": "2026-11-12T10:59+09:00"
+   },
+   {
+    "title": "코스맥스 영업익 95% 급증…주가 8%대 강세",
+    "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1uRG9xVkhUcmNrbzNSRkQ4bjdobkh1QWEzYmg5c1Jsbl94N04xRXpoSDlGajhYbWlNektZN1pwUWFDUmtPNno3Qkd0dUpCRWhaRWlSNnpyclNxZWxPdlV3UzByQWhpcGRsX3BEMk5TMGPSAXBBVV95cUxNbkRvcVZIVHJja28zUkZEOG43aG5IdUFhM2JoOXNSbG5feDdOMUV6aEg5Rmo4WG1pTXpLWTdacFFhQ1JrTzZ6N0JHdHVKQkVoWkVpUjZ6cnJTcWVsT3ZVd1MwckFoaXBkbF9wRDJOUzBj?oc=5",
+    "source": "엠에스투데이",
+    "date": "2026-11-12T10:07+09:00"
+   },
+   {
+    "title": "코스맥스, 한·미 법인 고성장에 실적 호조…목표가 41만원 상향-신한",
+    "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxON0JFUFFVX2hSYmNjNkdWZEdLal9SMlBmeVZzZEtNSmJGc2dvLXdRT2RqMVAwSHVuOU5ZZm5BUkp6UFN2SXhTRzVSSFY4dGNEVllaN2J2UGtYV3BJbjBoYVp0RTZiTEI4S3lxMG9aRnE1bzg1a3hRcFBZOXFVNHpJNw?oc=5",
+    "source": "이데일리",
+    "date": "2026-11-12T07:52+09:00"
+   },
+   {
+    "title": "K뷰티 훈풍에 코스맥스 ‘활짝’…美 매출 88% 급증",
+    "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE8tMXpRNW5GNnVmZmRya0llbVI4cjI3alIwdS1PRkNReUtvMzJVVGR3MnJFeWxwdmxQcHNnc1R0ZFRRclRIUW00UEREZFN2Yi1lRjJESTc3bVFWcDhka0lFZ1R6M28?oc=5",
+    "source": "서울경제TV",
+    "date": "2026-11-11T19:30+09:00"
+   },
+   {
+    "title": "“K-뷰티 타고 날았다”…코스맥스, 3분기 영업익 833억 전년比 95% ↑",
+    "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1FVVNvZFVfX003aU9acFRBX0oxb204MG5DbzB4UHJXNlhKZjZvUmc0QW9KNHc2MGFXTnIwYlhHTmJHU0ZXWEd6YUV2bTRROW5mQXI0anF4LVhSVWktMWdnNw?oc=5",
+    "source": "마이데일리",
+    "date": "2026-11-11T18:28+09:00"
+   },
+   {
+    "title": "롯데는 재도전, 한섬·신세계는 재정비…백화점 PB 화장품 승부수",
+    "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTFB2S25FbTF6X1VlWWtGc09Oa2ZQMDd5VFIybWpkWURncHFWQkE3TTBoWFh1THBUNFRUcEFaak5tYTVOeHc5MFZvbFNaRzBGV2ZGQS1J0gFTQVVfeXFMUHZLbkVtMXpfVWVZa0ZzT05rZlAwN3lUUjJtamRZRGdwcVZCQTdNMGhYWHVMcFQ0VFRwQVpqTm1hNU54dzkwVm9sU1pHMEZXZkZBLUk?oc=5",
+    "source": "KPI뉴스",
+    "date": "2026-11-11T17:41+09:00"
+   },
+   {
+    "title": "코스맥스, 3분기 매출 8758억원···분기 최대 실적 경신",
+    "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1nT0dWcVVsZVZmSVI2Vk0zNFhLaGp1VXlhUlFTNGVoM3FTTm1BRUVaVUtMQ25jeXFzVmdoNUJ5eV9sZ19Xai04cWtWcGQ0VzRkOXd6Ti1qQzVrM0FTUC1hdmR4RzVQVE3SAWtBVV95cUxQakFPUTJra0kzOUtGaXF5QzFKblFJR0hiV1VoN2ctRklDWlRRYVdYNEItZlZYdDhyMVhvNTRiaENHQzJ4dWVWT3RuYUdXY3p2WHh2LXBScklQM1pUaDdtTFl3bnNNZ1pGZFFQZw?oc=5",
+    "source": "현대경제신문",
+    "date": "2026-11-11T17:26+09:00"
+   },
+   {
+    "title": "코스맥스, 3분기 매출 사상 최대…영업익 95%↑",
+    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5MSmVyQXF2M1FuMW5feFBSR0lKMVgtZ0cxVUtlODdJc2E5aS1sNmpicEZWNEVJOUgxVFE0TTY1clduUXBRTjhUQ3AyY3VyZ2RIeU5MMEQ4bFVYUThuckhkZ1RMV2JMZUNyLVBBVA?oc=5",
+    "source": "프라임경제",
+    "date": "2026-11-11T17:24+09:00"
+   }
+  ],
+  "W컨셉 뷰티": [
+   {
+    "title": "W컨셉, 도쿄 하라주쿠·시부야서 팝업…국내 패션·뷰티 브랜드 소개",
+    "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1kQVduMkhXSUNqZGxWRkFTa1ZiMkJjVUUtWW9KZjFkOGl2ZlhmY2NxZGc0ekh5aWNVaTF6ZTQtT045NDRVcUw2c2NrQnNsUHRtR0F2ME9ibTl2NUxPdWZ5V1NVMlAwNDMwTXBQZkZiWGVBMFU?oc=5",
+    "source": "어패럴뉴스",
+    "date": "2026-11-12T15:48+09:00"
+   },
+   {
+    "title": "W컨셉, 도쿄 하라주쿠·시부야서 팝업…국내 패션·뷰티 브랜드 소개",
+    "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTFA0d3BQaWh5SGZrTkRldGVUX3ZGXzlseG5hbzltS3RpMU9UdmR2T3kwQVVQTURPU3dteVU4YkVYQ3gwMWtjd0ZlaTdHb04wY2ZiZTg3WE8xV2x2c2FvR0MtSjRfOXFnVFdRTmNvd05ORmp1a3Yxc2Rn?oc=5",
+    "source": "어패럴뉴스",
+    "date": "2026-11-12T15:48+09:00"
+   },
+   {
+    "title": "도쿄 하라주쿠·시부야에 K패션 물결···日 공략 속도내는 W컨셉",
+    "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1zX3k3MjZDbzVWTU0wY3RLcV9HcC1UTms4TE9wU3JSdjBHSE5wZVRtbGNIWFJlNUZwVTJDd0Q5TzFEZDBldzBVb0h5cE81U2RTRm1XRi1QLW9JMkVkWG9OaXRoVjB4bmdUWUg0WFNMdmbSAXRBVV95cUxNMU1weURCTi1CcnJMNHBVcEZnZVpkWmlpVi1yWWNoOVZLcUhIUVNIOHZ4MGo0V3ppeWhXQzE1ZDRlc1J0bS12RGVlc3U4SEowVFV3Z0x3WnJrN2djSDljUVVHeUNIM3JXeTJSVndhaTBCeTBfbg?oc=5",
+    "source": "이뉴스투데이",
+    "date": "2026-11-12T09:35+09:00"
+   },
+   {
+    "title": "W컨셉, 日 도쿄서 릴레이 팝업...패션∙뷰티∙리빙 선봬",
+    "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1KV3F6ZUxKc1I3NDZ4MW82VFUxUFhoS2RLeXBXUS1mc0lReUpUaS1ZYmt5RXZkWF9uSzV6LXBpSWdrSTRTdVBQVVk5eG9rX1NoTjh1U1R1WTE0NklfMkF2cFdldWhXQQ?oc=5",
+    "source": "싱글리스트",
+    "date": "2026-11-10T17:00+09:00"
+   },
+   {
+    "title": "W컨셉, 25일까지 '더블유위크'…패션·뷰티·라이프 할인",
+    "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9CYU9iNGU3R2xLdUFTRHlVY19qZktCUUxuMFp2eGU1UGtDYjYyZ2hTeU8yMjhzLXNONHBHLVc1WUlPeWwxeTUtcHZhVVF0VzZ5M0h1M3VHR0Z0Ymw3WW5PN0RWalgxYVltRktGb3d1SzVGZ1dZX2ZR?oc=5",
+    "source": "어패럴뉴스",
+    "date": "2026-11-09T15:46+09:00"
+   },
+   {
+    "title": "W컨셉, 연중 최대 '더블유위크'…최대 85% 할인",
+    "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBkX01BZTh5X0RjZGRWOUtzaDRVMkNCeU4wNWU4OWJBbzc1ODRjT29HYld6a00zVFFGMVBvOGNPMEdudW9UR1YtMTFmT3JVWWRfZWQ4c183V3NrVC0wNmJpaHh4dzd3eTBOQjhJZFRScjRPYzVy?oc=5",
+    "source": "파이낸셜포스트",
+    "date": "2026-11-09T15:06+09:00"
+   },
+   {
+    "title": "W컨셉, 17일간 ‘더블유위크’... 20만개 상품 최대 85% 할인",
+    "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1wcWRrUEtORXp5SnRkdjhWWFhoZWpXWUVaSTd2OXAwZ19TWTIxMG1YUkpxY1RFOVlrQlhtZV91M3VWTlhlb05PRFJUbnhSd1FV?oc=5",
+    "source": "패션비즈",
+    "date": "2026-11-09T10:22+09:00"
+   },
+   {
+    "title": "언뮤트, W컨셉 '더블유위크'서 스킨케어 6종 최대 54% 할인",
+    "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1iZFpkRmt1aUpvNXZTMGM0M09JVmt0bWhUTnN6LW1OUGwya2I1VjRlOE5jREZMQVRISUk3OWdfOEJGY2hVNDF3SllXLS1sa3N0ZmxxWkY0YUxyalhGZmh0THNQV2tUZw?oc=5",
+    "source": "싱글리스트",
+    "date": "2026-11-09T09:47+09:00"
+   },
+   {
+    "title": "W컨셉, 연중 최대 '더블유위크' 개최…패션·뷰티 최대 85% 할인",
+    "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9XYXQ3cDJQVjlvcVVKLVpDRHJaNUlwb2tHOHRRcHE0WE5TTWZlRk96MUczcVNyRUlaZERlSHp3amNGY1VZVFVCWkd3Q0lWQQ?oc=5",
+    "source": "전자신문",
+    "date": "2026-11-09T08:29+09:00"
+   },
+   {
+    "title": "W컨셉, 25일까지 '더블유위크'…패션·뷰티·라이프 할인",
+    "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1CTXhCUXc5aGUxR3BXXzcyVXg2WVF1aEktZjVEVms1ajBWbVhJR01peWt1WWFKc3lkUGZvLV9ROXFHY0U1MW10V0t1bjg3RjMtYTlCYWRFQnc1YmFPSWtadXJseS0zWlIyeUZEUnF3aGJwanFMc3c?oc=5",
+    "source": "어패럴뉴스",
+    "date": "2026-11-09T00:00+09:00"
+   }
+  ]
+ },
+ "holidays": [
+  {
+   "date": "2026-12-24",
+   "name": "크리스마스 이브",
+   "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."
+  },
+  {
+   "date": "2026-12-25",
+   "name": "크리스마스",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2026-12-31",
+   "name": "섣달 그믐날",
+   "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."
+  },
+  {
+   "date": "2027-01-01",
+   "name": "새해첫날",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-02-07",
+   "name": "설날",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-02-08",
+   "name": "설날 연휴",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-02-09",
+   "name": "쉬는 날 설날",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-03-01",
+   "name": "삼일절",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-04-05",
+   "name": "식목일",
+   "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."
+  },
+  {
+   "date": "2027-05-01",
+   "name": "노동절",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-05-03",
+   "name": "쉬는 날 노동절",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-05-05",
+   "name": "어린이날",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-05-08",
+   "name": "어버이날",
+   "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."
+  },
+  {
+   "date": "2027-05-13",
+   "name": "부처님오신날",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-05-15",
+   "name": "스승의날",
+   "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."
+  },
+  {
+   "date": "2027-06-06",
+   "name": "현충일",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-07-17",
+   "name": "제헌절",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-07-19",
+   "name": "쉬는 날 제헌절",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-08-15",
+   "name": "광복절",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-08-16",
+   "name": "쉬는 날 광복절",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-09-14",
+   "name": "추석 연휴",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-09-15",
+   "name": "추석",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-09-16",
+   "name": "추석 연휴",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-10-01",
+   "name": "국군의날",
+   "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."
+  },
+  {
+   "date": "2027-10-03",
+   "name": "개천절",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-10-04",
+   "name": "쉬는 날 개천절",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-10-09",
+   "name": "한글날",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-10-11",
+   "name": "쉬는 날 한글날",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-12-24",
+   "name": "크리스마스 이브",
+   "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."
+  },
+  {
+   "date": "2027-12-25",
+   "name": "크리스마스",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-12-27",
+   "name": "쉬는 날 크리스마스",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2027-12-31",
+   "name": "섣달 그믐날",
+   "kind": "기념일\\n기념일을 숨기려면 Google Calendar 설정 > 대한민국의 휴일 캘린더로 이동하세요."
+  },
+  {
+   "date": "2028-01-01",
+   "name": "새해첫날",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2028-01-26",
+   "name": "설날",
+   "kind": "공휴일"
+  },
+  {
+   "date": "2028-01-27",
+   "name": "설날 연휴",
+   "kind": "공휴일"
+  }
+ ],
+ "errors": []
+}
